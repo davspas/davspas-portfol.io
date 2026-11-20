@@ -1,0 +1,110 @@
+<!-- PROJ-MULTI-SELECT -->
+<!-- Custom multi-select dropdown with tag display. Supports flat lists and hierarchical (tree) data. -->
+
+<!-- METADATA
+Component: Multi-Select
+Category: Forms
+Complexity: High
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- MUST be initialized via JavaScript with `ProjMultiSelect.create(target, options)` — markup alone does nothing
+- The container element should be empty in HTML; the plugin renders trigger + dropdown into it
+- MUST pass `mode: 'flat'` or `mode: 'tree'` in options
+- For `tree` mode, items MUST have nested `children` arrays
+- The `onChange` callback receives the array of selected IDs
+
+COMMON MISTAKES TO AVOID:
+[X] Writing trigger/dropdown HTML manually — use the JS API which renders the markup
+[X] Mutating `items` after init — call `ProjMultiSelect.setItems(target, items)` instead
+[X] Mixing flat and tree items in the same instance — pick one mode per instance
+[X] Forgetting to provide a stable `id` for each item — used for selection tracking
+
+JAVASCRIPT INTEGRATION:
+- Initialize: `ProjMultiSelect.create('#myEl', { mode, items, selected, onChange })`
+- Get selected IDs: `ProjMultiSelect.getSelected('#myEl')` → returns array
+- Set selection: `ProjMultiSelect.setSelected('#myEl', ['id1', 'id2'])`
+- Replace items: `ProjMultiSelect.setItems('#myEl', items)`
+- Destroy: `ProjMultiSelect.destroy('#myEl')`
+- Positioning: the open dropdown is `position: fixed`, so a scrolling or clipped container never cuts it. It opens upward (`proj-multi-select__dropdown--up`) when there is more room above, and the list (about 10 rows) shrinks and scrolls inside to fit the viewport.
+
+API options:
+  mode: 'flat' | 'tree' (required)
+  items: Array of { id, label } (flat) or { id, label, children: [...] } (tree)
+  selected: Array of initial selected IDs
+  searchable: boolean (default true)
+  showSelectAllControls: boolean (default true) — Select All / None links
+  maxVisibleTags: number (default 3) — overflow shows "+N"
+  allLabel: string (default 'All Items') — tag text when everything selected
+  placeholder: string (default 'Select Items')
+  onChange: (selectedIds) => {} — fires whenever selection changes
+
+COMPANION FILES:
+- CSS: proj-multi-select.css
+- JS: proj-multi-select.js
+
+CORRECT STRUCTURE TEMPLATE:
+<div class="proj-multi-select" id="myMultiSelect"></div>
+<!-- Then in JS:
+ProjMultiSelect.create('#myMultiSelect', {
+  mode: 'flat',
+  items: [{ id: 's1', label: 'Campus 1' }, { id: 's2', label: 'Campus 2' }],
+  selected: ['s1'],
+  allLabel: 'All Campuses',
+  placeholder: 'Select Campuses',
+  onChange: function(ids) { console.log(ids); }
+});
+-->
+
+When to prompt: If a designer asks for any multi-select with tags (whether flat or tree),
+ask: "Should this be a flat list or a hierarchical tree?" — pick the appropriate mode.
+Variants: flat, tree
+-->
+
+<!-- DEFAULT (FLAT MODE) -->
+<div class="proj-multi-select" id="myFlatSelect"></div>
+
+<!-- TREE MODE -->
+<div class="proj-multi-select" id="myTreeSelect"></div>
+
+<!-- The plugin renders this internally (do NOT write by hand): -->
+<!--
+<div class="proj-multi-select proj-multi-select--open">
+  <div class="proj-multi-select__trigger">
+    <div class="proj-multi-select__content">
+      <div class="proj-multi-select__tags">
+        <span class="proj-multi-select__tag">
+          <span class="proj-multi-select__tag-text">Tag Label</span>
+          <button class="proj-multi-select__tag-close" data-id="...">×</button>
+        </span>
+        <span class="proj-multi-select__overflow">+N</span>
+      </div>
+      <span class="proj-multi-select__arrow">▼</span>
+    </div>
+  </div>
+  <div class="proj-multi-select__dropdown proj-multi-select__dropdown--open">
+    <div class="proj-multi-select__search">
+      <input type="text" class="form-input proj-multi-select__search-input" placeholder="Search…">
+    </div>
+    <div class="proj-multi-select__controls">
+      <a href="#" class="proj-multi-select__link proj-multi-select__select-all">Select All</a>
+      <span class="proj-multi-select__separator">|</span>
+      <a href="#" class="proj-multi-select__link proj-multi-select__select-none">None</a>
+    </div>
+    <div class="proj-multi-select__list">
+      <!-- Flat: checkbox rows -->
+      <!-- Tree: nested .proj-multi-select__node items with toggle + checkbox -->
+    </div>
+  </div>
+</div>
+-->
+
+<!-- USAGE:
+- Designers use this via JS — markup is just the empty container
+- Tags collapse to "+N" after `maxVisibleTags` — close × removes individual selections
+- Tree mode auto-consolidates tags: parent tag shown when all its children are selected
+- Tree mode shows a partial (dash) checkbox on a parent when only some of its children are selected; MDS checkboxes have no partial style, so proj-multi-select.css draws it
+- "All [items]" tag shown when every item across the dataset is selected
+- Outside-click closes the dropdown
+- Uses MDS form-input for search and MDS checkbox styling for selection rows
+- Design tokens: spacing, colors, typography all from MDS
+-->

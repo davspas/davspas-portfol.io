@@ -1,0 +1,113 @@
+<!-- PROJ-CASCADER -->
+<!-- Multi-column, data-driven drilldown picker. Each column declares its own single/multi select mode. -->
+
+<!-- METADATA
+Component: Cascader
+Category: Forms
+Complexity: High
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- MUST be initialized via JavaScript with `ProjCascader.create(target, options)` — markup alone does nothing
+- The container element should be empty in HTML; the plugin renders the trigger into it and portals the popup to <body>
+- `columns` (array) defines BOTH the number of levels AND each level's selection `mode` ('single' | 'multi')
+- `getOptions(level, path)` supplies each column's data on demand — `path` holds the selections of all columns to the left
+- A SINGLE-select column closes the popup ONLY when it is the LAST column; otherwise it reveals the next column
+- A MULTI-select column NEVER closes the popup on toggle — the popup closes on outside click / Escape
+- The `onChange(value, meta)` callback receives the full value object (single → id string|null, multi → id array)
+
+COMMON MISTAKES TO AVOID:
+[X] Writing popup/column HTML by hand — the JS API renders everything
+[X] Using a global dataset instead of supplying `getOptions`
+[X] Expecting a multi-select column to close the popup
+[X] Hard-coding colors instead of MDS tokens
+
+JAVASCRIPT INTEGRATION:
+- Initialize: `ProjCascader.create('#myEl', { columns, getOptions, value, placeholder, onChange })`
+- Reconfigure columns (e.g. mode switch): `ProjCascader.setColumns('#myEl', columns)` — preserves matching-level values
+- Set value (fires onChange unless { silent: true }): `ProjCascader.setValue('#myEl', value, { silent: true })`
+- Read value: `ProjCascader.getValue('#myEl')` → value object
+- Update empty-state placeholder: `ProjCascader.setPlaceholder('#myEl', 'Select a Campus')`
+- Re-read options + repaint after data changes: `ProjCascader.refresh('#myEl')`
+- Open / Close / Destroy: `ProjCascader.open/close/destroy('#myEl')`
+
+API options:
+  columns: Array of { level, mode, placeholder?, allLabel?, countNoun?, showSelectAllControls? }
+           - level: stable key used in the value object and getOptions
+           - mode:  'single' | 'multi'
+           - placeholder: pending-segment text for the trigger
+           - allLabel: trigger label when a multi column has everything selected
+           - countNoun: noun for the multi count label, e.g. 'Building Controller' → "2 Building Controllers selected"
+                        (pluralized with "s" when >1); omit for a bare "N selected"
+           - showSelectAllControls: boolean (multi only, default true)
+  getOptions: (level, path) => [{ id, label }]   — path = selections of columns to the left
+  value: { [level]: idString | null  (single)  ,  [level]: idArray  (multi) }
+  placeholder: string — trigger text when nothing is selected
+  onChange: (value, meta) => {}   — meta = { level, mode, closed }
+
+COMPANION FILES:
+- CSS: proj-cascader.css
+- JS:  proj-cascader.js
+
+CORRECT STRUCTURE TEMPLATE:
+<div class="proj-cascader" id="myCascader"></div>
+<!-- Then in JS:
+ProjCascader.create('#myCascader', {
+  columns: [
+    { level: 'site',       mode: 'single', placeholder: 'Pick a Campus' },
+    { level: 'lineServer', mode: 'multi',  placeholder: 'Pick Building Controllers', allLabel: 'All Building Controllers' }
+  ],
+  getOptions: function(level, path) {
+    if (level === 'site') return sites.map(function(s){ return { id: s.id, label: s.name }; });
+    var site = sites.filter(function(s){ return s.id === path.site; })[0];
+    return site ? site.children.map(function(c){ return { id: c.id, label: c.name }; }) : [];
+  },
+  value: { site: null, lineServer: [] },
+  placeholder: 'Select scope…',
+  onChange: function(value, meta) { console.log(value, meta); }
+});
+-->
+
+When to prompt: When the designer asks for a drilldown / cascading picker over hierarchical data,
+ask how many levels and which levels are single vs multi select.
+Variants: single-column, multi-column (all single), mixed single + multi
+-->
+
+<!-- DEFAULT (single + multi columns) -->
+<div class="proj-cascader" id="myCascader"></div>
+
+<!-- The plugin renders this internally (do NOT write by hand): -->
+<!--
+<div class="proj-cascader">
+  <button type="button" class="proj-cascader__trigger">
+    <span class="proj-cascader__trigger-text"><span class="proj-cascader__placeholder">Select scope…</span></span>
+    <span class="proj-cascader__caret"><sf-symbol name="chevron.down"></sf-symbol><sf-symbol name="chevron.up"></sf-symbol></span>
+  </button>
+</div>
+<div class="proj-cascader__popup" hidden>
+  <div class="proj-cascader__column proj-cascader__column--leaf" data-level="site" data-index="0">
+    <div class="proj-cascader__option is-active" data-level="site" data-value="...">
+      <span>Label</span><span class="proj-cascader__option-arrow"><sf-symbol name="chevron.right"></sf-symbol></span>
+    </div>
+  </div>
+  <div class="proj-cascader__column proj-cascader__column--multi proj-cascader__column--leaf" data-level="lineServer" data-index="1">
+    <div class="proj-cascader__controls">
+      <a class="proj-cascader__link proj-cascader__select-all" data-level="lineServer">Select All</a>
+      <span class="proj-cascader__separator">|</span>
+      <a class="proj-cascader__link proj-cascader__select-none" data-level="lineServer">None</a>
+    </div>
+    <label class="checkbox proj-cascader__check-option">
+      <input type="checkbox" class="checkbox__input proj-cascader__cb" data-level="lineServer" data-value="...">
+      <span class="checkbox__box"></span><span class="checkbox__label">Label</span>
+    </label>
+  </div>
+</div>
+-->
+
+<!-- USAGE:
+- Designers use this via JS — markup is just the empty container
+- Popup is portaled to <body> and positioned with fixed coords (escapes overflow:hidden ancestors)
+- Outside-click / Escape closes the popup; it repositions on scroll + resize while open
+- Downstream sub-selections are remembered per first-level item: switching to another parent
+  and back restores the previously-chosen child selections
+- Uses MDS checkbox styling for multi columns and design tokens throughout
+-->

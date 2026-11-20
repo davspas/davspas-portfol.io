@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HSF · Financial Services app, before and after — David Smith</title>
+  <meta name="description" content="UX/UI redesign of the HSF financial services mobile app: the consortium card and its detail view, before and after, with an interactive comparison.">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+  <link rel="stylesheet" href="../assets/s1-page.css">
+</head>
+<body class="s1-page hsf-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../#work-ux">← Work</a><a href="#context">Background</a><a href="#card">Card</a><a href="#detail">Detail</a><a href="#components">Components</a><a href="#tokens">Status colours</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en" aria-current="true">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a> / <a href="../../../#work">Work</a> / <a href="../../../#work-ux">Software UX</a> / HSF · Financial Services</nav>
+    <section class="s1-hero">
+      <div>
+        <div class="eyebrow">Venturus · S1 · HSF</div>
+        <h1>HSF <span class="gold">Financial Services</span></h1>
+        <p class="steam">A redesign of the consortium screens in the HSF mobile app: the card people see first and the detail view behind it. This page compares the screens before and after, side by side or with a slider, and shows the component sheet the new version is built from.</p>
+        <ul class="facts-row"><li><b>Client</b>HSF</li><li><b>Platform</b>Mobile app</li><li><b>Interface language</b>Portuguese (Brazil)</li><li><b>Period</b>Feb 2021 – Jul 2021</li><li><b>My role</b>UX/UI design at Venturus</li></ul>
+        <div class="btn-row" style="margin-top:26px"><a class="btn gold" href="#card">Compare the card</a><a class="btn" href="#detail">Compare the detail view</a><a class="btn" href="../../../#work-ux">Back to all work</a></div>
+      </div>
+      <div class="ba reveal"><figure><img src="assets/web/card-paid.jpg" alt="Before: the consortium card"><figcaption>Before</figcaption></figure><figure><img src="assets/web/card-late.jpg" alt="After: the redesigned consortium card"><figcaption>After</figcaption></figure></div>
+    </section>
+
+    <section class="s1-sec reveal" id="context"><h2>Background</h2><p class="intro">An app for vehicle financial services that had been worked on before I joined it. The problem was mostly how the prototypes were organised and the lack of components for the design assets.</p><div class="states"><div class="box"><h3>Plan</h3><p>I made a plan to organise and refactor parts of the UI.</p></div><div class="box"><h3>Design system</h3><p>I created an initial design system for the app, remapped every screen already designed and planned the components for them.</p></div><div class="box"><h3>Process</h3><p>I improved the UX for upcoming features and set up a process for UI development.</p></div></div></section>
+
+    <section class="s1-sec reveal" id="pillars"><h2>What the redesign aims at</h2><div class="pillars"><div class="pillar"><div class="n">01</div><h3>Status first</h3><p>The progress bar keeps its place at the top of the card, and the label that explains it, such as “Em atraso 60%”, now sits right under the bar.</p></div><div class="pillar"><div class="n">02</div><h3>Easier to scan</h3><p>Text is left-aligned and Grupo, Cota and RD became a label above a value, instead of a centred pill.</p></div><div class="pillar"><div class="n">03</div><h3>A clear way to open more</h3><p>An “Expandir” bar over the bottom of the photo tells people the card opens, and the actions below it are fewer and clearer.</p></div><div class="pillar"><div class="n">04</div><h3>A detail view that gets to the point</h3><p>The photo becomes a blurred header, so the list of actions starts higher and can hold more of what people need.</p></div></div></section>
+
+    <section class="s1-sec reveal" id="flow"><h2>Flow</h2><p class="intro">The path did not change: from the card carousel to the details of one product.</p><div class="lane"><div class="path"><h4>Consortium</h4><div class="chain"><div class="node page"><small>Cards</small>Swipe through the products</div><span class="arrow">→</span><div class="node panel"><small>Quick action</small>Statement · Bid</div><span class="arrow">→</span><div class="node drawer"><small>Expandir</small>Detail view</div><span class="arrow">→</span><div class="node page"><small>Policy · Digital card · Claims</small></div></div></div></div></section>
+<section class="s1-sec" id="card"><h2>The card</h2><p class="intro">The first screen of the flow: one card per product, with its status, its data and quick actions. Drag the handle to compare, or switch to side by side.</p><div class="cmpwrap reveal"><div class="cmp" data-cmp style="--ar:1000/1779"><div class="cmp-bar"><div class="cmp-modes" role="group" aria-label="View mode"><button type="button" data-m="slide" class="on">Slide</button><button type="button" data-m="side">Side by side</button></div><span class="cmp-hint">Drag the handle</span></div><div class="cmp-stage"><div class="pane pb"><img src="assets/web/card-paid.jpg" alt="Before"><span class="lab">Before</span></div><div class="pane pa"><img src="assets/web/card-late.jpg" alt="After"><span class="lab">After</span></div><div class="cmp-handle" aria-hidden="true"><i>⇆</i></div><input class="cmp-range" type="range" min="0" max="100" value="50" aria-label="Compare before and after"></div></div><div class="changes"><h3>What changed</h3><ul><li><b>Header.</b> The red “Consórcios” title becomes a black “Consórcio” title.</li><li><b>Status.</b> Progress bar on top, with the status and percentage now under it.</li><li><b>Name and data.</b> The centred nickname and model, plus a pill with Grupo, Cota and RD, become left-aligned text with labels over values.</li><li><b>Photo.</b> The vehicle bleeds to the bottom edge and carries an “Expandir” bar.</li><li><b>Actions.</b> Three actions (Devolução, Extrato, Recibos) give way to two (Extrato, Ofertar lance), each with its icon and a divider.</li></ul></div></div></section><section class="s1-sec" id="detail"><h2>The detail view</h2><p class="intro">What opens when you tap Expandir: the product, its status and the list of things you can do with it.</p><div class="cmpwrap reveal"><div class="cmp" data-cmp style="--ar:1000/2073"><div class="cmp-bar"><div class="cmp-modes" role="group" aria-label="View mode"><button type="button" data-m="slide" class="on">Slide</button><button type="button" data-m="side">Side by side</button></div><span class="cmp-hint">Drag the handle</span></div><div class="cmp-stage"><div class="pane pb"><img src="assets/web/detail-paid.jpg" alt="Before"><span class="lab">Before</span></div><div class="pane pa"><img src="assets/web/detail-late.jpg" alt="After"><span class="lab">After</span></div><div class="cmp-handle" aria-hidden="true"><i>⇆</i></div><input class="cmp-range" type="range" min="0" max="100" value="50" aria-label="Compare before and after"></div></div><div class="changes"><h3>What changed</h3><ul><li><b>Header.</b> A full photo with a title and an edit icon becomes a blurred photo behind the status bar, the name and the data.</li><li><b>Primary rows.</b> Two grey rows stay at the top of the list: Devolução de valores and Próxima assembleia become Detalhes da apólice and Acionar seguro.</li><li><b>Secondary list.</b> Three items (Extrato, Recibos de pagamento, Assembleias) become four (Cartão digital, Alterar ou cancelar apólice, Renovação ou nova cotação, Acompanhar sinistros), each with a one-line description.</li><li><b>Icons.</b> Chevrons stay, and Cartão digital gets a download icon because it issues a file.</li></ul></div></div></section><section class="s1-sec" id="components"><h2>Components</h2><p class="intro">The sheet the new version is built from: every layout of the actions card, and the progress card in each status. Click to zoom.</p><div class="shots-group reveal"><h3>Component sheet <span>3 columns</span></h3><p>Left: the actions card with three, two or one action. Centre: the progress card in each status. Right: the vertical list of every action.</p><div class="shots small"><figure class="shot"><button type="button" data-full="assets/web/components.jpg"><img loading="lazy" src="assets/web/components.jpg" alt="Card Produto: actions and progress"></button><figcaption><b>Card Produto: actions and progress.</b> Click to zoom and pan.</figcaption></figure></div></div></section><section class="s1-sec reveal" id="states"><h2>Actions in the sheet</h2><p class="intro">Thirteen actions, each an icon and a short label, combined three at a time depending on the product state.</p><div class="states"><div class="box"><h3>Payments and documents</h3><p>Pagamentos, Meu Contrato, Extrato, Recibos, Detalhes.</p></div><div class="box"><h3>Bids and meetings</h3><p>Ofertar lance, Editar lance, Contemplação, Antecipar parcelas, Devolução de valores.</p></div><div class="box"><h3>Insurance and recovery</h3><p>Acionar, Renovar seguro, Reativar consórcio.</p></div></div></section><section class="s1-sec reveal" id="tokens"><h2>Status colours</h2><p class="intro">Each status has its own bar colour; the colours below are approximate, read from the sheet.</p><div class="tokens"><div class="token"><i style="--c:#5de27f"></i><span><b>Green</b><code>Em andamento · Ativo</code></span></div><div class="token"><i style="--c:#e8404f"></i><span><b>Red</b><code>Em atraso · Cobrança</code></span></div><div class="token"><i style="--c:#4aa8f0"></i><span><b>Blue</b><code>Contemplado · Quitado · Vigência encerrada</code></span></div><div class="token"><i style="--c:#b9b9b9"></i><span><b>Grey</b><code>Cancelado · Contemplado excluído</code></span></div></div></section><section class="s1-sec reveal" id="credits"><h2>Credits &amp; open items</h2><div class="credits"><div class="box"><h3>Credits</h3><p><strong>UX/UI design:</strong> David Smith, at Venturus.</p></div><div class="box"><h3>Open items</h3><p>The before and after screens show different sample vehicles and statuses (a paid-off Civic and a late HR-V), so compare the layout and structure, not the data. The differences listed are what I can see in the screens, not a record of the decisions behind them. There is no live prototype on this page.</p></div></div></section>  <nav class="nextproj" aria-label="Next project"><a class="btn" href="../../../#work-ux">← Back to all work</a><a class="btn primary" href="../../../Daitan/"><small>Next project</small> Daitan projects →</a></nav>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>© David Simonsen Paes de Almeida Smith</span><span>Designed by hand. Only Atrium was prototyped with AI</span><a href="../../../#work-ux">← Back to all work</a></div>
+  </footer>
+  <script src="../assets/viewer.js"></script>
+  <script>
+    (function () {
+      document.querySelectorAll('[data-cmp]').forEach(function (c) {
+        var st = c.querySelector('.cmp-stage'), r = c.querySelector('.cmp-range'), wrap = c.parentNode;
+        function set(v) { st.style.setProperty('--p', v + '%'); }
+        r.addEventListener('input', function () { set(r.value); }); set(r.value);
+        c.querySelectorAll('.cmp-modes button').forEach(function (b) {
+          b.addEventListener('click', function () {
+            var side = b.dataset.m === 'side'; c.classList.toggle('side', side); wrap.classList.toggle('side', side);
+            c.querySelectorAll('.cmp-modes button').forEach(function (x) { x.classList.toggle('on', x === b); });
+          });
+        });
+      });
+    })();
+  </script>
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

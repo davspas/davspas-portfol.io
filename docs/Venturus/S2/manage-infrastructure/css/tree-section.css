@@ -1,0 +1,677 @@
+/* ============================================
+   TREE SECTION
+   ============================================ */
+
+.tree-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-fill);
+    border-right: 0.1rem solid var(--color-fill-gray-quaternary);
+    overflow: hidden;
+    position: relative;
+    min-height: 0;
+}
+
+.tree-section__header {
+    padding: var(--space-s) var(--space-m);
+    background-color: #fff;
+    border-bottom: 0.1rem solid var(--color-fill-gray-quaternary);
+    flex-shrink: 0;
+    min-height: 5.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+}
+
+/* Tree section header: the left zone (`.tree-section__header-zone`) groups the
+   "Filters" title and the presentation toggles (FSN API Calls, Show Archived,
+   Reset) together; the right side carries the Hostname-outdated legend. The
+   scope controls (Site multi-select, Projects filter, Search bar) live on the
+   page subheader, not here. */
+.tree-section__header-zone {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    min-width: 0;
+}
+
+.tree-section__title {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+    white-space: nowrap;
+}
+
+.tree-filters__reset {
+    background: none;
+    border: none;
+    padding: 0.4rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-s);
+    color: var(--color-glyph-blue);
+    transition: var(--transition-basic);
+}
+
+.tree-filters__reset:hover:not(:disabled) {
+    background-color: var(--color-fill-tertiary);
+}
+
+.tree-filters__reset:disabled {
+    color: var(--color-glyph-gray-secondary);
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.tree-filters__reset sf-symbol {
+    /* No `display` here: the button is inline-flex + centred, and <sf-symbol> writes
+       `display: inline-block` inline on itself, so any plain display rule is inert. */
+    color: var(--color-base-accent);
+}
+
+.tree-filters__reset:disabled sf-symbol {
+    color: inherit;
+}
+
+.tree-container {
+    flex: 1;
+    height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--space-s);
+}
+
+/* Tree View Styles */
+.tree {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tree__item {
+    margin: 0;
+    padding: 0;
+}
+
+.tree__node {
+    display: flex;
+    align-items: center;
+    padding: var(--space-s) var(--space-m);
+    cursor: pointer;
+    border-radius: var(--radius-s);
+    transition: var(--transition-basic);
+    user-select: none;
+    gap: var(--space-s);
+}
+
+.tree__node:hover {
+    background-color: var(--color-fill-blue-secondary);
+}
+
+.tree__node--selected {
+    background-color: var(--color-fill-blue-secondary);
+    color: var(--color-fill-blue);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Shift+hover range preview — painted by bulk-mode.js while the user holds
+   Shift before committing a range with Shift+Click. Lighter than --selected
+   and adds a left border so the preview is distinguishable from the live
+   selection. */
+.tree__node--range-preview {
+    background-color: rgba(79,70,229, 0.1);
+    border-left: 0.3rem solid var(--color-fill-blue);
+    padding-left: calc(var(--space-s) - 0.3rem);
+}
+
+.tree__toggle {
+    width: 1.6rem;
+    height: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--color-glyph-gray-secondary);
+    font-size: 1.2rem;
+    transition: var(--transition-basic);
+    flex-shrink: 0;
+}
+
+.tree__toggle:hover {
+    color: var(--color-fill-blue);
+}
+
+.tree__toggle--expanded {
+    transform: rotate(90deg);
+}
+
+.tree__toggle--hidden {
+    visibility: hidden;
+}
+
+.tree__icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    color: var(--color-glyph-gray-secondary);
+}
+
+.tree__icon svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    fill: currentColor;
+}
+
+.tree__node--selected .tree__icon {
+    color: var(--color-fill-blue);
+}
+
+/* Building Controller / Campus Hub / Relay whose hostname predates the atrium.test rule: both
+   the icon and the hostname text go orange, kept even while selected so the
+   outdated signal never disappears. */
+.tree__node--outdated .tree__icon,
+.tree__node--outdated .tree__label,
+.tree__node--selected.tree__node--outdated .tree__icon,
+.tree__node--selected.tree__node--outdated .tree__label {
+    color: var(--color-glyph-orange);
+}
+
+.tree__label {
+    flex: 1;
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.tree__node--selected .tree__label {
+    color: var(--color-fill-blue);
+}
+
+/* Nested tree items */
+.tree__children {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-left: var(--space-l);
+    display: none;
+}
+
+.tree__children--expanded {
+    display: block;
+}
+
+/* Empty state in tree */
+.tree__empty-state {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-m) 0;
+}
+
+.tree__empty-state .empty-state {
+    min-height: auto;
+    padding: var(--space-l) var(--space-m);
+}
+
+.tree__empty-state .empty-state__icon {
+    width: 4rem;
+    height: 4rem;
+}
+
+.tree__empty-state .empty-state__title {
+    font-size: var(--font-size-xxs);
+    margin-bottom: var(--space-xs);
+}
+
+.tree__empty-state .empty-state__subtitle {
+    font-size: var(--font-size-tiny);
+}
+
+/* Inline project tags on line server nodes */
+.tree__projects {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 0.3rem;
+    margin-left: auto;
+    flex-shrink: 1;
+    max-width: 50%;
+    overflow: hidden;
+    min-width: 0;
+    position: relative;
+}
+
+/* Empty-state hint shown in the tree row where project tags would normally
+   render (active line server with zero project associations). */
+.tree__projects-empty {
+    margin-left: auto;
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray-secondary);
+    font-style: italic;
+}
+
+.tree__project-tag {
+    font-size: var(--font-size-xxxs);
+    padding: 0.1rem 0.4rem;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+.tree__node--selected .tree__project-tag {
+    opacity: 0.8;
+}
+
+/* APPL tag for cross-site GHDS servers */
+.tree__appl-tag {
+    font-size: var(--font-size-xxxs);
+    padding: 0.1rem 0.4rem;
+    line-height: 1.4;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+/* Overflow badge (+N) */
+.tree__projects-overflow {
+    display: none;
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+}
+
+.tree__projects-overflow--visible {
+    display: inline-flex;
+}
+
+.tree__projects-overflow-badge {
+    font-size: var(--font-size-xxxs);
+    padding: 0.1rem 0.4rem;
+    line-height: 1.4;
+    color: var(--color-glyph-gray-secondary);
+    background-color: var(--color-fill-tertiary);
+    border-radius: var(--radius-s);
+    white-space: nowrap;
+}
+
+/* Overflow popover (shows on hover) */
+.tree__projects-popover {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    right: 0;
+    padding: var(--space-s);
+    background-color: #fff;
+    border: 0.1rem solid var(--color-fill-gray-quaternary);
+    border-radius: var(--radius-s);
+    box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.12);
+    z-index: 1000;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    max-width: 24rem;
+}
+
+.tree__projects-overflow:hover .tree__projects-popover {
+    display: flex;
+}
+
+.tree__projects-popover .tag {
+    font-size: var(--font-size-xxxs);
+    padding: 0.1rem 0.4rem;
+    line-height: 1.4;
+}
+
+/* Highlight search matches */
+.tree__label mark {
+    background-color: var(--color-fill-yellow);
+    color: var(--color-glyph-gray);
+    padding: 0.1rem 0.2rem;
+    border-radius: 0.2rem;
+}
+
+/* Archived server nodes */
+.tree__node--archived .tree__label {
+    color: var(--color-glyph-gray-tertiary);
+}
+
+.tree__node--archived .tree__icon {
+    opacity: 0.4;
+}
+
+/* Section header nodes (GHDS Servers, CDN Servers groups) */
+.tree__node--section-header {
+    margin-top: var(--space-s);
+}
+
+.tree__node--section-header .tree__label {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-tiny);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-glyph-gray-secondary);
+}
+
+.tree__node--section-header:hover .tree__label {
+    color: var(--color-glyph-gray);
+}
+
+.tree__node--section-header.tree__node--selected .tree__label {
+    color: var(--color-fill-blue);
+}
+
+/* Tree Filters (right "presentation" zone in the section header) */
+.tree-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.tree-filters > * {
+    display: inline-flex;
+    align-items: center;
+}
+
+.tree-filters .checkbox {
+    white-space: nowrap;
+}
+
+.tree-filters .checkbox__label {
+    font-size: var(--font-size-xxs);
+}
+
+.tree-filters .form-select--table-cell {
+    min-width: 0;
+    width: 9rem;
+    font-size: var(--font-size-tiny);
+}
+
+.tree-filter__label {
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+    white-space: nowrap;
+}
+
+/* Configuration indicators on line server rows */
+.tree__indicators {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: var(--space-xs);
+    flex-shrink: 0;
+}
+
+.tree__node:not(:has(.tree__projects)) .tree__indicators {
+    margin-left: auto;
+}
+
+.tree__indicator {
+    display: inline-block;
+    width: 1.4rem;
+    height: 1.4rem;
+    background-color: var(--color-fill-gray-tertiary);
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    flex-shrink: 0;
+}
+
+.tree__indicator--fsn {
+    -webkit-mask-image: url('../../runtime/assets/icons/regular/shield-lefthalf-filled.svg');
+    mask-image: url('../../runtime/assets/icons/regular/shield-lefthalf-filled.svg');
+}
+
+.tree__indicator--enabled {
+    background-color: var(--color-fill-green);
+}
+
+/* Tree filter wrapper with leading icon */
+.tree-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.tree-filter__icon {
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+/* Filters button badge (shows count of active filters in the popover) */
+.tree-filters__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    padding: 0 0.5rem;
+    margin-left: 0.4rem;
+    background-color: var(--color-fill-blue);
+    color: #fff;
+    font-size: var(--font-size-xxxs);
+    font-weight: var(--font-weight-semibold);
+    border-radius: 0.8rem;
+    line-height: 1;
+}
+
+.tree-filters__badge[hidden] {
+    display: none;
+}
+
+/* Filters popover body — labels stacked above their fields */
+.filters-popover__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+}
+
+.filters-popover__body .tree-filter {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.6rem;
+    row-gap: 0.6rem;
+    width: 100%;
+    align-items: center;
+}
+
+.filters-popover__body .tree-filter .tree-filter__icon {
+    grid-row: 1;
+    grid-column: 1;
+    opacity: 0.7;
+}
+
+.filters-popover__body .tree-filter .tree-filter__label {
+    grid-row: 1;
+    grid-column: 2;
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph);
+    font-weight: var(--font-weight-medium);
+}
+
+.filters-popover__body .tree-filter .form-select--table-cell {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    width: 100%;
+    font-size: var(--font-size-xxs);
+}
+
+.filters-popover__body .checkbox {
+    margin-top: var(--space-xs);
+    padding-top: var(--space-s);
+    border-top: 0.1rem solid var(--color-fill-gray-quaternary);
+}
+
+/* Hostname-outdated indicator - right-aligned in the section header row, shown
+   only when the rendered tree has a Line / GHDS / CDN server on a
+   non-atrium.test hostname. Toggled to inline-flex by JS. */
+.tree-legend {
+    display: none;
+    align-items: center;
+    gap: var(--space-xxs);
+    vertical-align: middle;
+    color: var(--color-glyph-orange);
+    font-weight: normal;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tree-legend__icon {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Bulk Selection Info Bar - At top of tree section */
+.bulk-selection-info {
+    padding: var(--space-s) var(--space-m);
+    background-color: #fff;
+    border-bottom: 0.1rem solid var(--color-fill-gray-quaternary);
+    z-index: 10;
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+    flex-shrink: 0;
+}
+
+.bulk-selection-info .notification {
+    margin: 0;
+    padding: 0;
+    pointer-events: auto;
+    background-color: transparent;
+    flex: 1;
+    min-width: 0;
+}
+
+.bulk-selection-info .notification__message {
+    font-size: var(--font-size-tiny);
+}
+
+.bulk-selection-info .notification__message strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+.bulk-selection-info kbd {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: var(--font-size-tiny);
+    font-family: inherit;
+    line-height: 1;
+    color: var(--color-glyph-gray);
+    background-color: var(--color-fill);
+    border: 0.1rem solid var(--color-fill-gray-quaternary);
+    border-radius: var(--radius-s);
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Floating Clear Selection Button */
+.bulk-selection-clear {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-right: var(--space-s);
+}
+
+.bulk-selection-clear__icon {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Bulk mode: disabled non-LS nodes */
+.tree__node--bulk-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Empty state row when filters yield no line servers */
+.tree__ls-empty {
+    list-style: none;
+    margin: var(--space-m) 0;
+    padding: 0;
+}
+
+.tree__ls-empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-xs);
+    padding: var(--space-m);
+    color: var(--color-glyph-gray-secondary);
+}
+
+.tree__ls-empty-content sf-symbol {
+    font-size: 2rem;
+    opacity: 0.6;
+    margin-bottom: var(--space-xs);
+}
+
+.tree__ls-empty-title {
+    margin: 0;
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+.tree__ls-empty-subtitle {
+    margin: 0;
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray-secondary);
+}
+
+/* MDS dark popover for disabled tree nodes — fixed-positioned to escape scroll clipping */
+.tree-bulk-tooltip {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.tree-bulk-tooltip .popover__content {
+    background-color: #0f172a;
+    box-shadow: none;
+    border-radius: 0.6rem;
+    padding: var(--space-s) var(--space-m);
+    min-width: auto;
+}
+
+.tree-bulk-tooltip .popover__body p {
+    color: #fff;
+    margin: 0;
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+}
+
+.popover.tree-bulk-tooltip .popover__arrow {
+    top: -0.6rem;
+    left: var(--space-m);
+    transform: none;
+    border-style: solid;
+    border-width: 0 0.6rem 0.6rem 0.6rem;
+    border-color: transparent transparent #0f172a transparent;
+    filter: none;
+}

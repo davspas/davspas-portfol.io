@@ -1,0 +1,33 @@
+/* proj-popover-editor.css */
+/* Plugin component: Popover Editor */
+/* Wrapper + MDS popover overrides for absolute-positioned editor panels. */
+
+.proj-popover-editor {
+    position: absolute;
+    z-index: 1100;
+}
+
+.proj-popover-editor > .popover {
+    position: relative;
+    display: block;
+    z-index: auto;
+}
+
+/* Allow wider editors (configure, filter) to size freely */
+.proj-popover-editor .popover__content {
+    max-width: none;
+}
+
+/* Arrow sits above content and flips with placement */
+.proj-popover-editor .popover__arrow {
+    z-index: 1;
+}
+
+.proj-popover-editor .popover--bottom > .popover__arrow {
+    top: -0.6rem;
+}
+
+.proj-popover-editor .popover--top > .popover__arrow {
+    bottom: -0.6rem;
+    top: auto;
+}

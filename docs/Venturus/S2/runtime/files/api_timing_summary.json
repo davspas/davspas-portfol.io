@@ -1,0 +1,52 @@
+{
+  "apis": {
+    "fsm": {
+      "requestCount": 21,
+      "totalTime": {
+        "milliseconds": 36517.35499986366,
+        "seconds": 36.517354999863656
+      },
+      "averageTime": {
+        "milliseconds": 1738.9216666601742,
+        "seconds": 1.7389216666601741
+      }
+    },
+    "station-units": {
+      "requestCount": 20,
+      "totalTime": {
+        "milliseconds": 34099.15800041097,
+        "seconds": 34.099158000410974
+      },
+      "averageTime": {
+        "milliseconds": 1704.9579000205485,
+        "seconds": 1.7049579000205486
+      }
+    },
+    "project": {
+      "requestCount": 1,
+      "totalTime": {
+        "milliseconds": 5776.573000010103,
+        "seconds": 5.776573000010103
+      },
+      "averageTime": {
+        "milliseconds": 5776.573000010103,
+        "seconds": 5.776573000010103
+      }
+    },
+    "lines": {
+      "requestCount": 2,
+      "totalTime": {
+        "milliseconds": 10849.343999987468,
+        "seconds": 10.849343999987468
+      },
+      "averageTime": {
+        "milliseconds": 5424.671999993734,
+        "seconds": 5.424671999993734
+      }
+    }
+  },
+  "grandTotal": {
+    "milliseconds": 87242.4300002722,
+    "seconds": 87.24243000027221
+  }
+}

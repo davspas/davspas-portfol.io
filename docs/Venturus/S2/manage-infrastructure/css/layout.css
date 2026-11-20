@@ -1,0 +1,22 @@
+/* ============================================
+   PAGE LAYOUT
+   ============================================ */
+
+/* Main Layout: Vertical stack (Tabs, then Two-column content) */
+.line-servers-layout {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* Content layout below tabs - two-column (Tree + Settings Panel) */
+.content-layout {
+    display: flex;
+    gap: 0;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+    padding-bottom: 3.2rem; /* space for fixed canvas footer */
+}

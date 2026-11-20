@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Earlier work at Daitan — David Smith</title>
+  <meta name="description" content="My years at Daitan Group: design systems, Sketch libraries and mockups, and projects for telecom companies and banks, including the AML design system.">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="assets/dt-page.css">
+</head>
+<body class="dt-page dtov-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../"><i></i>David Smith</a>
+      <nav aria-label="Sections"><a href="../#work-ux">← Work</a><a href="#projects">Projects</a><a href="#did">What I did</a><a href="#tools">Tools</a></nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en" aria-current="true">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../">Home</a> / <a href="../#work">Work</a> / <a href="../#work-ux">Software UX</a> / Daitan projects</nav>
+    <section class="dt-hero" style="grid-template-columns:1fr">
+      <div>
+        <div class="eyebrow">Daitan · Earlier work</div>
+        <h1>Earlier work <span class="gold">at Daitan</span></h1>
+        <p class="steam">My years at Daitan Group, where I focused on the craft and the systems behind interfaces. I worked on design systems and Sketch libraries, on mockups across many tools, and on a variety of projects for different clients, always with the engineering team so the design was implemented correctly.</p>
+        <ul class="facts-row"><li><b>Role</b>UX Designer, Pleno (mid-level)</li><li><b>Period</b>Nov 2017 – Jul 2020</li><li><b>Company</b>Daitan Group</li></ul>
+        <div class="btn-row" style="margin-top:26px"><a class="btn gold" href="#projects">See the projects</a><a class="btn" href="../#work-ux">Back to all work</a></div>
+      </div>
+    </section>
+
+    <section class="dt-sec" id="projects"><h2>Projects</h2><p class="intro">I worked on many projects at Daitan, not only AML. The AML design system has its own case study; the others are summarised here.</p><div class="work-grid reveal"><a class="wk hl" href="AML/"><img loading="lazy" src="AML/assets/web/colors-primary.jpg" alt="AML design system: the primary colour Bergamot with its shades"><div><h3>AML design system</h3><p>A design system I created with other designers for AML, an application a bank uses to be alerted about fraud and money laundering: colours, typography, icons, buttons, input fields and search.</p><p><b>Mar 2018 – Jun 2019</b> · Sketch · Zeplin. I moved the design project from Photoshop to Sketch with developer handoff in Zeplin, took many features from low to high fidelity with screen flows presented to the client, and wrote a framework of every element and its interactions to keep the complex interface consistent. The team worked in SCRUM.</p><span class="go">Open the case study →</span></div></a><div class="wk"><h3>Call center and VoIP agent interfaces</h3><p>An interface agents in call centers use to manage calls, messages and other ways of talking to their clients. I worked on a redesign, with libraries in Sketch and InVision prototypes for user testing, and in parallel on a reskin that moved every element to the company's new design language.</p><p><b>Nov 2017 – Feb 2018</b> · Sketch · InVision</p></div><div class="wk"><h3>Biometric and clearance project for airports</h3><p>An identification totem that lets passengers move past boarding lines with their biometrics and boarding pass, plus a log interface where an ambassador checks that everything is in order and accompanies them to the gate. I redesigned the ambassador UI and created another use case for it with a Design Sprint, with a working prototype.</p><p><b>Jun 2019 – Aug 2019</b> · Sketch · InVision</p></div><div class="wk"><h3>Bank SMS management and database capacity interfaces</h3><p>The SMS interface organises message data so a bank can act on the cost of messages, such as repeated messages or numbers that were cancelled. The capacity interface uses dashboards to predict when machine parts reach end of life, so they can be ordered in time to avoid downtime. I improved the first and created the second from the bank's branding and the work of the front-end, back-end and data science teams.</p><p><b>Jun 2019 – Sep 2019</b> · Figma</p></div><div class="wk"><h3>Learning tool and assessment tool for a software company</h3><p>A learning tool that guides new users through the company's software with articles, hands-on experiences and tutorials, and an assessment tool that checks whether a client's database hardware is compatible with the company's virtual machine software, then suggests upgrading the machines, moving to the company's cloud, or upgrading the software. I migrated the project from Sketch to Adobe XD, defined features and UI decisions in an agile process, and proposed user and benchmark research.</p><p><b>Sep 2019 – Mar 2020</b> · Figma · Adobe XD</p></div><div class="wk"><h3>Telecom project for transferring or adding users</h3><p>A flow for transferring or adding users to a telecom client's platform, with low fidelity prototypes in Axure and high fidelity in Sketch.</p><p><b>Apr 2020 – Jul 2020</b> · Axure · Sketch</p></div></div></section>
+
+    <section class="dt-sec reveal" id="did"><h2>What I did</h2><p class="intro">The work behind the projects.</p><div class="states"><div class="box"><h3>Libraries and mockups</h3><p>I built and maintained Sketch libraries and produced mockups across several tools, so teams could design with the same pieces.</p></div><div class="box"><h3>Design systems and frameworks</h3><p>I worked on frameworks and design systems, from colour and type rules to components with their states and measures.</p></div><div class="box"><h3>Handoff with engineering</h3><p>I worked with the engineering team to make sure what was designed was what got implemented.</p></div></div></section>
+
+    <section class="dt-sec reveal" id="tools"><h2>Tools</h2><p class="intro">Mockups and handoff were done across these tools.</p><ul class="toolrow"><li>Sketch</li><li>Figma</li><li>Adobe XD</li><li>Zeplin</li><li>InVision</li><li>Axure</li></ul></section>
+  <nav class="nextproj" aria-label="Next project"><a class="btn" href="../#work-ux">← Back to all work</a><a class="btn primary" href="../Games/UI/Dark%20Island%20-%20Faded%20Memories/"><small>Next project</small> Dark Island: Faded Memories →</a></nav>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>© David Simonsen Paes de Almeida Smith</span><span>Designed by hand. Only Atrium was prototyped with AI</span><a href="../#work-ux">← Back to all work</a></div>
+  </footer>
+  <script src="../assets/site.js"></script>
+</body>
+</html>

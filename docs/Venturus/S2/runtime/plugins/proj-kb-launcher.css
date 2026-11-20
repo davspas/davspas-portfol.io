@@ -1,0 +1,23 @@
+/* Knowledge Base Launcher — ribbon button linking to the KB graph page, and the return
+   button that takes its place on the KB page itself.
+
+   Owns no panel; the KB is a full page. The only styling needed is the label's
+   no-wrap and the flex `order` slot — the two buttons share it because they are never
+   both present.
+
+   Order slots in `.prototype-ribbon__cell:last-child` (all injected async, so DOM
+   order is racy and CSS decides): KB / Back (0) · Q&A (1) · Requirements (2) ·
+   Change History (3). Slots 1–3 are declared in proj-requirements-panel.css —
+   do not renumber them here. */
+
+.proj-kb-ribbon__label {
+    white-space: nowrap;
+}
+
+#kbBtn,
+#kbBackBtn {
+    order: 0;
+    /* Both are <a>, so they inherit link underline/colour from the design system unless
+       reset — .btn already handles colour, this kills the underline. */
+    text-decoration: none;
+}

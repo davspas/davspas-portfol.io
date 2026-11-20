@@ -1,0 +1,140 @@
+/* ===== PROJ-TIMELINE COMPONENT ===== */
+/* Horizontal read-only milestone timeline with progress line. */
+
+.proj-timeline {
+    --tl-color-accent: #4f46e5;
+    --tl-color-track: #C7C7CC;
+    --tl-circle-container: 20px;
+    --tl-dot-size: 10px;
+    --tl-dot-size-current: 14px;
+    --tl-track-height: 2px;
+    display: inline-block;
+}
+
+/* Track: relative container */
+.proj-timeline__track {
+    position: relative;
+}
+
+/* Milestones row */
+.proj-timeline__milestones {
+    display: flex;
+    gap: 70px;
+    position: relative;
+}
+
+/* Single milestone: column (label -> circle -> value) */
+.proj-timeline__milestone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+/* Top label — fixed height for line alignment */
+.proj-timeline__label {
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--tl-color-accent);
+    line-height: 16px;
+    margin-bottom: var(--space-xs);
+    white-space: nowrap;
+}
+
+/* Bottom value — matches label height for symmetry */
+.proj-timeline__value {
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray-secondary);
+    line-height: 16px;
+    margin-top: var(--space-xs);
+    white-space: nowrap;
+}
+
+/* Circle — 20px layout container for all states */
+.proj-timeline__circle {
+    width: var(--tl-circle-container);
+    height: var(--tl-circle-container);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    position: relative;
+    background: transparent;
+}
+
+/* Inner dot — shared by past, current, future */
+.proj-timeline__circle::before {
+    content: '';
+    width: var(--tl-dot-size);
+    height: var(--tl-dot-size);
+    border-radius: 50%;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+/* ---- Base state: past — 14px blue filled dot ---- */
+.proj-timeline__milestone--past .proj-timeline__circle::before {
+    background: var(--tl-color-accent);
+}
+
+/* ---- Base state: current — 14px blue filled dot + checkmark ---- */
+.proj-timeline__milestone--current .proj-timeline__circle::before {
+    width: var(--tl-dot-size-current);
+    height: var(--tl-dot-size-current);
+    background: var(--tl-color-accent);
+}
+
+.proj-timeline__checkmark {
+    position: relative;
+    z-index: 1;
+    color: var(--color-fill);
+}
+
+/* ---- Base state: draft — 14px white dot, gray border + gray checkmark ---- */
+.proj-timeline__milestone--draft .proj-timeline__circle::before {
+    width: var(--tl-dot-size-current);
+    height: var(--tl-dot-size-current);
+    background: var(--color-fill);
+    border: 1px solid var(--color-glyph-gray-tertiary);
+}
+
+.proj-timeline__milestone--draft .proj-timeline__checkmark {
+    color: var(--color-glyph-gray);
+    opacity: 0.4;
+}
+
+/* ---- Base state: future — 14px white dot, 1px gray border ---- */
+.proj-timeline__milestone--future .proj-timeline__circle::before {
+    background: var(--color-fill);
+    border: 1px solid var(--color-glyph-gray-tertiary);
+}
+
+/* ---- Modifier: selected — 20px blue outer ring (agnostic) ---- */
+/* White bg hides the track line; dot (::before) renders on top */
+.proj-timeline__milestone--selected .proj-timeline__circle {
+    border: 2px solid var(--tl-color-accent);
+    background: var(--color-fill);
+}
+
+/* ---- Track lines (positioned by JS to align with circle centers) ---- */
+/* Gray line — always visible, spans first to last circle */
+.proj-timeline__line {
+    position: absolute;
+    top: 50%;
+    height: var(--tl-track-height);
+    background: var(--tl-color-track);
+    transform: translateY(-50%);
+}
+
+/* Blue progress — fills from first circle to current milestone */
+.proj-timeline__progress {
+    position: absolute;
+    top: 50%;
+    height: var(--tl-track-height);
+    background: var(--tl-color-accent);
+    transform: translateY(-50%);
+    z-index: 1;
+}

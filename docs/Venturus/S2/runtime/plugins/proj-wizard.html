@@ -1,0 +1,100 @@
+<!-- PROJ-WIZARD -->
+<!-- Multi-step wizard built on the MDS large modal: header (close + title + stepper), body + footer slots -->
+
+<!-- METADATA
+Component: Wizard
+Category: Overlays
+Complexity: High
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- MUST be created via JS — ProjWizard.create(config) builds and portals the overlay to <body>
+- Built on the MDS modal (modal-overlay + modal modal--large): MDS provides backdrop, centered
+  panel, sizing (80rem / 90vh) and the scrollable body
+- MUST NOT hand-write the overlay markup in page-content; the plugin owns the DOM
+- Stepper is rendered with the proj-timeline plugin (custom template) — proj-timeline.js MUST be
+  loaded before proj-wizard.js
+- Caller fills the body + footer via instance.bodyEl() / instance.footerEl()
+
+COMMON MISTAKES TO AVOID:
+[X] Forgetting to load proj-timeline.js BEFORE proj-wizard.js (stepper won't render)
+[X] Loading proj-wizard.js via plugins.js — load per-prototype via <script> (like proj-timeline)
+[X] Putting wizard content in page-content — the overlay is portaled to <body> by the plugin
+[X] Toggling display yourself — use instance.open() / instance.close() (toggles modal-overlay--open)
+
+JAVASCRIPT INTEGRATION:
+- Load per-prototype, AFTER proj-timeline.js, BEFORE your main.js:
+    <script src="../../runtime/plugins/proj-timeline.js"></script>
+    <script src="../../runtime/plugins/proj-wizard.js"></script>
+- Create once: var wiz = ProjWizard.create({ steps: [{label:'Step 1'},{label:'Step 2'}], title: 'Add Devices' });
+- Fill content: wiz.bodyEl().innerHTML = '...'; wiz.footerEl().innerHTML = '...';
+- Navigate: wiz.setStep(1) (0-based) re-renders the stepper (earlier steps → checkmark, current → number)
+- Show/hide: wiz.open() / wiz.close(); Escape closes; X (close button) closes + fires onClose
+- Other methods: setTitle(text), getStep(), destroy()
+- Config: { steps:[{label}], title?, onClose?, onStepChange?(index) }
+
+COMPANION FILES:
+- CSS: proj-wizard.css (auto-loaded via plugins.css)
+- JS: proj-wizard.js (load per-prototype via script tag; depends on proj-timeline.js)
+
+CORRECT STRUCTURE TEMPLATE (built by the plugin — do not author by hand):
+<div class="modal-overlay proj-wizard-overlay modal-overlay--open">
+  <div class="modal modal--large proj-wizard">
+    <div class="modal__header proj-wizard__header">
+      <button class="proj-wizard__close"><sf-symbol name="xmark"></sf-symbol></button>
+      <h2 class="proj-wizard__title">Title</h2>
+      <div class="proj-wizard__stepper"><!-- proj-timeline renders here --></div>
+    </div>
+    <div class="modal__body proj-wizard__body"><!-- caller content --></div>
+    <div class="modal__footer proj-wizard__footer"><!-- caller buttons --></div>
+  </div>
+</div>
+
+When to prompt: When a flow needs a multi-step modal wizard (stepper + per-step body/footer).
+Ask about: step labels, whether a stepper is needed, footer button set per step.
+Variants: Base only — large MDS modal. Step count is data-driven via the `steps` config.
+-->
+
+
+<!-- ==================== -->
+<!-- USAGE (JS-ONLY) -->
+<!-- ==================== -->
+<!--
+var wiz = ProjWizard.create({
+    steps: [{ label: 'Provide asset tags' }, { label: 'Review and register Devices' }],
+    title: 'Add Devices',
+    onClose: function() { /* reset state */ }
+});
+
+// Step 1
+wiz.setTitle('Add Devices to NORT');
+wiz.bodyEl().innerHTML   = stepOneHtml;
+wiz.footerEl().innerHTML = '<button class="btn btn--secondary btn--medium">Cancel</button>'
+                         + '<button class="btn btn--primary btn--medium">Next</button>';
+wiz.open();
+
+// Advance
+wiz.setStep(1);          // 0-based: step 1 circle becomes a checkmark, step 2 the active number
+-->
+
+
+
+<!-- ==================== -->
+<!-- USAGE (JS-ONLY) -->
+<!-- ==================== -->
+<!--
+var wiz = ProjWizard.create({
+    steps: [{ label: 'Provide asset tags' }, { label: 'Review and register Devices' }],
+    title: 'Add Devices',
+    onClose: function() { /* reset state */ }
+});
+
+// Step 1
+wiz.setTitle('Add Devices to NORT');
+wiz.bodyEl().innerHTML   = stepOneHtml;
+wiz.footerEl().innerHTML = '<button class="btn btn--secondary btn--medium">Cancel</button>'
+                         + '<button class="btn btn--primary btn--medium">Next</button>';
+wiz.open();
+
+// Advance
+wiz.setStep(1);          // 0-based: step 1 circle becomes a checkmark, step 2 the active number
+-->

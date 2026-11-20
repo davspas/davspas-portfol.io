@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About me — David Smith</title>
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body class="about-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../">← Home</a>
+        <a href="../#work-ux">Venturus</a>
+        <a href="../#work-games">Games</a>
+        <a href="../#work-ux">Daitan</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en" aria-current="true">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap about">
+    <aside class="rail">
+      <img class="avatar" src="photo.jpg" alt="David Smith" width="120" height="120">
+      <strong>David Simonsen Paes de Almeida Smith</strong>
+      <h2>Contact</h2>
+      <ul>
+        <li><a href="mailto:davidsmith577@gmail.com">davidsmith577@gmail.com</a></li>
+        <li><a href="https://www.linkedin.com/in/davspas">LinkedIn</a></li>
+        <li><a href="https://www.harpiagamesstudio.com/">Harpia Games website</a></li>
+      </ul>
+      <h2>Portfolio</h2>
+      <ul>
+        <li><a href="https://www.figma.com/proto/zuoU4UwCiJQkO2iQbvzsTh/Personal-Portfolio">Figma portfolio</a></li>
+        <li><a href="https://workflowy.com/s/game-designdocument/T8VetfbgKRIPnbnG">Game design document</a></li>
+      </ul>
+      <h2>Languages</h2>
+      <ul>
+        <li>English <span style="color:var(--faint)">· Full professional</span></li>
+        <li>Spanish <span style="color:var(--faint)">· Elementary</span></li>
+        <li>Portuguese <span style="color:var(--faint)">· Native</span></li>
+      </ul>
+      <a class="btn primary" href="Profile.pdf" download>Download CV (PDF)</a>
+      <button class="btn ai" type="button" data-copy-ai title="Copies a markdown summary of this portfolio for use in an AI chat">✦ Copy for AI</button>
+    </aside>
+
+    <div>
+      <div class="eyebrow">About me</div>
+      <h1>David <span class="grad">Smith</span></h1>
+      <p class="headline">User Experience Designer @ Venturus | Game Designer @ Harpia Games | Prototyping and documenting with AI</p>
+      <p class="loc">Campinas, São Paulo, Brazil</p>
+
+      <section class="sec reveal">
+        <h2>Summary</h2>
+        <p class="summary">UX designer and game designer. I design interfaces and systems for both: ten-plus years across web and editorial design, design systems and enterprise product design, and game design since 2019. I did all the UI and the logo for Dark Island: Faded Memories (on Steam, 40k wishlists), and at Harpia Games I design mechanics, levels and UI. I am drawn to the intricate design challenges game mechanics bring, how they affect the player's perception of the game world and how a game can deliver the most varied, excellent experiences. I have experience managing teams, creating design documentation, working across all areas of game production, and shipping one game demo (PUC Campinas).</p>
+      </section>
+
+      <section class="sec reveal">
+        <h2>Experience</h2>
+        <ol class="timeline">
+          <li>
+            <h3>Venturus</h3>
+            <div class="when">6 yrs 5 mos · Campinas, São Paulo, Brazil</div>
+            <div class="sub">
+              <p class="role-line">Senior User Experience Designer</p>
+              <p class="meta">Jul 2024 – Present</p>
+            </div>
+            <div class="sub">
+              <p class="role-line">User Experience Designer (Pleno, mid-level)</p>
+              <p class="meta">Jul 2020 – Jul 2024 · 4 yrs 1 mo</p>
+              <p>Working as a Product Designer with design processes and implementing them on the client's product. Also creating user interfaces for the solutions, with Design Systems and Figma, working closely with the engineering team to assure the best experience for the user.</p>
+            </div>
+          </li>
+          <li>
+            <h3>Harpia Games</h3>
+            <div class="when">Mar 2019 – Present · Brazil</div>
+            <p class="role-line">Game Designer</p>
+            <p>A fictitious company created with friends. As the main Game Designer on a team of 3 people, I develop not only the game mechanics, but the level design and UI for our games. Mostly working in Unity, while studying how to use Unreal Engine 5.</p>
+          </li>
+          <li>
+            <h3>Gaister Studios</h3>
+            <div class="when">May 2025 – Sep 2025 · 5 mos</div>
+            <p class="role-line">UI/UX Designer</p>
+            <p>Working with amazing people to fulfil the dream of making a video game, and gaining incredible experience with it.</p>
+          </li>
+          <li>
+            <h3>Daitan Group</h3>
+            <div class="when">Nov 2017 – Jul 2020 · 2 yrs 9 mos · Campinas and region, Brazil</div>
+            <p class="role-line">User Experience Designer (Pleno)</p>
+            <p>UX Designer focused on creating Sketch libraries and providing mockups in Sketch, Figma, Adobe XD, Zeplin and InVision, plus frameworks and design systems, working very closely with the engineering team to guarantee the correct implementation of the design.</p>
+          </li>
+          <li>
+            <h3>Chuva Inc.</h3>
+            <div class="when">2 yrs 10 mos · Campinas, São Paulo, Brazil</div>
+            <div class="sub">
+              <p class="role-line">UX/UI Designer</p>
+              <p class="meta">Feb 2016 – Nov 2017 · 1 yr 10 mos</p>
+              <p>UX/UI design for web systems and pages, editorial projects and branding. Creating with Photoshop, Illustrator and InDesign, building the best mockups for delivery to the client and for internal projects.</p>
+            </div>
+            <div class="sub">
+              <p class="role-line">Web Design Intern</p>
+              <p class="meta">Feb 2015 – Jan 2016 · 1 yr</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="sec reveal">
+        <h2>Education</h2>
+        <div class="two">
+          <div class="box">
+            <h3>Pontifícia Universidade Católica de Campinas</h3>
+            <p>Tecnólogo, Video Games (Brazilian technologist degree) · 2016 – 2018</p>
+          </div>
+          <div class="box">
+            <h3>FACAMP</h3>
+            <p>Bachelor's degree in Design, Design and Visual Communications · 2012 – 2015</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec reveal">
+        <h2>Top skills</h2>
+        <ul class="tags">
+          <li>Artificial Intelligence (AI)</li>
+          <li>Information Architecture</li>
+          <li>Design</li>
+          <li>UX Design</li>
+          <li>UI Design</li>
+          <li>Design Systems</li>
+          <li>Design Thinking</li>
+          <li>Product Design</li>
+          <li>Game Design</li>
+          <li>UI Game Design</li>
+          <li>Level Design</li>
+          <li>Game Mechanics</li>
+          <li>Gamification</li>
+          <li>Game Writing</li>
+          <li>Prototyping</li>
+          <li>Design Documentation</li>
+          <li>Team Management</li>
+          <li>Figma</li>
+          <li>Sketch</li>
+          <li>Unity</li>
+          <li>Unreal Engine 5 (learning)</li>
+        </ul>
+      </section>
+
+      <section class="sec reveal">
+        <h2>Certifications</h2>
+        <ul class="certs">
+          <li>Master Storyboard Skills for Commercials &amp; Video Games</li>
+          <li>DESIGN RULES: Principles + Practices for Great UI Design</li>
+          <li>Gamification: Motivation Psychology &amp; The Art of Engagement</li>
+          <li>Game Writing: Storytelling through Video Game Design</li>
+          <li>Games People Play: Thinking Strategically with Game Theory</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Designed by hand. Only Atrium was prototyped with AI</span>
+      <a href="../">← Back to home</a>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+</body>
+</html>

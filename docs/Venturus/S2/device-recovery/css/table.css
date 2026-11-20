@@ -1,0 +1,137 @@
+/* Table styling follows the Manage Devices table: flush to the page edges (.content has no padding, see page.css),
+   a scroll container sized to the viewport minus the header stack (14rem) and footer (3.2rem), sticky header cells. */
+.fdr-page .table-container {
+    margin-top: 0;
+    overflow: auto;
+    max-height: calc(100vh - 17.2rem);
+}
+.fdr-page .table__head > .table__row > .table__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--color-fill);
+}
+/* Fixed layout: check and action columns keep their width, the four data columns share the rest equally. */
+.fdr-page .table { table-layout: fixed; width: 100%; }
+.fdr-page .table__head .table__row:hover { background-color: transparent; }
+.fdr-page td:first-child, .fdr-page th:first-child { padding-left: 2.4rem !important; }
+.fdr-page td:last-child, .fdr-page th:last-child { padding-right: 4.2rem !important; }
+.fdr-col-check { width: 6.4rem; }
+.fdr-col-action { width: 12rem; }
+.fdr-page .table__header .checkbox,
+.fdr-page .table__cell .checkbox { margin: 0; }
+.fdr-page .table__header .checkbox__label,
+.fdr-page .table__cell .checkbox__label { display: none; }
+.fdr-page .table__cell .tag { margin: 0; }
+
+/* Indentation: one 2.4rem step per level, measured from the checkbox edge (2.4rem):
+   project 2.4 > site 4.8 > unit 7.2 (a site row without a project row sits at 2.4). Column 1 is 6.4rem wide,
+   so the unit cell (column 2) starts 0.8rem in plus the cell's own padding. */
+.fdr-page .fdr-group--site[data-indent="1"] > .table__cell:first-child { padding-left: 4.8rem !important; }
+.fdr-unit > .table__cell:nth-child(2) { padding-left: 0.8rem; }
+.fdr-group > .table__cell { font-size: var(--font-size-xxs); }
+.fdr-group--site > .table__cell, .fdr-group--project > .table__cell { font-weight: var(--font-weight-semibold); color: var(--color-glyph-gray); }
+.fdr-unit--selected > .table__cell { background: var(--color-fill-blue-secondary); }
+
+.fdr-unit--focus > .table__cell { background: var(--color-fill-blue-secondary); box-shadow: inset 0 0.1rem 0 var(--color-base-accent), inset 0 -0.1rem 0 var(--color-base-accent); }
+.fdr-unit__id { display: flex; flex-direction: column; }
+
+.fdr-name { display: flex; align-items: center; gap: var(--space-xs); }
+.fdr-name__text { font-weight: var(--font-weight-medium); }
+.fdr-chevron {
+    display: inline-flex;
+    border: 0;
+    background: none;
+    padding: 0.2rem;
+    color: var(--color-base-accent);
+    cursor: pointer;
+    vertical-align: middle;
+}
+.fdr-chevron sf-symbol { transition: transform 0.15s; }
+.fdr-chevron[aria-expanded="true"] sf-symbol { transform: rotate(90deg); }
+
+.fdr-sub { font-size: var(--font-size-xxs); color: var(--color-glyph-gray-secondary); }
+.fdr-sub--inline { display: inline; }
+.fdr-link {
+    color: var(--color-base-accent);
+    text-decoration: none;
+    font-size: var(--font-size-xxs);
+}
+.fdr-link:hover { text-decoration: underline; }
+.fdr-link sf-symbol { vertical-align: -0.1em; }
+.fdr-linkbtn {
+    border: 0;
+    background: none;
+    padding: 0;
+    font: inherit;
+    font-size: var(--font-size-xxs);
+    color: var(--color-base-accent);
+    cursor: pointer;
+}
+.fdr-linkbtn:hover { text-decoration: underline; }
+
+/* One fixed slot per status, so the counts line up row to row (empty slots stay blank). */
+.fdr-counts { display: inline-grid; grid-template-columns: repeat(5, 4.8rem); }
+.fdr-count, .fdr-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+.fdr-status--green, .fdr-count--green sf-symbol, .fdr-status--green sf-symbol { color: var(--color-glyph-green); }
+.fdr-status--red, .fdr-count--red sf-symbol, .fdr-status--red sf-symbol { color: var(--color-glyph-red); }
+.fdr-status--blue sf-symbol, .fdr-count--blue sf-symbol { color: var(--color-base-accent); }
+.fdr-status--orange sf-symbol, .fdr-count--orange sf-symbol { color: var(--color-glyph-orange); }
+.fdr-status--gray sf-symbol, .fdr-count--gray sf-symbol { color: var(--color-glyph-gray-secondary); }
+.fdr-status--green { color: inherit; }
+.fdr-status--red { color: inherit; }
+.fdr-inprogress { font-size: var(--font-size-xxs); color: var(--color-glyph-gray-secondary); }
+.fdr-action { text-align: right; }
+.fdr-action__group { display: inline-flex; align-items: center; justify-content: flex-end; gap: var(--space-s); }
+.fdr-action__spacer { display: inline-block; width: 3.2rem; }
+.fdr-action .btn sf-symbol { vertical-align: -0.15em; }
+
+/* Hover tooltip (the design system has none; native title is unreliable on disabled buttons). Wraps the button. */
+.fdr-tip { position: relative; display: inline-flex; }
+.fdr-tip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 0.6rem);
+    right: 0;
+    width: max-content;
+    max-width: 24rem;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.4;
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-fill);
+    background: var(--color-fill-gray);
+    padding: var(--space-xs) var(--space-s);
+    border-radius: var(--radius-s);
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 30;
+}
+.fdr-tip--start::after { right: auto; left: 0; }
+.fdr-cannot { cursor: help; }
+.fdr-tip:hover::after, .fdr-tip:focus-within::after { opacity: 1; visibility: visible; }
+
+/* Column filter popover (proj-popover-editor). Same look as the Manage Devices column filters. */
+.col-filter-popover { min-width: 24rem; }
+.col-filter-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-xs); }
+.col-filter-section-label {
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray-secondary);
+    text-transform: uppercase;
+    margin-bottom: var(--space-xs);
+}
+.col-filter-section-header .col-filter-section-label { margin-bottom: 0; }
+.col-filter-quick-actions { display: flex; align-items: center; gap: var(--space-xs); font-size: var(--font-size-tiny); }
+.col-filter-separator { color: var(--color-glyph-gray-tertiary); }
+.col-filter-list { display: flex; flex-direction: column; gap: var(--space-xs); }
+.col-filter-hint { margin: var(--space-s) 0 0; font-size: var(--font-size-tiny); color: var(--color-glyph-gray-secondary); }
+.col-filter-footer { display: flex; justify-content: flex-end; gap: var(--space-xs); }

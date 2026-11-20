@@ -1,0 +1,233 @@
+/* ============================================
+   NEW SERVER FORM (Unified Drawer)
+   ============================================ */
+
+/* Drawer body layout: scrollable form + sticky footer */
+.new-node-drawer__body {
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+    overflow: visible;
+}
+
+/* Scrollable form area */
+.new-server-form {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-l);
+    padding-top: var(--space-m);
+    padding-bottom: var(--space-m);
+}
+
+/* Section title */
+.new-server-form__section-title {
+    margin: 0 0 var(--space-m) 0;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Subsection title (e.g., GH Server Info) */
+.new-server-form__subsection-title {
+    margin: var(--space-m) 0 var(--space-m) 0;
+    padding-top: var(--space-m);
+    border-top: 0.1rem solid var(--color-fill-gray-quaternary);
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+/* Two-column row (Site + Project side by side) */
+.new-server-form__row {
+    display: flex;
+    gap: var(--space-m);
+}
+
+.new-server-form__row > .form-group {
+    flex: 1;
+}
+
+/* Read-only value display (e.g., "rsync") */
+.new-server-form__readonly-value {
+    padding: var(--space-s) 0;
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray-secondary);
+}
+
+/* Required field asterisk */
+.form-required {
+    color: var(--color-fill-red);
+}
+
+/* ============================================
+   TOGGLE SECTIONS (GHDS / CDN)
+   ============================================ */
+
+/* Site field (sits above the three toggle sections). Hidden by JS when
+   the drawer is opened from a Manage action or Unarchive — those entry
+   points imply the site and surface it in the drawer title. */
+.new-server-form__site {
+    padding-bottom: 0;
+}
+
+/* Tighten the gap above the first toggle section when it follows the
+   site field — the site field already provides visual context, so the
+   default --space-l above the divider feels too loose here. */
+.new-server-form__site + .new-server-form__toggle-section {
+    margin-top: var(--space-s);
+}
+
+/* Subheader-entry gating: when no Site is picked yet (e.g., 2+ sites in the
+   header and the user hasn't chosen one), JS adds this class to the form
+   root to dim and block interactions on the three toggle sections. The
+   Site field above stays interactive so the user can pick one. */
+.new-server-form--site-locked .new-server-form__toggle-section {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.new-server-form__toggle-section {
+    margin-top: var(--space-l);
+    border-top: 0.1rem solid var(--color-fill-gray-quaternary);
+    padding-top: var(--space-l);
+}
+
+/* When the Site field is present (always the first child of .new-server-form),
+   the first toggle section keeps its top border so the divider lines up with
+   the Site field's bottom border. Without this rule, `:first-child` would
+   suppress the border in any scenario where a toggle section is the first
+   child (legacy behavior). */
+.new-server-form > .new-server-form__toggle-section:first-child {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+}
+
+/* When JS hides the Site field (Manage / Unarchive / single-site entries), the
+   Site wrapper is still in the DOM (display:none), so the first toggle section
+   keeps matching `.new-server-form__site + …`. Its top border would then float
+   at the very top of the form with nothing above it — drop the divider. */
+.new-server-form--no-site .new-server-form__site + .new-server-form__toggle-section {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+}
+
+/* Toggle header: label + switch on same row */
+.new-server-form__toggle-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+}
+
+.new-server-form__toggle-title {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+.new-server-form__toggle-subtitle {
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray-secondary);
+    margin-top: var(--space-xs);
+}
+
+.new-server-form__optional-label {
+    font-weight: var(--font-weight-regular);
+    color: var(--color-glyph-gray-tertiary);
+    font-size: var(--font-size-xxs);
+}
+
+.new-server-form__toggle-header--locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.new-server-form__toggle-header--locked .switch__input {
+    cursor: not-allowed;
+}
+
+/* Expandable section (hidden by default) */
+.new-server-form__expandable {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.new-server-form__expandable--open {
+    max-height: 200rem;
+    transition: max-height 0.4s ease-in;
+}
+
+.new-server-form__expandable-content {
+    padding-top: var(--space-l);
+}
+
+/* Inherited site note */
+/* Dropdown that opens upward (for fields near bottom of scrollable area) */
+.project-multi-select--dropup .project-multi-select__dropdown {
+    top: auto;
+    bottom: calc(100% + 0.4rem);
+    box-shadow: 0 -0.4rem 0.8rem rgba(0, 0, 0, 0.1);
+}
+
+/* Project line-server indicator icon */
+.project-ls-indicator {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    opacity: 0.35;
+}
+.project-ls-indicator svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Help text below form controls */
+.form-help {
+    display: block;
+    margin-top: var(--space-xs);
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray-secondary);
+}
+
+/* FATP info note */
+.form-help--warning {
+    color: var(--color-text-warning, #b45309);
+    margin-top: var(--space-xs);
+}
+
+.new-server-form__inherited-note {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: var(--space-s) var(--space-m);
+    margin-bottom: var(--space-m);
+    background-color: var(--color-fill-blue-secondary);
+    border-radius: var(--radius-s);
+    font-size: var(--font-size-xxs);
+    color: var(--color-fill-blue);
+}
+
+/* ============================================
+   STICKY FORM ACTIONS
+   ============================================ */
+
+.new-server-form__actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-m);
+    padding: var(--space-m) var(--space-l);
+    border-top: 0.1rem solid var(--color-fill-gray-quaternary);
+    background-color: var(--color-fill);
+    overflow: visible;
+    position: relative;
+}
+
+/* Inline field error message styling now lives in the shared
+   `.davinci/plugins/proj-field-error.css`, so every prototype renders it the same. */

@@ -1,0 +1,4 @@
+﻿Project:;Z00;Version:;2025-11-07 13:42:35.895;;;
+Test Station Name;Address;CB to check;CB to clear on pass;CB to clear on fail;Allowed fail count;FDR Keys
+Z00 TEST17;0xE1;;;;;
+Z00 TEST20;0x34;0xE1;;;;

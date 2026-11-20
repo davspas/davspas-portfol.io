@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Infrastructure</title>
+    <!-- The framework will automatically load all CSS from assets -->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- App container where the canvas will be injected -->
+    <div id="app"></div>
+
+    <!-- Define your page-specific content here -->
+    <script id="page-content" type="text/html">
+        <!-- NOTE: Subheader is handled by canvas automatically via canvas-navigation-data.json -->
+        <!-- Do NOT add subheader HTML here - it will create duplicates -->
+        
+        <div class="manage-infrastructure-page">
+            <!-- Empty State: No Campus/Faculty Selected -->
+            <div id="noSelectionState" class="empty-state" style="display: flex; height: 100%;">
+                <sf-symbol class="empty-state__icon" name="tray"></sf-symbol>
+                <h3 class="empty-state__title">No campus selected</h3>
+                <p class="empty-state__subtitle">Select one or more campuses above to view and manage infrastructure</p>
+            </div>
+
+            <!-- Main Layout: Tabs above Tree View + Settings Panel -->
+            <div class="line-servers-layout" id="lineServersLayout" style="display: none;">
+                <!-- Two-column layout: Tree View + Settings Panel -->
+                <div class="content-layout">
+                    <!-- Tree View Section -->
+                    <div class="tree-section">
+                        <div class="tree-section__header">
+                            <div class="tree-section__header-zone">
+                                <h3 class="tree-section__title">Filters</h3>
+                                <div class="tree-filters" id="treeFilters">
+                                    <div class="tree-filter">
+                                        <sf-symbol class="tree-filter__icon" name="shield.lefthalf.filled" style="font-size:14px"></sf-symbol>
+                                        <span class="tree-filter__label">Registry Sync</span>
+                                        <select class="form-select form-select--table-cell" id="filterFSN">
+                                            <option value="all">All</option>
+                                            <option value="enabled">Enabled</option>
+                                            <option value="disabled">Disabled</option>
+                                        </select>
+                                    </div>
+                                    <label class="checkbox">
+                                        <input type="checkbox" class="checkbox__input" id="filterArchived">
+                                        <span class="checkbox__box"></span>
+                                        <span class="checkbox__label">Show Archived Nodes</span>
+                                    </label>
+                                    <button class="tree-filters__reset" id="resetFiltersBtn" type="button" aria-label="Reset filters" title="Reset filters" disabled>
+                                        <sf-symbol name="arrow.counterclockwise" style="font-size:14px"></sf-symbol>
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="tree-legend" id="hostnameOutdatedLegend" style="display: none;"><span class="tree-legend__icon"><sf-symbol name="info.circle" style="font-size:16px"></sf-symbol></span><span class="tree-legend__text">Hostname outdated</span></span>
+                        </div>
+                        <div class="bulk-selection-info" id="bulkSelectionInfo">
+                            <div class="notification notification--info">
+                                <div class="notification__icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" fill="currentColor"><path d="M29.6069941,59.5508318 C45.7791327,59.5508318 59.2059447,46.1546139 59.2059447,29.9824753 C59.2059447,13.8102773 45.7484199,0.414059407 29.5762218,0.414059407 C13.4285584,0.414059407 0.0386138615,13.8102773 0.0386138615,29.9824753 C0.0386138615,46.1546139 13.4592713,59.5508318 29.6069941,59.5508318 Z M24.3875882,46.7820417 C23.137806,46.7820417 22.2023406,45.8892535 22.2023406,44.6275248 C22.2023406,43.4887723 23.137806,42.5345347 24.3875882,42.5345347 L28.0816872,42.5345347 L28.0816872,28.8858416 L24.8738258,28.8858416 C23.6855288,28.8858416 22.7193505,27.9930297 22.7193505,26.731307 C22.7193505,25.5863169 23.6855288,24.6383169 24.8738258,24.6383169 L30.5311129,24.6383169 C32.0513109,24.6383169 32.870103,25.7400594 32.870103,27.3399802 L32.870103,42.5345347 L36.564202,42.5345347 C37.7769743,42.5345347 38.7494496,43.4887723 38.7494496,44.6275248 C38.7494496,45.8892535 37.7769743,46.7820417 36.564202,46.7820417 L24.3875882,46.7820417 Z M29.3610535,19.7051882 C27.1808555,19.7051882 25.431707,17.9315644 25.431707,15.7513664 C25.431707,13.5404555 27.1808555,11.8157822 29.3610535,11.8157822 C31.5411921,11.8157822 33.2351525,13.5404555 33.2351525,15.7513664 C33.2351525,17.9315644 31.5411921,19.7051882 29.3610535,19.7051882 Z" transform="translate(2.297 2)"/></svg>
+                                </div>
+                                <div class="notification__content">
+                                    <div class="notification__message" id="bulkSelectionMessage">
+                                        <kbd>⌘</kbd> + <kbd>Click</kbd> for multiple items, <kbd>Shift</kbd> + <kbd>Click</kbd> for range selection. Available for Building Controllers and Campuses.
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn--secondary btn--small bulk-selection-clear" id="bulkSelectionClearBtn" style="display: none;">
+                                <span class="bulk-selection-clear__text">✕ Clear Selection</span>
+                            </button>
+                        </div>
+                        <div class="tree-container" id="treeContainer">
+                            <!-- Tree will be rendered here by JavaScript -->
+                        </div>
+                    </div>
+
+
+                    <!-- Settings Panel (Right Side) -->
+                    <div class="settings-panel">
+                        <div class="settings-panel__header">
+                            <div class="settings-panel__header-content">
+                                <h3 class="settings-panel__title" id="settingsPanelTitle">Building Controller Details</h3>
+                                <div class="popover__trigger" id="managePopoverTrigger" style="display: none;">
+                                    <button class="btn btn--secondary btn--small popover-trigger" id="manageBtn">Manage &#x25BC;</button>
+                                    <div class="popover popover--bottom" id="managePopover">
+                                        <div class="popover__content">
+                                            <ul class="popover__menu" id="manageMenu"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="popover popover--bottom" id="archiveConfirmPopover" style="min-width: 28rem;">
+                                        <div class="popover__content">
+                                            <div class="popover__header">
+                                                <strong class="popover__confirm-title" id="archiveConfirmTitle"></strong>
+                                            </div>
+                                            <div class="popover__body" id="archiveConfirmBody"></div>
+                                            <div class="popover__footer">
+                                                <button class="btn btn--secondary btn--small" id="archiveConfirmCancel">Keep Node</button>
+                                                <button class="btn btn--danger btn--small" id="archiveConfirmBtn">Yes, Archive</button>
+                                            </div>
+                                        </div>
+                                        <div class="popover__arrow"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-panel__body" id="settingsBody">
+                            <!-- Empty State: No Selection -->
+                            <div id="detailsEmptyState" class="details-empty-state">
+                                <div class="empty-state">
+                                    <sf-symbol class="empty-state__icon" name="tray"></sf-symbol>
+                                    <h3 class="empty-state__title">No Selection</h3>
+                                    <p class="empty-state__subtitle">Select item(s) in the tree to load options</p>
+                                </div>
+                            </div>
+
+                            <!-- Bulk Configuration Panel (shown during multi-select) -->
+                            <div id="bulkConfigPanel" style="display: none;">
+                                <div class="settings-category settings-category--expanded">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <sf-symbol name="gearshape" style="font-size:12px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__title">CONFIGURATION</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="notification notification--info" id="bulkFSNApiCallsNotice" style="display: none;">
+                                            <div class="notification__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" fill="currentColor"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" fill="none"/><path d="M32 28V44M32 20V20.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                                            </div>
+                                            <div class="notification__content">
+                                                <div class="notification__message" id="bulkFSNApiCallsNoticeMessage">Changing Registry Sync on a campus updates every building controller in that campus. Use the filters to limit changes to a specific subset.</div>
+                                            </div>
+                                        </div>
+                                        <div class="settings-list">
+                                            <div class="setting-row">
+                                                <label class="setting-label setting-label--with-icon"><sf-symbol class="setting-label__icon" name="shield.lefthalf.filled" style="font-size:14px"></sf-symbol>Registry Sync</label>
+                                                <div class="setting-value">
+                                                    <label class="switch">
+                                                        <input type="checkbox" class="switch__input" id="bulkFSNApiCalls">
+                                                        <span class="switch__slider"></span>
+                                                        <span class="switch__label">Disabled</span>
+                                                    </label>
+                                                    <span class="setting-note">Grant Building Controllers access to communicate with Asset Registry.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Details Content (hidden by default) -->
+                            <div id="detailsContent" style="display: none;">
+                                <!-- Campus Configuration Section (Registry Sync cascades to the site's building controllers) -->
+                                <div class="settings-category settings-category--expanded" id="siteConfigSection" style="display: none;">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <sf-symbol name="gearshape" style="font-size:12px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__title">CONFIGURATION</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="notification notification--info">
+                                            <div class="notification__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" fill="currentColor"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" fill="none"/><path d="M32 28V44M32 20V20.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                                            </div>
+                                            <div class="notification__content">
+                                                <div class="notification__message" id="siteFSNApiCallsNotice">Changing Registry Sync here updates every building controller in this campus. Use the filters to limit changes to a specific subset.</div>
+                                            </div>
+                                        </div>
+                                        <div class="settings-list">
+                                            <div class="setting-row">
+                                                <label class="setting-label setting-label--with-icon"><sf-symbol class="setting-label__icon" name="shield.lefthalf.filled" style="font-size:14px"></sf-symbol>Registry Sync</label>
+                                                <div class="setting-value">
+                                                    <label class="switch">
+                                                        <input type="checkbox" class="switch__input" id="siteFSNApiCalls">
+                                                        <span class="switch__slider"></span>
+                                                        <span class="switch__label">Disabled</span>
+                                                    </label>
+                                                    <span class="setting-note">Grant Building Controllers access to communicate with Asset Registry.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Configuration Section (first section for Building Controllers) -->
+                                <div class="settings-category settings-category--expanded" id="lineServerConfigSection" style="display: none;">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <sf-symbol name="gearshape" style="font-size:12px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__title">CONFIGURATION</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="settings-list">
+                                            <div class="setting-row">
+                                                <label class="setting-label setting-label--with-icon"><sf-symbol class="setting-label__icon" name="shield.lefthalf.filled" style="font-size:14px"></sf-symbol>Registry Sync</label>
+                                                <div class="setting-value">
+                                                    <label class="switch">
+                                                        <input type="checkbox" class="switch__input" id="infoFSNApiCalls">
+                                                        <span class="switch__slider"></span>
+                                                        <span class="switch__label">Disabled</span>
+                                                    </label>
+                                                    <span class="setting-note" id="infoFSNApiCallsNote">Grant Building Controllers access to communicate with Asset Registry.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Building Controller Info Section -->
+                                <div class="settings-category settings-category--expanded" id="lineServerInfoSection">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M0.237247707,30.4172478 C0.237247707,36.7733946 5.16627524,41.4459634 11.858422,41.4459634 L45.5867891,41.4459634 C52.2787707,41.4459634 57.2081285,36.7733946 57.2081285,30.4172478 C57.2081285,28.6064588 56.7050093,26.9270643 56.0708808,25.4191377 L48.0033028,6.07194496 C46.4267891,2.20612844 43.1550826,0.144770642 38.6788624,0.144770642 L18.7663487,0.144770642 C14.3186422,0.144770642 10.9899633,2.20612844 9.41339451,6.07194496 L1.36849542,25.4191377 C0.716862387,26.9962019 0.237247707,28.635523 0.237247707,30.4172478 Z M8.56849543,19.9051376 L13.5939633,7.23577983 C14.4519633,5.04666056 16.3202753,3.92069725 18.9820734,3.92069725 L38.4805872,3.92069725 C41.1650643,3.92069725 43.0106973,5.04666056 43.8628625,7.23577983 L48.8884955,19.9051376 C47.8641469,19.5721652 46.7539817,19.3885321 45.5926239,19.3885321 L11.8642569,19.3885321 C10.6970642,19.3885321 9.59267892,19.5721652 8.56849543,19.9051376 Z M4.50908258,30.4172478 C4.50908258,26.4679266 7.54458717,23.6830459 11.858422,23.6830459 L45.5867891,23.6830459 C49.9062937,23.6830459 52.9420735,26.4679266 52.9420735,30.4172478 C52.9420735,34.6287524 50.1914313,37.1514496 45.5867891,37.1514496 L11.858422,37.1514496 C7.53880735,37.1514496 4.50908258,34.3723487 4.50908258,30.4172478 Z M42.3530092,30.4172478 C42.3530092,32.1710643 43.7981285,33.6161835 45.5693395,33.5993395 C47.3115414,33.5766606 48.7398716,32.1710643 48.7398716,30.4172478 C48.7398716,28.7320184 47.2830826,27.2409909 45.5693395,27.2409909 C43.8440368,27.2409909 42.3530092,28.7320184 42.3530092,30.4172478 Z M26.0968624,53.3141065 L30.4140551,53.3141065 L30.4140551,38.726312 L26.0968624,38.726312 L26.0968624,53.3141065 Z M5.920789,55.4460001 L50.5899634,55.4460001 C51.7877616,55.4460001 52.7516148,54.4879322 52.7516148,53.2845139 C52.7516148,52.1153946 51.7877616,51.1288184 50.5899634,51.1288184 L5.920789,51.1288184 C4.72315597,51.1288184 3.75924771,52.1153946 3.75924771,53.2845139 C3.75924771,54.4879322 4.72315597,55.4460001 5.920789,55.4460001 Z M28.2583487,59.5673395 C31.6736147,59.5673395 34.5063854,56.7630827 34.5063854,53.3193634 C34.5063854,49.8983115 31.6736147,47.0940386 28.2583487,47.0940386 C24.8373028,47.0940386 22.0045321,49.8983115 22.0045321,53.3193634 C22.0045321,56.7630827 24.8373028,59.5673395 28.2583487,59.5673395 Z" transform="translate(3.376 2)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">BUILDING CONTROLLER INFO</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <!-- Read-only Node Information -->
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Node ID</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="infoServerID">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Network Protocol</div>
+                                                    <div class="info-item__value info-item__value--muted" id="infoNetworkProtocol">rsync</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Associated Faculties</div>
+                                                    <div class="info-item__value">
+                                                        <div class="project-tags" id="infoAssociatedProjects"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Editable Fields -->
+                                        <div class="section-separator"></div>
+                                        <div class="editable-fields-section">
+                                            <div class="settings-list">
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="infoServerType">Node Type</label>
+                                                    <div class="setting-value">
+                                                        <select class="form-select" id="infoServerType">
+                                                            <option value="">Select node type</option>
+                                                            <option value="fatp">Standalone Campus</option>
+                                                            <option value="panda">Connected Campus</option>
+                                                            <option value="lab">Test Lab</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="infoHostname">Hostname</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="infoHostname" placeholder="e.g. meds-bc1-4.atrium.test" data-error-label="Hostname">
+                                                        <span class="form-help form-help--error" id="infoHostnameError"></span>
+                                                        <span class="field-note" id="infoHostnameHint">Hostname must be {campus}-bc{floor}-{n}.atrium.test or any valid domain name ending in atrium.test.</span>
+                                                        <span class="setting-note" id="infoHostnameNote" style="display: none;"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="infoIPAddress">IP Address</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="infoIPAddress" placeholder="e.g.,192.168.1.100" data-error-label="IP Address">
+                                                        <span class="form-help form-help--error" id="infoIPAddressError"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="infoGHDSSelect">Campus Hub Association</label>
+                                                    <div class="setting-value">
+                                                        <select class="form-select" id="infoGHDSSelect">
+                                                            <option value="">Not assigned</option>
+                                                        </select>
+                                                        <span class="setting-note" id="infoGHDSNote"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="infoCDNSelect">Relay Association</label>
+                                                    <div class="setting-value">
+                                                        <select class="form-select" id="infoCDNSelect">
+                                                            <option value="">Not assigned</option>
+                                                        </select>
+                                                        <span class="setting-note" id="infoCDNNote"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="infoProxyURL">Proxy URL</label>
+                                                    <div class="setting-value">
+                                                        <div class="setting-value__input-row">
+                                                            <input type="text" class="form-input" id="infoProxyURL" placeholder="Enter proxy URL">
+                                                            <button type="button" class="navigate-icon-btn" id="infoProxyURLOpen" title="Open Proxy URL" aria-label="Open Proxy URL"><sf-symbol name="arrow.up.right.square" style="font-size:14px"></sf-symbol></button>
+                                                        </div>
+                                                        <span class="setting-note" id="infoProxyNote"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Description</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="infoDescription" placeholder="Enter description">
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Location</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="infoLocation" placeholder="Enter location">
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Alert Service</label>
+                                                    <div class="setting-value">
+                                                        <label class="switch">
+                                                            <input type="checkbox" class="switch__input" id="infoPGMService">
+                                                            <span class="switch__slider"></span>
+                                                            <span class="switch__label">Off</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Classify as an Exam Lockdown controller</label>
+                                                    <div class="setting-value">
+                                                        <label class="checkbox">
+                                                            <input type="checkbox" class="checkbox__input" id="infoRedPanda">
+                                                            <span class="checkbox__box"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Enable Energy Saver</label>
+                                                    <div class="setting-value">
+                                                        <label class="checkbox">
+                                                            <input type="checkbox" class="checkbox__input" id="infoKomodo">
+                                                            <span class="checkbox__box"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Associated Campus Hub Info (Read-only, shown when building controller has Campus Hub) -->
+                                <div class="settings-category settings-category--expanded" id="lineServerAssociatedGHDS" style="display: none;">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M0.285,31.7938449 C0.285,38.202807 5.24534484,43.1953346 12.2699483,43.1953346 L47.9085001,43.1953346 C54.9331553,43.1953346 59.8935001,38.202807 59.8935001,31.7938449 C59.8935001,29.8935518 59.3240173,28.1969483 58.6852242,26.6025 L50.1616035,6.17818967 C48.5079828,2.14256897 45.0794484,0.0548275863 40.5718966,0.0548275863 L19.6331897,0.0548275863 C15.0988449,0.0548275863 11.6701035,2.14256897 10.0166379,6.17818967 L1.48779311,26.6025 C0.848741381,28.1915173 0.285,29.8935518 0.285,31.7938449 Z M4.34715518,31.7938449 C4.34715518,27.6142759 7.50144829,24.4599828 12.2699483,24.4599828 L47.9085001,24.4599828 C52.6769484,24.4599828 55.836776,27.6142759 55.836776,31.7938449 C55.836776,36.4552863 52.6769484,39.1064277 47.9085001,39.1064277 L12.2699483,39.1064277 C7.50144829,39.1064277 4.34715518,35.9521294 4.34715518,31.7938449 Z M8.42487932,21.0564311 L13.9340173,7.23956898 C14.9013621,4.83843104 16.9633449,3.6242069 19.8517759,3.6242069 L40.3587932,3.6242069 C43.2150001,3.6242069 45.3037242,4.83843104 46.2445346,7.23956898 L51.7536725,21.0509483 C50.5598794,20.6353966 49.2853966,20.3978793 47.9085001,20.3978793 L12.2699483,20.3978793 C10.887569,20.3978793 9.6128276,20.6353966 8.42487932,21.0564311 Z M44.7025863,31.7938449 C44.7025863,33.5712932 46.157638,34.9242673 47.8919484,34.9242673 C49.5616035,34.9242673 51.0171208,33.5281035 51.0171208,31.7938449 C51.0171208,30.1027759 49.5616035,28.6689311 47.8919484,28.6689311 C46.157638,28.6689311 44.7025863,30.1027759 44.7025863,31.7938449 Z" transform="translate(2 10.276)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">ASSOCIATED CAMPUS HUB</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Hostname</div>
+                                                    <div class="info-item__value" id="assocGHDSHostname">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Proxy URL</div>
+                                                    <div class="info-item__value" id="assocGHDSProxyURL">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">IP Address</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="assocGHDSIP">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Node ID</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="assocGHDSServerID">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Campus</div>
+                                                    <div class="info-item__value" id="assocGHDSSite">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Network Protocol</div>
+                                                    <div class="info-item__value info-item__value--muted" id="assocGHDSProtocol">aria2c</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="section-separator"></div>
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Description</div>
+                                                    <div class="info-item__value" id="assocGHDSDescription">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Location</div>
+                                                    <div class="info-item__value" id="assocGHDSLocation">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Bridge Service</div>
+                                                    <div class="info-item__value" id="assocGHBridgeService">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Associated Timetable Relay Info (Read-only, shown when building controller has a Relay) -->
+                                <div class="settings-category settings-category--expanded" id="lineServerAssociatedCDN" style="display: none;">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M46.5921208,12.7325173 C48.3419484,12.7002931 49.7809139,11.2615345 49.7809139,9.51139657 C49.7809139,7.7558276 48.3419484,6.25805173 46.5921208,6.25805173 C44.8687242,6.25805173 43.3655173,7.7558276 43.3655173,9.51139657 C43.3655173,11.2615345 44.8687242,12.7647414 46.5921208,12.7325173 Z M46.5921208,26.7188276 C48.3419484,26.6866035 49.7809139,25.2478449 49.7809139,23.4977587 C49.7809139,21.742138 48.3419484,20.2444138 46.5921208,20.2444138 C44.8687242,20.2444138 43.3655173,21.742138 43.3655173,23.4977587 C43.3655173,25.2478449 44.8687242,26.7510518 46.5921208,26.7188276 Z M46.5921208,40.7051639 C48.3419484,40.6729397 49.7809139,39.2341759 49.7809139,37.4840639 C49.7809139,35.7285001 48.3419484,34.2307242 46.5921208,34.2307242 C44.8687242,34.2307242 43.3655173,35.7285001 43.3655173,37.4840639 C43.3655173,39.2341759 44.8687242,40.7373932 46.5921208,40.7051639 Z M57.3538449,18.4335 L57.3538449,14.6122759 L2.26732759,14.6122759 L2.26732759,18.4335 L57.3538449,18.4335 Z M57.3538449,32.5011725 L57.3538449,28.6799483 L2.26732759,28.6799483 L2.26732759,32.5011725 L57.3538449,32.5011725 Z M7.92827588,46.7988518 L51.6114311,46.7988518 C56.9038449,46.7988518 59.5345346,44.1573104 59.5345346,38.9560863 L59.5345346,8.1355345 C59.5345346,2.93431035 56.9038449,0.292758621 51.6114311,0.292758621 L7.92827588,0.292758621 C2.66260345,0.292758621 0.0051724138,2.92339656 0.0051724138,8.1355345 L0.0051724138,38.9560863 C0.0051724138,44.1682242 2.66260345,46.7988518 7.92827588,46.7988518 Z M7.99272415,42.7099449 C5.47050001,42.7099449 4.06732759,41.3603339 4.06732759,38.7577863 L4.06732759,8.33384484 C4.06732759,5.70455173 5.47050001,4.3817069 7.99272415,4.3817069 L51.5467759,4.3817069 C54.0471208,4.3817069 55.4721208,5.70455173 55.4721208,8.33384484 L55.4721208,38.7577863 C55.4721208,41.3603339 54.0471208,42.7099449 51.5467759,42.7099449 L7.99272415,42.7099449 Z" transform="translate(2 8.466)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">ASSOCIATED TIMETABLE RELAY</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Hostname</div>
+                                                    <div class="info-item__value" id="assocCDNHostname">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Proxy URL</div>
+                                                    <div class="info-item__value" id="assocCDNProxyURL">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">IP Address</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="assocCDNIP">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Node ID</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="assocCDNServerID">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Campus</div>
+                                                    <div class="info-item__value" id="assocCDNSite">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Network Protocol</div>
+                                                    <div class="info-item__value info-item__value--muted" id="assocCDNTransport">rsync</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="section-separator"></div>
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Description</div>
+                                                    <div class="info-item__value" id="assocCDNDescription">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Location</div>
+                                                    <div class="info-item__value" id="assocCDNLocation">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Campus Hub Info Section -->
+                                <div class="settings-category settings-category--expanded" id="ghdsServerInfoSection">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M0.285,31.7938449 C0.285,38.202807 5.24534484,43.1953346 12.2699483,43.1953346 L47.9085001,43.1953346 C54.9331553,43.1953346 59.8935001,38.202807 59.8935001,31.7938449 C59.8935001,29.8935518 59.3240173,28.1969483 58.6852242,26.6025 L50.1616035,6.17818967 C48.5079828,2.14256897 45.0794484,0.0548275863 40.5718966,0.0548275863 L19.6331897,0.0548275863 C15.0988449,0.0548275863 11.6701035,2.14256897 10.0166379,6.17818967 L1.48779311,26.6025 C0.848741381,28.1915173 0.285,29.8935518 0.285,31.7938449 Z M4.34715518,31.7938449 C4.34715518,27.6142759 7.50144829,24.4599828 12.2699483,24.4599828 L47.9085001,24.4599828 C52.6769484,24.4599828 55.836776,27.6142759 55.836776,31.7938449 C55.836776,36.4552863 52.6769484,39.1064277 47.9085001,39.1064277 L12.2699483,39.1064277 C7.50144829,39.1064277 4.34715518,35.9521294 4.34715518,31.7938449 Z M8.42487932,21.0564311 L13.9340173,7.23956898 C14.9013621,4.83843104 16.9633449,3.6242069 19.8517759,3.6242069 L40.3587932,3.6242069 C43.2150001,3.6242069 45.3037242,4.83843104 46.2445346,7.23956898 L51.7536725,21.0509483 C50.5598794,20.6353966 49.2853966,20.3978793 47.9085001,20.3978793 L12.2699483,20.3978793 C10.887569,20.3978793 9.6128276,20.6353966 8.42487932,21.0564311 Z M44.7025863,31.7938449 C44.7025863,33.5712932 46.157638,34.9242673 47.8919484,34.9242673 C49.5616035,34.9242673 51.0171208,33.5281035 51.0171208,31.7938449 C51.0171208,30.1027759 49.5616035,28.6689311 47.8919484,28.6689311 C46.157638,28.6689311 44.7025863,30.1027759 44.7025863,31.7938449 Z" transform="translate(2 10.276)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">CAMPUS HUB INFO</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <!-- Read-only Node Information -->
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Node ID</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="ghdsServerID">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Campus</div>
+                                                    <div class="info-item__value" id="ghdsSite">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Network Protocol</div>
+                                                    <div class="info-item__value info-item__value--muted" id="ghdsNetworkProtocol">aria2c</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Faculties</div>
+                                                    <div class="info-item__value">
+                                                        <div class="project-tags" id="ghdsAssociatedProjects"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Editable Fields -->
+                                        <div class="section-separator"></div>
+                                        <div class="editable-fields-section">
+                                            <div class="settings-list">
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="ghdsHostname">Hostname</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="ghdsHostname" placeholder="e.g. meds-hub.atrium.test" data-error-label="Hostname">
+                                                        <span class="form-help form-help--error" id="ghdsHostnameError"></span>
+                                                        <span class="field-note" id="ghdsHostnameHint">Hostname must be a valid domain name ending in atrium.test.</span>
+                                                        <span class="setting-note" id="ghdsHostnameNote"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="ghdsIPAddress">IP Address</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="ghdsIPAddress" placeholder="e.g.,192.168.1.100" data-error-label="IP Address">
+                                                        <span class="form-help form-help--error" id="ghdsIPAddressError"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Description</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="ghdsDescription" placeholder="Enter description">
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Location</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="ghdsLocation" placeholder="Enter location">
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Bridge Service</label>
+                                                    <div class="setting-value">
+                                                        <label class="switch switch--small">
+                                                            <input type="checkbox" class="switch__input" id="ghBridgeService">
+                                                            <span class="switch__slider"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Associated Building Controllers (shown when Campus Hub server has building controllers) -->
+                                <div class="settings-category settings-category--expanded" id="ghdsAssociatedLSSection" style="display: none;">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M0.237247707,30.4172478 C0.237247707,36.7733946 5.16627524,41.4459634 11.858422,41.4459634 L45.5867891,41.4459634 C52.2787707,41.4459634 57.2081285,36.7733946 57.2081285,30.4172478 C57.2081285,28.6064588 56.7050093,26.9270643 56.0708808,25.4191377 L48.0033028,6.07194496 C46.4267891,2.20612844 43.1550826,0.144770642 38.6788624,0.144770642 L18.7663487,0.144770642 C14.3186422,0.144770642 10.9899633,2.20612844 9.41339451,6.07194496 L1.36849542,25.4191377 C0.716862387,26.9962019 0.237247707,28.635523 0.237247707,30.4172478 Z M8.56849543,19.9051376 L13.5939633,7.23577983 C14.4519633,5.04666056 16.3202753,3.92069725 18.9820734,3.92069725 L38.4805872,3.92069725 C41.1650643,3.92069725 43.0106973,5.04666056 43.8628625,7.23577983 L48.8884955,19.9051376 C47.8641469,19.5721652 46.7539817,19.3885321 45.5926239,19.3885321 L11.8642569,19.3885321 C10.6970642,19.3885321 9.59267892,19.5721652 8.56849543,19.9051376 Z M4.50908258,30.4172478 C4.50908258,26.4679266 7.54458717,23.6830459 11.858422,23.6830459 L45.5867891,23.6830459 C49.9062937,23.6830459 52.9420735,26.4679266 52.9420735,30.4172478 C52.9420735,34.6287524 50.1914313,37.1514496 45.5867891,37.1514496 L11.858422,37.1514496 C7.53880735,37.1514496 4.50908258,34.3723487 4.50908258,30.4172478 Z M42.3530092,30.4172478 C42.3530092,32.1710643 43.7981285,33.6161835 45.5693395,33.5993395 C47.3115414,33.5766606 48.7398716,32.1710643 48.7398716,30.4172478 C48.7398716,28.7320184 47.2830826,27.2409909 45.5693395,27.2409909 C43.8440368,27.2409909 42.3530092,28.7320184 42.3530092,30.4172478 Z M26.0968624,53.3141065 L30.4140551,53.3141065 L30.4140551,38.726312 L26.0968624,38.726312 L26.0968624,53.3141065 Z M5.920789,55.4460001 L50.5899634,55.4460001 C51.7877616,55.4460001 52.7516148,54.4879322 52.7516148,53.2845139 C52.7516148,52.1153946 51.7877616,51.1288184 50.5899634,51.1288184 L5.920789,51.1288184 C4.72315597,51.1288184 3.75924771,52.1153946 3.75924771,53.2845139 C3.75924771,54.4879322 4.72315597,55.4460001 5.920789,55.4460001 Z M28.2583487,59.5673395 C31.6736147,59.5673395 34.5063854,56.7630827 34.5063854,53.3193634 C34.5063854,49.8983115 31.6736147,47.0940386 28.2583487,47.0940386 C24.8373028,47.0940386 22.0045321,49.8983115 22.0045321,53.3193634 C22.0045321,56.7630827 24.8373028,59.5673395 28.2583487,59.5673395 Z" transform="translate(3.376 2)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">ASSOCIATED BUILDING CONTROLLERS</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="associated-servers-list" id="ghdsAssociatedLSList"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Associated Timetable Relays (shown when Campus Hub server has Relay servers) -->
+                                <div class="settings-category settings-category--expanded" id="ghdsAssociatedCDNSection" style="display: none;">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M46.5921208,12.7325173 C48.3419484,12.7002931 49.7809139,11.2615345 49.7809139,9.51139657 C49.7809139,7.7558276 48.3419484,6.25805173 46.5921208,6.25805173 C44.8687242,6.25805173 43.3655173,7.7558276 43.3655173,9.51139657 C43.3655173,11.2615345 44.8687242,12.7647414 46.5921208,12.7325173 Z M46.5921208,26.7188276 C48.3419484,26.6866035 49.7809139,25.2478449 49.7809139,23.4977587 C49.7809139,21.742138 48.3419484,20.2444138 46.5921208,20.2444138 C44.8687242,20.2444138 43.3655173,21.742138 43.3655173,23.4977587 C43.3655173,25.2478449 44.8687242,26.7510518 46.5921208,26.7188276 Z M46.5921208,40.7051639 C48.3419484,40.6729397 49.7809139,39.2341759 49.7809139,37.4840639 C49.7809139,35.7285001 48.3419484,34.2307242 46.5921208,34.2307242 C44.8687242,34.2307242 43.3655173,35.7285001 43.3655173,37.4840639 C43.3655173,39.2341759 44.8687242,40.7373932 46.5921208,40.7051639 Z M57.3538449,18.4335 L57.3538449,14.6122759 L2.26732759,14.6122759 L2.26732759,18.4335 L57.3538449,18.4335 Z M57.3538449,32.5011725 L57.3538449,28.6799483 L2.26732759,28.6799483 L2.26732759,32.5011725 L57.3538449,32.5011725 Z M7.92827588,46.7988518 L51.6114311,46.7988518 C56.9038449,46.7988518 59.5345346,44.1573104 59.5345346,38.9560863 L59.5345346,8.1355345 C59.5345346,2.93431035 56.9038449,0.292758621 51.6114311,0.292758621 L7.92827588,0.292758621 C2.66260345,0.292758621 0.0051724138,2.92339656 0.0051724138,8.1355345 L0.0051724138,38.9560863 C0.0051724138,44.1682242 2.66260345,46.7988518 7.92827588,46.7988518 Z M7.99272415,42.7099449 C5.47050001,42.7099449 4.06732759,41.3603339 4.06732759,38.7577863 L4.06732759,8.33384484 C4.06732759,5.70455173 5.47050001,4.3817069 7.99272415,4.3817069 L51.5467759,4.3817069 C54.0471208,4.3817069 55.4721208,5.70455173 55.4721208,8.33384484 L55.4721208,38.7577863 C55.4721208,41.3603339 54.0471208,42.7099449 51.5467759,42.7099449 L7.99272415,42.7099449 Z" transform="translate(2 8.466)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">ASSOCIATED TIMETABLE RELAYS</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="associated-servers-list" id="ghdsAssociatedCDNList"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Timetable Relay Info Section -->
+                                <div class="settings-category settings-category--expanded" id="cdnServerInfoSection">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M46.5921208,12.7325173 C48.3419484,12.7002931 49.7809139,11.2615345 49.7809139,9.51139657 C49.7809139,7.7558276 48.3419484,6.25805173 46.5921208,6.25805173 C44.8687242,6.25805173 43.3655173,7.7558276 43.3655173,9.51139657 C43.3655173,11.2615345 44.8687242,12.7647414 46.5921208,12.7325173 Z M46.5921208,26.7188276 C48.3419484,26.6866035 49.7809139,25.2478449 49.7809139,23.4977587 C49.7809139,21.742138 48.3419484,20.2444138 46.5921208,20.2444138 C44.8687242,20.2444138 43.3655173,21.742138 43.3655173,23.4977587 C43.3655173,25.2478449 44.8687242,26.7510518 46.5921208,26.7188276 Z M46.5921208,40.7051639 C48.3419484,40.6729397 49.7809139,39.2341759 49.7809139,37.4840639 C49.7809139,35.7285001 48.3419484,34.2307242 46.5921208,34.2307242 C44.8687242,34.2307242 43.3655173,35.7285001 43.3655173,37.4840639 C43.3655173,39.2341759 44.8687242,40.7373932 46.5921208,40.7051639 Z M57.3538449,18.4335 L57.3538449,14.6122759 L2.26732759,14.6122759 L2.26732759,18.4335 L57.3538449,18.4335 Z M57.3538449,32.5011725 L57.3538449,28.6799483 L2.26732759,28.6799483 L2.26732759,32.5011725 L57.3538449,32.5011725 Z M7.92827588,46.7988518 L51.6114311,46.7988518 C56.9038449,46.7988518 59.5345346,44.1573104 59.5345346,38.9560863 L59.5345346,8.1355345 C59.5345346,2.93431035 56.9038449,0.292758621 51.6114311,0.292758621 L7.92827588,0.292758621 C2.66260345,0.292758621 0.0051724138,2.92339656 0.0051724138,8.1355345 L0.0051724138,38.9560863 C0.0051724138,44.1682242 2.66260345,46.7988518 7.92827588,46.7988518 Z M7.99272415,42.7099449 C5.47050001,42.7099449 4.06732759,41.3603339 4.06732759,38.7577863 L4.06732759,8.33384484 C4.06732759,5.70455173 5.47050001,4.3817069 7.99272415,4.3817069 L51.5467759,4.3817069 C54.0471208,4.3817069 55.4721208,5.70455173 55.4721208,8.33384484 L55.4721208,38.7577863 C55.4721208,41.3603339 54.0471208,42.7099449 51.5467759,42.7099449 L7.99272415,42.7099449 Z" transform="translate(2 8.466)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">TIMETABLE RELAY INFO</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <!-- Read-only Node Information -->
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Node ID</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="cdnServerID">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Network Protocol</div>
+                                                    <div class="info-item__value info-item__value--muted" id="cdnNetworkTransport">rsync</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Editable Fields -->
+                                        <div class="section-separator"></div>
+                                        <div class="editable-fields-section">
+                                            <div class="settings-list">
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="cdnHostname">Hostname</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="cdnHostname" placeholder="e.g. meds-rly1-1.atrium.test" data-error-label="Hostname">
+                                                        <span class="form-help form-help--error" id="cdnHostnameError"></span>
+                                                        <span class="field-note" id="cdnHostnameHint">Hostname must be {campus}-rly{floor}-{n}.atrium.test or any valid domain name ending in atrium.test.</span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="cdnIPAddress">IP Address</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="cdnIPAddress" placeholder="e.g.,192.168.1.100" data-error-label="IP Address">
+                                                        <span class="form-help form-help--error" id="cdnIPAddressError"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="cdnGHDSSelect">Campus Hub Association</label>
+                                                    <div class="setting-value">
+                                                        <select class="form-select" id="cdnGHDSSelect">
+                                                            <option value="">Not assigned</option>
+                                                        </select>
+                                                        <span class="setting-note" id="cdnGHDSNote"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label" for="cdnProxyURL">Proxy URL</label>
+                                                    <div class="setting-value">
+                                                        <div class="setting-value__input-row">
+                                                            <input type="text" class="form-input" id="cdnProxyURL" placeholder="Enter proxy URL">
+                                                            <button type="button" class="navigate-icon-btn" id="cdnProxyURLOpen" title="Open Proxy URL" aria-label="Open Proxy URL"><sf-symbol name="arrow.up.right.square" style="font-size:14px"></sf-symbol></button>
+                                                        </div>
+                                                        <span class="setting-note" id="cdnProxyNote"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Description</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="cdnDescription" placeholder="Enter description">
+                                                    </div>
+                                                </div>
+                                                <div class="setting-row">
+                                                    <label class="setting-label">Location</label>
+                                                    <div class="setting-value">
+                                                        <input type="text" class="form-input" id="cdnLocation" placeholder="Enter location">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Associated Building Controllers (shown when Relay server has building controllers) -->
+                                <div class="settings-category settings-category--expanded" id="cdnAssociatedLSSection" style="display: none;">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M0.237247707,30.4172478 C0.237247707,36.7733946 5.16627524,41.4459634 11.858422,41.4459634 L45.5867891,41.4459634 C52.2787707,41.4459634 57.2081285,36.7733946 57.2081285,30.4172478 C57.2081285,28.6064588 56.7050093,26.9270643 56.0708808,25.4191377 L48.0033028,6.07194496 C46.4267891,2.20612844 43.1550826,0.144770642 38.6788624,0.144770642 L18.7663487,0.144770642 C14.3186422,0.144770642 10.9899633,2.20612844 9.41339451,6.07194496 L1.36849542,25.4191377 C0.716862387,26.9962019 0.237247707,28.635523 0.237247707,30.4172478 Z M8.56849543,19.9051376 L13.5939633,7.23577983 C14.4519633,5.04666056 16.3202753,3.92069725 18.9820734,3.92069725 L38.4805872,3.92069725 C41.1650643,3.92069725 43.0106973,5.04666056 43.8628625,7.23577983 L48.8884955,19.9051376 C47.8641469,19.5721652 46.7539817,19.3885321 45.5926239,19.3885321 L11.8642569,19.3885321 C10.6970642,19.3885321 9.59267892,19.5721652 8.56849543,19.9051376 Z M4.50908258,30.4172478 C4.50908258,26.4679266 7.54458717,23.6830459 11.858422,23.6830459 L45.5867891,23.6830459 C49.9062937,23.6830459 52.9420735,26.4679266 52.9420735,30.4172478 C52.9420735,34.6287524 50.1914313,37.1514496 45.5867891,37.1514496 L11.858422,37.1514496 C7.53880735,37.1514496 4.50908258,34.3723487 4.50908258,30.4172478 Z M42.3530092,30.4172478 C42.3530092,32.1710643 43.7981285,33.6161835 45.5693395,33.5993395 C47.3115414,33.5766606 48.7398716,32.1710643 48.7398716,30.4172478 C48.7398716,28.7320184 47.2830826,27.2409909 45.5693395,27.2409909 C43.8440368,27.2409909 42.3530092,28.7320184 42.3530092,30.4172478 Z M26.0968624,53.3141065 L30.4140551,53.3141065 L30.4140551,38.726312 L26.0968624,38.726312 L26.0968624,53.3141065 Z M5.920789,55.4460001 L50.5899634,55.4460001 C51.7877616,55.4460001 52.7516148,54.4879322 52.7516148,53.2845139 C52.7516148,52.1153946 51.7877616,51.1288184 50.5899634,51.1288184 L5.920789,51.1288184 C4.72315597,51.1288184 3.75924771,52.1153946 3.75924771,53.2845139 C3.75924771,54.4879322 4.72315597,55.4460001 5.920789,55.4460001 Z M28.2583487,59.5673395 C31.6736147,59.5673395 34.5063854,56.7630827 34.5063854,53.3193634 C34.5063854,49.8983115 31.6736147,47.0940386 28.2583487,47.0940386 C24.8373028,47.0940386 22.0045321,49.8983115 22.0045321,53.3193634 C22.0045321,56.7630827 24.8373028,59.5673395 28.2583487,59.5673395 Z" transform="translate(3.376 2)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">ASSOCIATED BUILDING CONTROLLERS</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="associated-servers-list" id="cdnAssociatedLSList"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Associated Campus Hub (shown when Relay server has Campus Hub association) -->
+                                <div class="settings-category settings-category--expanded" id="cdnAssociatedGHDSSection" style="display: none;">
+                                    <button class="settings-category__header">
+                                        <span class="settings-category__arrow">
+                                            <sf-symbol name="chevron.right" style="font-size:10px"></sf-symbol>
+                                        </span>
+                                        <span class="settings-category__icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 64 64" fill="currentColor"><path d="M0.285,31.7938449 C0.285,38.202807 5.24534484,43.1953346 12.2699483,43.1953346 L47.9085001,43.1953346 C54.9331553,43.1953346 59.8935001,38.202807 59.8935001,31.7938449 C59.8935001,29.8935518 59.3240173,28.1969483 58.6852242,26.6025 L50.1616035,6.17818967 C48.5079828,2.14256897 45.0794484,0.0548275863 40.5718966,0.0548275863 L19.6331897,0.0548275863 C15.0988449,0.0548275863 11.6701035,2.14256897 10.0166379,6.17818967 L1.48779311,26.6025 C0.848741381,28.1915173 0.285,29.8935518 0.285,31.7938449 Z M4.34715518,31.7938449 C4.34715518,27.6142759 7.50144829,24.4599828 12.2699483,24.4599828 L47.9085001,24.4599828 C52.6769484,24.4599828 55.836776,27.6142759 55.836776,31.7938449 C55.836776,36.4552863 52.6769484,39.1064277 47.9085001,39.1064277 L12.2699483,39.1064277 C7.50144829,39.1064277 4.34715518,35.9521294 4.34715518,31.7938449 Z M8.42487932,21.0564311 L13.9340173,7.23956898 C14.9013621,4.83843104 16.9633449,3.6242069 19.8517759,3.6242069 L40.3587932,3.6242069 C43.2150001,3.6242069 45.3037242,4.83843104 46.2445346,7.23956898 L51.7536725,21.0509483 C50.5598794,20.6353966 49.2853966,20.3978793 47.9085001,20.3978793 L12.2699483,20.3978793 C10.887569,20.3978793 9.6128276,20.6353966 8.42487932,21.0564311 Z M44.7025863,31.7938449 C44.7025863,33.5712932 46.157638,34.9242673 47.8919484,34.9242673 C49.5616035,34.9242673 51.0171208,33.5281035 51.0171208,31.7938449 C51.0171208,30.1027759 49.5616035,28.6689311 47.8919484,28.6689311 C46.157638,28.6689311 44.7025863,30.1027759 44.7025863,31.7938449 Z" transform="translate(2 10.276)"/></svg>
+                                        </span>
+                                        <span class="settings-category__title">ASSOCIATED CAMPUS HUB</span>
+                                    </button>
+                                    <div class="settings-category__content">
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Hostname</div>
+                                                    <div class="info-item__value" id="cdnAssocGHDSHostname">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Proxy URL</div>
+                                                    <div class="info-item__value" id="cdnAssocGHDSProxyURL">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">IP Address</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="cdnAssocGHDSIP">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Node ID</div>
+                                                    <div class="info-item__value info-item__value--monospace" id="cdnAssocGHDSServerID">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Campus</div>
+                                                    <div class="info-item__value" id="cdnAssocGHDSSite">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Network Protocol</div>
+                                                    <div class="info-item__value info-item__value--muted" id="cdnAssocGHDSProtocol">aria2c</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="section-separator"></div>
+                                        <div class="info-section">
+                                            <div class="info-grid">
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Description</div>
+                                                    <div class="info-item__value" id="cdnAssocGHDSDescription">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Location</div>
+                                                    <div class="info-item__value" id="cdnAssocGHDSLocation">-</div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-item__label">Bridge Service</div>
+                                                    <div class="info-item__value" id="cdnAssocGHDSBridgeService">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fixed Footer: Save / Discard -->
+                        <div class="settings-panel__footer" id="settingsPanelFooter" style="display: none;">
+                            <div class="popover__trigger">
+                                <button class="btn btn--link btn--medium popover-trigger" id="discardBtn">Discard Changes</button>
+                                <div class="popover popover--top" id="discardConfirmPopover" style="min-width: 24rem;">
+                                    <div class="popover__content">
+                                        <div class="popover__header">
+                                            <strong class="popover__confirm-title">Discard Changes</strong>
+                                        </div>
+                                        <div class="popover__body">
+                                            <p style="color: var(--color-glyph-gray-secondary); font-size: var(--font-size-xxs); margin: 0;">
+                                                Are you sure you want to discard all changes? This will restore the node information to its previous state.
+                                            </p>
+                                        </div>
+                                        <div class="popover__footer">
+                                            <button class="btn btn--secondary btn--small" id="discardConfirmCancel">Cancel</button>
+                                            <button class="btn btn--danger btn--small" id="discardConfirmBtn">Discard</button>
+                                        </div>
+                                    </div>
+                                    <div class="popover__arrow"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn--secondary btn--medium" id="saveBtn">Save</button>
+                            <!-- Opened by handleSaveClick when a Campus Hub change would strand
+                                 associations. Deliberately NOT wrapped in .popover__trigger:
+                                 MDS binds a toggle to the first button inside one, which would
+                                 open this on every Save, and its positioner centres the popover
+                                 on the trigger with inline styles — off the right edge of the
+                                 panel. Anchored by .settings-panel__footer instead. -->
+                            <div class="popover popover--top panel-confirm-popover" id="ghdsChangeConfirmPopover">
+                                <div class="popover__content">
+                                    <div class="popover__header">
+                                        <strong class="popover__confirm-title">Change Campus Hub</strong>
+                                    </div>
+                                    <div class="popover__body" id="ghdsChangeConfirmBody"></div>
+                                    <div class="popover__footer">
+                                        <button class="btn btn--secondary btn--small" id="ghdsChangeConfirmCancel">Cancel</button>
+                                        <button class="btn btn--primary btn--small" id="ghdsChangeConfirmBtn">Save Changes</button>
+                                    </div>
+                                </div>
+                                <div class="popover__arrow"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            <div class="drawer-overlay" id="newServerDrawer">
+                <div class="drawer drawer--right drawer--medium">
+                    <div class="drawer__header">
+                        <button class="drawer__close" id="closeNewServerDrawer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64" fill="currentColor"><path d="M1.60500048,58.4772309 C2.91892453,59.7518284 5.05097517,59.7518284 6.33360808,58.4772309 L30.041279,34.7222663 L53.7962664,58.4772309 C55.0315828,59.7518284 57.2029752,59.7518284 58.4856081,58.4772309 C59.7601904,57.1553155 59.7601904,55.0232284 58.4856081,53.7799221 L34.7305448,30.0329246 L58.4856081,6.32525365 C59.7601904,5.04262074 59.7994563,2.87122833 58.4856081,1.59664605 C57.1636335,0.353354908 55.0315828,0.353354908 53.7962664,1.59664605 L30.041279,25.3436587 L6.33360808,1.59664605 C5.05097517,0.353354908 2.87958276,0.314013136 1.60500048,1.59664605 C0.361709338,2.9105701 0.361709338,5.04262074 1.60500048,6.32525365 L25.3519372,30.0329246 L1.60500048,53.7799221 C0.361709338,55.0232284 0.322367566,57.1946223 1.60500048,58.4772309 Z" transform="translate(2 2)"/></svg>
+                        </button>
+                        <h3 class="drawer__title">Create New Node</h3>
+                    </div>
+                    <div class="drawer__body new-node-drawer__body">
+                        <!-- Scrollable form area -->
+                        <div class="new-server-form">
+
+                            <!-- SITE — visible only when the entry point is the subheader Create Node button.
+                                 Manage actions and Unarchive hide this field via #newServerSiteField (the site is implied
+                                 by the entry point and surfaced in the drawer title instead). -->
+                            <div class="new-server-form__site" id="newServerSiteField">
+                                <div class="form-group">
+                                    <label for="newServerSite" class="form-label">Campus</label>
+                                    <select class="form-select" id="newServerSite">
+                                        <option value="">Select a campus</option>
+                                    </select>
+                                    <span class="form-help" id="newServerSiteHelp">Choose where to add this node. The list shows the campuses currently selected. Update the Campus filter in the header to add more.</span>
+                                </div>
+                            </div>
+
+                            <!-- LINE SERVER TOGGLE SECTION -->
+                            <div class="new-server-form__toggle-section">
+                                <div class="new-server-form__toggle-header">
+                                    <div>
+                                        <div class="new-server-form__toggle-title">Create Building Controller</div>
+                                        <div class="new-server-form__toggle-subtitle">Standard building controller for room management</div>
+                                    </div>
+                                    <label class="switch switch--small">
+                                        <input type="checkbox" class="switch__input" id="toggleLineServer" checked>
+                                        <span class="switch__slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="new-server-form__expandable new-server-form__expandable--open" id="lineServerFormSection">
+                                    <div class="new-server-form__expandable-content">
+
+                                        <div class="form-group">
+                                            <label for="newLineServerType" class="form-label">Node Type</label>
+                                            <select class="form-select" id="newLineServerType">
+                                                <option value="">Select node type</option>
+                                                <option value="fatp">Standalone Campus</option>
+                                                <option value="panda">Connected Campus</option>
+                                                <option value="lab">Test Lab</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newLineHostname" class="form-label">Hostname</label>
+                                            <input type="text" class="form-input" id="newLineHostname" placeholder="e.g. meds-bc1-4.atrium.test" data-error-label="Hostname">
+                                            <span class="form-help form-help--error" id="newLineHostnameError"></span>
+                                            <span class="field-note" id="newLineHostnameHint">Hostname must be {campus}-bc{floor}-{n}.atrium.test or any valid domain name ending in atrium.test.</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newLineIP" class="form-label">IP Address</label>
+                                            <input type="text" class="form-input" id="newLineIP" placeholder="e.g.,192.168.1.100">
+                                            <span class="form-help">Must be unique across all nodes</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newLineGHDS" class="form-label">Campus Hub Association</label>
+                                            <select class="form-select" id="newLineGHDS">
+                                                <option value="">Select a Campus Hub</option>
+                                            </select>
+                                            <span class="form-help" id="newLineGHDSHelp">Filtered by selected Campus</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newLineProxyURL" class="form-label">Proxy URL</label>
+                                            <input type="text" class="form-input" id="newLineProxyURL" placeholder="e.g, https://&lt;hostname&gt;/campus/">
+                                            <span class="form-help form-help--error" id="newLineProxyURLError" style="display:none"></span>
+                                            <span class="form-help" id="newLineProxyHelp"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Faculties (optional)</label>
+                                            <div id="newLineProjectSelect"></div>
+                                            <span class="form-help" id="newLineProjectsHelp"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newLineCDN" class="form-label">Relay Association (optional)</label>
+                                            <select class="form-select" id="newLineCDN" disabled>
+                                                <option value="">Select a Campus Hub first</option>
+                                            </select>
+                                            <span class="form-help" id="newLineCDNHelp"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="checkbox">
+                                                <input type="checkbox" class="checkbox__input" id="newLineRedPanda">
+                                                <span class="checkbox__box"></span>
+                                                <span class="checkbox__label">Classify as an Exam Lockdown controller</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="checkbox">
+                                                <input type="checkbox" class="checkbox__input" id="newLineKomodo">
+                                                <span class="checkbox__box"></span>
+                                                <span class="checkbox__label">Enable Energy Saver</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newLineDescription" class="form-label">Description</label>
+                                            <input type="text" class="form-input" id="newLineDescription" placeholder="What is this Building Controller for?">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newLineLocation" class="form-label">Location</label>
+                                            <input type="text" class="form-input" id="newLineLocation" placeholder="Building, Floor, Room">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Alert Service</label>
+                                            <label class="switch">
+                                                <input type="checkbox" class="switch__input" id="newLinePGM">
+                                                <span class="switch__slider"></span>
+                                                <span class="switch__label">Off</span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campus Hub SERVER TOGGLE SECTION -->
+                            <div class="new-server-form__toggle-section">
+                                <div class="new-server-form__toggle-header">
+                                    <div>
+                                        <div class="new-server-form__toggle-title">Create Campus Hub</div>
+                                        <div class="new-server-form__toggle-subtitle">Required for Standalone Campus campuses without existing Local Campus Hub</div>
+                                    </div>
+                                    <label class="switch switch--small">
+                                        <input type="checkbox" class="switch__input" id="toggleGHDS">
+                                        <span class="switch__slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="new-server-form__expandable" id="ghdsFormSection">
+                                    <div class="new-server-form__expandable-content">
+
+                                        <div class="form-group">
+                                            <label for="newGHDSHostname" class="form-label">Hostname</label>
+                                            <input type="text" class="form-input" id="newGHDSHostname" placeholder="e.g. meds-hub.atrium.test" data-error-label="Hostname">
+                                            <span class="form-help form-help--error" id="newGHDSHostnameError"></span>
+                                            <span class="field-note" id="newGHDSHostnameHint">Hostname must be a valid domain name ending in atrium.test.</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newGHDSIP" class="form-label">IP Address</label>
+                                            <input type="text" class="form-input" id="newGHDSIP" placeholder="e.g.,192.168.1.100">
+                                            <span class="form-help">Must be unique across all nodes</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newGHDSDescription" class="form-label">Description</label>
+                                            <input type="text" class="form-input" id="newGHDSDescription" placeholder="What is this Campus Hub for?">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newGHDSLocation" class="form-label">Location</label>
+                                            <input type="text" class="form-input" id="newGHDSLocation" placeholder="Building, Floor, Room">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Relay SERVER TOGGLE SECTION -->
+                            <div class="new-server-form__toggle-section">
+                                <div class="new-server-form__toggle-header">
+                                    <div>
+                                        <div class="new-server-form__toggle-title">Create Timetable Relay</div>
+                                        <div class="new-server-form__toggle-subtitle">Typically needed for Standalone Campus campuses</div>
+                                    </div>
+                                    <label class="switch switch--small">
+                                        <input type="checkbox" class="switch__input" id="toggleCDN">
+                                        <span class="switch__slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="new-server-form__expandable" id="cdnFormSection">
+                                    <div class="new-server-form__expandable-content">
+
+                                        <div class="notification notification--info">
+                                            <div class="notification__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" fill="currentColor"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" fill="none"/><path d="M32 28V44M32 20V20.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                                            </div>
+                                            <div class="notification__content">
+                                                <strong>Connected Campus type nodes:</strong> The Timetable Relay is the building controller itself, no dedicated Relay is needed. Only Standalone Campus type nodes require a separate physical Relay node.
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newCDNHostname" class="form-label">Hostname</label>
+                                            <input type="text" class="form-input" id="newCDNHostname" placeholder="e.g. meds-rly1-1.atrium.test" data-error-label="Hostname">
+                                            <span class="form-help form-help--error" id="newCDNHostnameError"></span>
+                                            <span class="field-note" id="newCDNHostnameHint">Hostname must be {campus}-rly{floor}-{n}.atrium.test or any valid domain name ending in atrium.test.</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newCDNIP" class="form-label">IP Address</label>
+                                            <input type="text" class="form-input" id="newCDNIP" placeholder="e.g.,192.168.1.100">
+                                            <span class="form-help">Must be unique across all nodes</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newCDNGHDS" class="form-label">Campus Hub Association</label>
+                                            <select class="form-select" id="newCDNGHDS">
+                                                <option value="">Select a Campus Hub</option>
+                                            </select>
+                                            <span class="form-help" id="newCDNGHDSHelp">Campus Hub this Relay will be connected to</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newCDNProxyURL" class="form-label">Proxy URL</label>
+                                            <input type="text" class="form-input" id="newCDNProxyURL" placeholder="e.g, https://&lt;hub-hostname&gt;/rly1-1/campus/">
+                                            <span class="form-help form-help--error" id="newCDNProxyURLError" style="display:none"></span>
+                                            <span class="form-help" id="newCDNProxyHelp"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Building Controller Association (optional)</label>
+                                            <div class="project-multi-select project-multi-select--dropup" id="newCDNLineServersSelect">
+                                                <button type="button" class="project-multi-select__trigger" id="newCDNLineServersTrigger" disabled>
+                                                    <span class="project-multi-select__label">Select a Campus Hub first</span>
+                                                    <span class="project-multi-select__chevron">▼</span>
+                                                </button>
+                                                <div class="project-multi-select__dropdown" id="newCDNLineServersDropdown">
+                                                    <!-- Populated by JS based on selected site + projects -->
+                                                </div>
+                                            </div>
+                                            <span class="form-help">Building Controllers that will use this Relay for file transfer</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newCDNDescription" class="form-label">Description</label>
+                                            <input type="text" class="form-input" id="newCDNDescription" placeholder="What is this Timetable Relay for?">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="newCDNLocation" class="form-label">Location</label>
+                                            <input type="text" class="form-input" id="newCDNLocation" placeholder="Building, Floor, Room">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sticky form actions -->
+                        <div class="new-server-form__actions">
+                            <div class="popover__trigger" id="cancelNewServerPopoverTrigger">
+                                <button class="btn btn--secondary btn--medium" id="cancelNewServer">Close</button>
+                                <div class="popover popover--top" id="cancelNewServerPopover">
+                                    <div class="popover__content">
+                                        <div class="popover__header">
+                                            <strong class="popover__confirm-title">Close Node Creation</strong>
+                                        </div>
+                                        <div class="popover__body">
+                                            <p>All information for this node creation will be lost. Are you sure you want to stop creating nodes?</p>
+                                        </div>
+                                        <div class="popover__footer">
+                                            <button class="btn btn--secondary btn--small popover-trigger" id="cancelNewServerKeep">Keep Creating</button>
+                                            <button class="btn btn--danger btn--small popover-trigger" id="cancelNewServerConfirm">Yes, Close</button>
+                                        </div>
+                                    </div>
+                                    <div class="popover__arrow"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn--primary btn--medium" id="saveNewServer">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+            <!-- Manage Action Drawer (reusable, content set by JS) -->
+            <div class="drawer-overlay" id="manageActionDrawer">
+                <div class="drawer drawer--right drawer--medium">
+                    <div class="drawer__header">
+                        <button class="drawer__close" id="closeManageActionDrawer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64" fill="currentColor"><path d="M1.60500048,58.4772309 C2.91892453,59.7518284 5.05097517,59.7518284 6.33360808,58.4772309 L30.041279,34.7222663 L53.7962664,58.4772309 C55.0315828,59.7518284 57.2029752,59.7518284 58.4856081,58.4772309 C59.7601904,57.1553155 59.7601904,55.0232284 58.4856081,53.7799221 L34.7305448,30.0329246 L58.4856081,6.32525365 C59.7601904,5.04262074 59.7994563,2.87122833 58.4856081,1.59664605 C57.1636335,0.353354908 55.0315828,0.353354908 53.7962664,1.59664605 L30.041279,25.3436587 L6.33360808,1.59664605 C5.05097517,0.353354908 2.87958276,0.314013136 1.60500048,1.59664605 C0.361709338,2.9105701 0.361709338,5.04262074 1.60500048,6.32525365 L25.3519372,30.0329246 L1.60500048,53.7799221 C0.361709338,55.0232284 0.322367566,57.1946223 1.60500048,58.4772309 Z" transform="translate(2 2)"/></svg>
+                        </button>
+                        <h3 class="drawer__title" id="manageActionDrawerTitle">Action</h3>
+                    </div>
+                    <div class="drawer__body manage-action-drawer__body">
+                        <div class="manage-action-drawer__content" id="manageActionDrawerContent"></div>
+                        <div class="manage-action-drawer__actions" id="manageActionDrawerFooter">
+                            <button class="btn btn--secondary btn--medium" id="manageActionCancel">Cancel</button>
+                            <button class="btn btn--primary btn--medium" id="manageActionConfirm">Confirm</button>
+                            <div class="popover popover--top manage-action__confirm-popover" id="manageActionConfirmPopover" style="min-width: 30rem;">
+                                <div class="popover__content">
+                                    <div class="popover__header">
+                                        <strong class="popover__confirm-title">Remove All Faculties</strong>
+                                    </div>
+                                    <div class="popover__body" id="manageActionConfirmBody"></div>
+                                    <div class="popover__footer">
+                                        <button class="btn btn--secondary btn--small" id="manageActionConfirmCancel">Cancel</button>
+                                        <button class="btn btn--danger btn--small" id="manageActionConfirmArchiveBtn">Remove All</button>
+                                    </div>
+                                </div>
+                                <div class="popover__arrow"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Load the DaVinci Canvas Framework -->
+    <script src="../runtime/assets/canvas/davinci-canvas.js"></script>
+    
+    <!-- JavaScript modules - only files that exist -->
+    <script src="js/config-data.js"></script>
+    <script src="js/ui-helpers.js"></script>
+    <script src="js/tree-search.js"></script>
+    <script src="js/tree-rendering.js"></script>
+    <script src="js/selection.js"></script>
+    <script src="js/bulk-mode.js"></script>
+    <script src="js/project-selection.js"></script>
+    <script src="js/new-node-drawer.js"></script>
+    <script src="js/manage-actions.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/init-search.js"></script>
+    <script src="js/init.js"></script>
+    <script src="../runtime/back-to-portfolio.js" data-href="../../../"></script>
+</body>
+</html>

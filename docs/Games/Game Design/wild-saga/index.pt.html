@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wild Saga — Documento de Game Design</title>
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+</head>
+<body class="gd-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../index.pt.html"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../index.pt.html">← Início</a>
+        
+        <a href="../dark-maze-of-mythos/index.pt.html">Dark Maze of Mythos</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Idioma">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt" aria-current="true">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap about">
+    <aside class="rail">
+      <h2 style="margin-top:0">Resumo rápido</h2>
+      <dl class="facts">
+        <div><dt>Gênero</dt><dd>Aventura narrativa cooperativa 2.5D</dd></div>
+        <div><dt>Público</dt><dd>Jogadores casuais, 10+</dd></div>
+        <div><dt>Engine</dt><dd>Unity</dd></div>
+        <div><dt>Contexto</dt><dd>Curso de Jogos Digitais, PUC Campinas (dois semestres)</dd></div>
+        <div><dt>Minha função</dt><dd>Game e UI/UX Designer</dd></div>
+      </dl>
+      <h2>Nesta página</h2>
+      <nav class="toc" aria-label="Nesta página">
+        <a href="#audience">Público &amp; diretrizes</a>
+        <a href="#story">Mundo &amp; história</a>
+        <a href="#characters">Personagens</a>
+        <a href="#levels">Cenários &amp; fases</a>
+        <a href="#mechanics">Mecânicas</a>
+        <a href="#ux">Sistema de UX</a>
+        <a href="#programming">Programação</a>
+        <a href="#postmortem">Post mortem</a>
+      </nav>
+    </aside>
+
+    <div class="doc">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.pt.html">Início</a> / <a href="../../../index.pt.html#work">Trabalhos</a> / <a href="../../../index.pt.html#work-gd">Game design</a> / Wild Saga</nav>
+      <div class="eyebrow">Documento de Game Design · 01</div>
+      <h1>Wild <span class="grad">Saga</span></h1>
+      <p class="headline">Uma aventura cooperativa 2.5D sobre um coelho e um tigre que precisam confiar um no outro para salvar a floresta, sem um único ato de violência gratuita.</p>
+      <p class="loc">David Smith (Game e UI/UX Designer) · Leonardo Yuji (Artista 3D) · Otavio Colombini (Artista 3D, designer de história) · Victor Perrotte (Game Designer, Desenvolvedor, Artista Geral)</p>
+
+      <aside class="tldr" aria-label="Em resumo"><h2>Em resumo</h2><p><strong>O jogo:</strong> uma aventura cooperativa 2.5D para 10+ em que a cooperação é a mecânica, de puzzles a um sistema de combate por contra-ataque. Minha parte: game design e o sistema de UX (HUD, menus, iconografia).</p><p><strong>A lição:</strong> o escopo era grande demais para quatro pessoas em um ano. O post mortem diz o que eu cortaria e testaria mais cedo. <a href="#postmortem">Ir para o post mortem →</a></p></aside>
+
+      <div class="res">
+        <a class="btn primary" href="https://drive.google.com/file/d/1xdxE2Y5rcnF2fUnfB-_MD1bTxlI6WjxL/view?usp=drive_link">Baixar build ↗</a>
+        <a class="btn" href="https://drive.google.com/file/d/1agGCfXzocHCXqtuxKh43fKgq_CFUe0t-/view?usp=drive_link">Vídeo ↗</a>
+        <a class="btn" href="https://www.figma.com/file/VQEszKh23lR1tCfwc5s9DReU/Wild-Saga?type=design&amp;node-id=0%3A1&amp;mode=design&amp;t=kU0X2KOanz0WEEFy-1">Wireframes de UI ↗</a>
+        <a class="btn" href="https://drive.google.com/file/d/1wegheyQw3IcUc2Ueh6zRRILMOYgLmjGS/view?usp=drive_link">GDD original <small>(em português)</small> ↗</a>
+        <a class="btn" href="https://docs.google.com/presentation/d/1KFN48VXxpk2lj9BNw9waS0AfW4LwAgkDFzewJabm67o/edit?usp=sharing">Apresentação <small>(em português)</small> ↗</a>
+      </div>
+
+      <!-- AUDIENCE -->
+      <section class="sec reveal" id="audience">
+        <h2>Público &amp; diretrizes de design</h2>
+        <h3>Para quem é este jogo?</h3>
+        <p>Um público amplo (10+) de jogadores casuais que gostam de jogos indie e de explorar fases com um toque de batalha. Pessoas que querem um jogo imersivo, guiado pela história, e que estão dispostas a descobrir cada pedaço do seu mundo, e que gostam de alternar momentos mais lentos (exploração, diálogo) com combates empolgantes ou trechos rápidos, como os momentos de runner.</p>
+        <h3>Por que esse público?</h3>
+        <p>Nossa pesquisa breve (uma amostra de 17 respostas) mostrou que os jogadores hoje tendem fortemente a jogos de tiro, luta e estratégia. Quisemos fugir dessa tendência e oferecer algo mais sincero e cativante, sem violência gratuita, ao mesmo tempo em que transmitimos valores que sentimos faltar no mundo.</p>
+        <figure class="fig"><img src="images/survey-destruction.png" alt="Resultado da pesquisa para “Explodir, destruir, esmagar e demolir” (de 1 a 5, 17 respostas): 9 responderam 4 e 4 responderam 5, com 1 resposta 2 e 3 respostas 3." width="567" height="247" loading="lazy"><figcaption>Resultado da pesquisa para “Explodir, destruir, esmagar e demolir” (de 1 a 5, 17 respostas): 9 responderam 4 e 4 responderam 5, com 1 resposta 2 e 3 respostas 3.</figcaption></figure>
+        <h3>Como chegamos até eles?</h3>
+        <ul class="bl">
+          <li><strong>Um estilo de arte distinto.</strong> Gráficos 2.5D com texturas que lembram pintura e um efeito de “pincelada”, cores saturadas e personagens intrigantes. O objetivo é atrair jogadores mais jovens e quem gosta de explorar um universo como obra de arte.</li>
+          <li><strong>Uma história emocionante e profunda</strong> que atrai todas as idades e levanta questões, valores e aprendizados, com novas mecânicas de exploração, quebra-cabeças e combate <em>defensivo</em> que evita o conflito direto sem deixar de ser empolgante.</li>
+        </ul>
+        <h3>O que falta no mercado?</h3>
+        <p>Jogos para crianças e adolescentes raramente oferecem <strong>jogabilidade cooperativa com uma história profunda</strong>. Wild Saga ensina amizade, lealdade, confiança e colaboração de verdade entre dois personagens muito diferentes, misturando ação eletrizante e mistério com momentos mais tranquilos. Também desafia os jogadores com novas mecânicas cooperativas, plataforma, quebra-cabeças e combate, atualizando ideias clássicas em combinações criativas.</p>
+        <h3>Inspirações</h3>
+        <ul class="chips"><li>Tomba · PS1</li><li>Super Mario Odyssey · Switch</li><li>Donkey Kong Country Returns / Tropical Freeze · Wii</li><li>Odin Sphere · PS2</li><li>Prinny 2 · PS2</li><li>Dark Cloud 2 · PS2</li><li>Breath of Fire IV · PSX</li></ul>
+        <h3>Escopo do projeto</h3>
+        <p>Antes de nos comprometermos com o jogo completo, adaptamos todas as funcionalidades principais (progressão no mapa, quebra-cabeças, diálogos, mecânicas cooperativas e jogabilidade em spline) em um único <strong>cenário de demonstração</strong> enxuto. Ele combina todas as mecânicas para teste e adaptação e funciona como um tutorial que apresenta o jogo.</p>
+        <figure class="fig"><img src="images/demo-scenario-island.png" alt="Concept art do cenário de demonstração: uma ilha flutuante com montanha, floresta, ruínas e uma cachoeira. Por Victor Perrotte." width="800" height="560" loading="lazy"><figcaption>Concept art do cenário de demonstração: uma ilha flutuante com montanha, floresta, ruínas e uma cachoeira. Por Victor Perrotte.</figcaption></figure>
+      </section>
+
+      <!-- STORY -->
+      <section class="sec reveal" id="story">
+        <h2>Mundo &amp; história</h2>
+        <h3>Construção de mundo</h3>
+        <p>Um mundo com um nível de tecnologia mais ou menos de 1850, com apenas algumas cidades-estado isoladas ligadas por trem. A maior parte do jogo acontece longe delas: florestas, planícies, cavernas, ruínas e vales. As ruínas de civilizações anteriores, animais ou humanas, são centrais para a narrativa, e o objetivo é passar uma sensação mística em cada ambiente, porque forças sobrenaturais movem a história.</p>
+        <h3>Sinopse</h3>
+        <ul class="bl">
+          <li>No fundo de uma floresta, algo desperta forças adormecidas dentro de uma ruína e causa um terremoto.</li>
+          <li>Um trem de circo é sacudido, e um vagão cai de uma ponte na floresta. Dentro da jaula há um <strong>Tigre</strong>.</li>
+          <li>Um <strong>Coelho</strong> que está por perto encontra a jaula e, depois de relutância e conflito, decide ajudar. Um pedaço solto da ponte cai e abre a jaula antes que ele consiga.</li>
+          <li>Perdidos e desorientados, os dois precisam trabalhar juntos apesar de objetivos diferentes: o Tigre quer voltar para casa, o Coelho quer salvar a dele. O único caminho para ambos é descobrir o que causou o terremoto.</li>
+          <li>Mais fundo na floresta, eles encontram “pedras que se movem” e uma ruína desconhecida guardada por um golem de pedra gigante, despertado e distorcido por uma energia maligna. Ele reconhece a linhagem de protetores do Coelho e pede aos heróis que ajudem os outros guardiões elementais a se libertarem.</li>
+        </ul>
+
+        <h3>Três atos</h3>
+        <div class="acts">
+          <div class="act"><h4 style="margin-top:0">Ato 1 · Convivência</h4>
+            <p>O Coelho precisa cooperar com um predador para voltar para casa. O Tigre está em um lugar desconhecido e perdido. Cenas-piloto:</p>
+            <ul class="bl">
+              <li><strong>Cena 01.</strong> O Coelho encontra a jaula e enfrenta um dilema moral: abrir para um predador? Quando ele estende a mão para a chave, uma pedra cai e a abre. Ele insiste que teria feito isso. O Tigre nunca fica totalmente convencido.</li>
+              <li><strong>Cena 02.</strong> Um obstáculo que só o Tigre consegue atravessar. O Coelho recusa no início, depois muda de ideia e o convence a seguirem juntos.</li>
+              <li><strong>Cena 03.</strong> Eles encontram uma criatura estranha e evitam uma luta.</li>
+              <li><strong>Cena 04.</strong> Descansando, eles conversam. O Tigre lembra da vida no circo e de querer voltar para “casa”. O Coelho se preocupa com a mudança de sua vila.</li>
+              <li><strong>Cenas seguintes (rascunho).</strong> Um golem quadrúpede cresce depois de ser derrotado, e o Coelho foge com o Tigre. O Tigre admite que a vida no circo não era tão boa quanto lembrava. Um Lobo brinca que o Tigre deveria comer o Coelho, e então pede ajuda para encontrar comida. Um golem sequestra um animal e eles o seguem para resgatá-lo.</li>
+            </ul>
+          </div>
+          <div class="act"><h4 style="margin-top:0">Ato 2 · Aventurando-se</h4>
+            <p>Eles descobrem de onde vêm os acontecimentos estranhos e que muito do que o Coelho conhecia mudou ou foi destruído. O Coelho vê sua chance de provar seu valor, mas sabe que não consegue fazer isso sozinho. O Tigre, depois de provar a liberdade, começa a repensar a volta ao circo.</p>
+          </div>
+          <div class="act"><h4 style="margin-top:0">Ato 3 · A fusão</h4>
+            <p>Depois de uma luta exaustiva com o último golem, o Tigre é nocauteado. O Coelho continua lutando sozinho e vence, mas o Artefato ainda brilha e seu amigo está morrendo. Ele funde sua magia com o Tigre para salvá-lo. O Tigre se levanta e se torna um golem diferente dos outros, e o Coelho precisa lutar contra seu melhor amigo para libertá-lo.</p>
+            <ul class="bl">
+              <li><strong>Final A: o Coelho vence.</strong> O Artefato se estilhaça, o Tigre é curado e, juntos, eles voltam para a vila, reconhecidos por sua amizade. O Coelho se torna um guardião humilde e eles ajudam a vila a florescer.</li>
+              <li><strong>Final B: Fusão.</strong> O Coelho se funde com o Tigre em um golem ainda maior e eles passam a usar o poder do Artefato como guardiões da região.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHARACTERS -->
+      <section class="sec reveal" id="characters">
+        <h2>Personagens</h2>
+        <div class="cols two">
+          <div class="box tiger">
+            <span class="tag-t">Principal · Tigre</span>
+            <h3>Nascido para se apresentar</h3>
+            <p>Criado em um circo, sua vida eram apresentações e treinos, e seu mundo era confinado. Ele nunca conheceu a liberdade, então se sente seguro no que tem e tem medo de perder. Ele sonha em entrar para circos maiores e mais famosos.</p>
+            <p>Suas melhores memórias são os primeiros aplausos e as brincadeiras com outros animais. Ele esconde lembranças reprimidas do sofrimento de outros animais, incluindo sua mãe. Sua maior alegria é fazer os outros felizes, e ele se torna brincalhão para evitar emoções pesadas. Ingênuo, se entedia fácil, exagerado e confiante mesmo quando está inseguro.</p>
+          </div>
+          <div class="box rabbit">
+            <span class="tag-r">Principal · Coelho</span>
+            <h3>O observador subestimado</h3>
+            <p>O filho mais novo de uma família importante em uma vila com muitas espécies de animais. Seu trabalho é vigiar os arredores e garantir que tudo esteja seguro. Criativo e inteligente, mas sempre subestimado pela família. Responsável, idealista e simpático, com gosto pela solidão.</p>
+            <p>Sem muita coragem, mas adora investigar o desconhecido e manter o controle. Lembra com carinho de brincar na floresta, mas sofreu tentando provar seu valor, o que aparece como perfeccionismo e insegurança.</p>
+          </div>
+        </div>
+        <div class="figrow"><figure class="fig"><img src="images/tiger-concept.png" alt="O Tigre, concept art de Victor Perrotte." width="400" height="267" loading="lazy"><figcaption>O Tigre, concept art de Victor Perrotte.</figcaption></figure><figure class="fig"><img src="images/rabbit-concept.png" alt="O Coelho, concept art de Victor Perrotte." width="392" height="390" loading="lazy"><figcaption>O Coelho, concept art de Victor Perrotte.</figcaption></figure></div>
+
+        <h3>Chefes: os Golems elementais</h3>
+        <p>Um Golem por ambiente, cada um de um elemento distinto. São guardiões ancestrais, criados para manter o equilíbrio natural e impedir a destruição descontrolada. A energia misteriosa os despertou, enfraquecidos e corrompidos, e a tarefa do jogador é ajudá-los a recuperar a sanidade. O primeiro é <strong>O Rochedo (The Boulder)</strong>, o Golem da Floresta: talvez o mais velho dos guardiões, ciente dos animais de sua floresta, grato à família do Coelho e intrigado com o Tigre despreocupado criado no circo.</p>
+        <div class="figrow"><figure class="fig"><img src="images/golem-concept.png" alt="O Golem da Floresta, concept art de Victor Perrotte." width="423" height="458" loading="lazy"><figcaption>O Golem da Floresta, concept art de Victor Perrotte.</figcaption></figure><figure class="fig"><img src="images/golem-sheet.png" alt="Ficha de personagem do Golem (“Golem 1B”): frente, lado e detalhe do punho." width="759" height="400" loading="lazy"><figcaption>Ficha de personagem do Golem (“Golem 1B”): frente, lado e detalhe do punho.</figcaption></figure></div>
+        <h3>Inimigos &amp; outros personagens</h3>
+        <ul class="bl">
+          <li><strong>Inimigos:</strong> os asseclas dos golems, “extensões” que se espalham por cada ambiente, além de animais perigosos como lobos, que levam a perseguições ou missões que terminam em batalha.</li>
+          <li><strong>Animais resgatados:</strong> animais da vila do Coelho feridos pelo Artefato. Eles dão missões cujas recompensas ajudam a reconstruir a vila.</li>
+        </ul>
+      </section>
+
+      <!-- LEVELS -->
+      <section class="sec reveal" id="levels">
+        <h2>Cenários &amp; fases</h2>
+        <h3>Ambientes</h3>
+        <div class="cols two">
+          <div class="box"><h3>1 · Lar, a Toca do Coelho</h3><p>Uma floresta onde vivem os animais “não civilizados”, considerada perigosa pela cidade, mas na verdade um lugar de liberdade, magia benigna, campos verdes abertos e ruínas cobertas pela natureza. Quando a energia do Artefato muda, os campos abertos viram territórios de caça expostos, a mata fechada fica quase sem luz e as ruínas irradiam malevolência.</p></div>
+          <div class="box"><h3>2 · Subterrâneo, a Escuridão Desconhecida</h3><p>Cavernas iluminadas apenas pelo luar em cavernas aquáticas, estreitas e sem ar, mas cheias de som: água pingando, sonar de morcegos. As ruínas lembram aquedutos e canos gigantes. Aqui o Artefato traz <em>luz</em> em vez de escuridão, com um brilho intenso contido apenas por uma pilha de rochas na entrada.</p></div>
+        </div>
+        <h3>Fases (Ambiente 1)</h3>
+        <ul class="bl">
+          <li><strong>Parte I · Campos Abertos.</strong> Começa no vagão caído, depois da primeira cutscene. Um diálogo mostra cada personagem afirmando que não precisa do outro. Três quebra-cabeças ensinam a trocar de personagem, a inverter papéis e um salto longo combinado, para que o jogador aprenda que cooperar funciona melhor. Campos abertos e montanhas passam uma sensação de liberdade, depois surgem áreas mais escuras e inimigos em direção à mata fechada.</li>
+          <li><strong>Parte II · A Mata Fechada.</strong> Mais escura e fechada, já afetada pelo Artefato, e mais longa que a Parte I. Apresenta o combate com pelo menos três golems e quebra-cabeças mais intrincados, e termina na entrada da ruína.</li>
+          <li><strong>Parte III · As Primeiras Ruínas.</strong> Quebra-cabeças e estruturas mais geométricos, com inimigos integrados aos quebra-cabeças. Arquitetura de templo desgastada e coberta de vinhas, com um efeito de partículas roxas marcando a influência do Artefato. Termina com a luta de boss contra o Golem de Pedra.</li>
+        </ul>
+        <p><strong>Base.</strong> A vila perdida e destruída do Coelho, que ele jura proteger e reconstruir. <strong>Mapa.</strong> Divisão clara dos ambientes, mostrando o caminho de cada fase percorrida até agora. O jogo é linear, com ruínas interligadas.</p>
+      </section>
+
+      <!-- MECHANICS -->
+      <section class="sec reveal" id="mechanics">
+        <h2>Mecânicas</h2>
+        <h3>Movimentação</h3>
+        <p>Plataforma 2D dentro de um mundo 3D: a movimentação segue caminhos retos e curvos, e um recurso de <strong>troca de caminho</strong> acrescenta profundidade e exploração. Ele também elimina os “poços sem fim”: cair significa apenas voltar por um caminho paralelo, e a mesma mecânica pode surpreender o jogador.</p>
+        <h3>Co-op</h3>
+        <p>Os dois personagens são interdependentes, uma dupla simbiótica. Eles lutam juntos, resolvem quebra-cabeças com a ajuda um do outro e superam obstáculos em equipe. O relacionamento se fortalece ao longo do jogo, acompanhando a história, e os jogadores devem sentir os personagens aprendendo um com o outro. A interface também suporta dois jogadores locais.</p>
+
+        <h3>Sistema de diálogo</h3>
+        <div class="cols">
+          <div class="box"><h3>Interação</h3><p>Trocas curtas e rápidas a partir de interações mínimas: um objeto não interativo, um caminho bloqueado, um NPC com uma missão aberta. Podem se sobrepor quando há vários objetos por perto, nunca atrapalham, somem sozinhos com o tempo e muitas vezes não têm retrato.</p></div>
+          <div class="box"><h3>Missão</h3><p>Narrativas de missão com NPCs, exibidas com um retrato do personagem que muda conforme a emoção. Não bloqueiam a movimentação e são avançadas ou puladas com o botão de ação.</p></div>
+          <div class="box"><h3>História principal</h3><p>Os mais complexos: trocas longas, possivelmente com animação no estilo de cutscene. Não podem ser pulados de imediato, mas há uma opção “pular história” disponível desde o início pelo botão start/esc.</p></div>
+        </div>
+
+        <h3>Quebra-cabeças</h3>
+        <p>Um personagem sempre ajuda o outro a passar por um obstáculo: uma alavanca que só o Coelho alcança, uma parede que só o Tigre quebra. Os quebra-cabeças compartilham uma estrutura, mas são temáticos para cada ambiente. <strong>Tipo 1:</strong> cinco botões no chão, três pedras e uma balança ligada a uma porta. As pedras e o próprio peso dos personagens precisam equilibrar a balança para abri-la.</p>
+        <h3>Plataformas</h3>
+        <p>Temáticas para cada trecho da fase, por exemplo campo → mata fechada → pântano → entrada da ruína. Obstáculos variados evitam a fadiga, e as paletas de cores escurecem conforme o jogo avança.</p>
+
+        <h3>Sistema de combate</h3>
+        <p>O combate é <strong>defensivo e cooperativo</strong>, construído em torno de contra-ataques, não de apertar botões sem parar.</p>
+        <div class="chain" style="margin:14px 0 6px">
+          <div class="node page"><small>1 · Antes</small>Inimigo parado (camuflado) ou patrulhando</div><span class="arrow">→</span>
+          <div class="node dialog"><small>2 · Início</small>Os jogadores entram no alcance dele; o HUD troca itens por habilidades</div><span class="arrow">→</span>
+          <div class="node wizard"><small>3 · Clímax</small>Esquivar, reagrupar, sinal visual, contra-ataque com 2 habilidades</div><span class="arrow">→</span>
+          <div class="node toast"><small>4 · Resolução</small>Vitória: acertos suficientes no ponto fraco · Derrota: ambos inconscientes</div>
+        </div>
+        <div class="figrow states"><figure class="fig"><img src="images/battle-1-patrol.png" alt="1 · Antes da luta: o golem patrulha uma área predefinida, ou fica parado como parte do cenário, até os jogadores entrarem na área de perigo." width="461" height="389" loading="lazy"><figcaption>1 · Antes da luta: o golem patrulha uma área predefinida, ou fica parado como parte do cenário, até os jogadores entrarem na área de perigo.</figcaption></figure><figure class="fig"><img src="images/battle-2-detected-attack.png" alt="2 · Jogador detectado: o golem se levanta, percebe os jogadores e se prepara para atacar. O golem sempre ataca primeiro." width="452" height="393" loading="lazy"><figcaption>2 · Jogador detectado: o golem se levanta, percebe os jogadores e se prepara para atacar. O golem sempre ataca primeiro.</figcaption></figure><figure class="fig"><img src="images/battle-3-retreat-counter.png" alt="3 · Os jogadores desviam do ataque e uma pista visual mostra que o contra-ataque está disponível. Depois que o inimigo termina o ataque, cada jogador seleciona uma habilidade e a animação começa." width="470" height="427" loading="lazy"><figcaption>3 · Os jogadores desviam do ataque e uma pista visual mostra que o contra-ataque está disponível. Depois que o inimigo termina o ataque, cada jogador seleciona uma habilidade e a animação começa.</figcaption></figure><figure class="fig"><img src="images/battle-4-escape.png" alt="Alternativa: os jogadores escapam. Sair da área encerra a batalha e o golem volta ao ponto de partida." width="456" height="372" loading="lazy"><figcaption>Alternativa: os jogadores escapam. Sair da área encerra a batalha e o golem volta ao ponto de partida.</figcaption></figure><figure class="fig"><img src="images/battle-5-success-fail.png" alt="4 · Resolução: se o contra-ataque acerta o ponto fraco, o inimigo é destruído e a batalha é resolvida. Se os dois personagens são atingidos, a batalha falha, e o jogo só acaba se os dois desmaiarem." width="459" height="393" loading="lazy"><figcaption>4 · Resolução: se o contra-ataque acerta o ponto fraco, o inimigo é destruído e a batalha é resolvida. Se os dois personagens são atingidos, a batalha falha, e o jogo só acaba se os dois desmaiarem.</figcaption></figure></div>
+        <ul class="bl">
+          <li><strong>Contra-ataque.</strong> Depois de esquivar, um sinal visual abre uma janela para combinar <em>uma habilidade de cada personagem</em>. Dependendo da combinação, ele atinge um ponto fraco diferente (frontal alto, médio ou baixo, costas, ou combinações) e só causa dano se corresponder ao ponto fraco do inimigo.</li>
+          <li><strong>Ser atingido.</strong> Se um jogador é atingido, não há contra-ataque. Ele cai inconsciente até o parceiro resgatá-lo na próxima janela. <em>Sugestão:</em> o ponto fraco pode mudar durante a luta.</li>
+          <li><strong>Evitar o combate.</strong> Os inimigos têm uma distância máxima de ativação. Saia dela e eles param de perseguir e voltam.</li>
+          <li><strong>Loadout.</strong> Até quatro habilidades por personagem, escolhidas entre: Proteção, Chute, Investida, Salto Mortal, Bote, Derrubada, Chicotada de Cauda, Chute Deslizante, Arremesso, Agarrar, Cabeçada, Mordida, Arranhão.</li>
+        </ul>
+
+        <h4>Os dez contra-ataques</h4>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Contra-ataque</th><th><span class="tag-t">Tigre</span></th><th><span class="tag-r">Coelho</span></th><th>Alvo</th><th>O que acontece</th></tr></thead>
+          <tbody>
+            <tr><td>Proteção (Protection)</td><td>Proteção</td><td>Proteção</td><td>Jogador</td><td>Evita dano a qualquer um dos jogadores.</td></tr>
+            <tr><td>Chute Alto (High Kick)</td><td>Arremesso</td><td>Chute</td><td>Frontal alto</td><td>O Tigre lança o Coelho para cima e ele chuta a cabeça do inimigo no ar.</td></tr>
+            <tr><td>Ataque Surpresa (Surprise Attack)</td><td>Cabeçada</td><td>Salto Mortal</td><td>Costas</td><td>O Coelho salta sobre o inimigo para ficar de frente para ele enquanto o Tigre ataca por trás.</td></tr>
+            <tr><td>Agarra-Morde (Grabite)</td><td>Mordida</td><td>Agarrar</td><td>Frontal médio / baixo</td><td>O Coelho pula na cabeça do Golem, cegando-o e atordoando-o, enquanto o Tigre morde.</td></tr>
+            <tr><td>Pega Presa (Pray Catcher)</td><td>Bote</td><td>Investida</td><td>Frontal alto / Costas</td><td>O Coelho corre entre as pernas do inimigo para distraí-lo enquanto o Tigre dá o bote.</td></tr>
+            <tr><td>Arranhão Mágico (Etch a Scratch)</td><td>Agarrar</td><td>Arranhão</td><td>Frontal baixo / médio</td><td>O Tigre imobiliza o inimigo por trás enquanto o Coelho pula alto, arranhando e chutando a frente dele.</td></tr>
+            <tr><td>De Baixo (From Below)</td><td>Derrubada</td><td>Chute Deslizante</td><td>Frontal baixo / Costas</td><td>O Tigre empurra o inimigo para trás para que ele role, e o Coelho o chute por trás.</td></tr>
+            <tr><td>Bola de Demolição (Wrecking Ball)</td><td>Chicotada de Cauda</td><td>Agarrar</td><td>Frontal médio</td><td>O Coelho segura a cauda do Tigre e gira contra a barriga do inimigo.</td></tr>
+            <tr><td>Velocidade É Meu Jogo (Speed Is My Game)</td><td>Investida</td><td>Investida</td><td>Jogador</td><td>Aumenta a velocidade dos dois jogadores por um tempo limitado.</td></tr>
+            <tr><td>Justa (Jousting)</td><td>Investida</td><td>Chute Deslizante</td><td>Frontal alto / médio</td><td>O Coelho monta no Tigre com um galho como lança enquanto o Tigre avança.</td></tr>
+          </tbody></table></div>
+        <figure class="matrixfig"><div class="tblwrap"><table class="matrix"><thead><tr><th class="corner">Coelho ↓ · Tigre →</th><th scope="col" class="t">Proteção</th><th scope="col" class="t">Chute</th><th scope="col" class="t">Investida</th><th scope="col" class="t">Salto Mortal</th><th scope="col" class="t">Bote</th><th scope="col" class="t">Derrubada</th><th scope="col" class="t">Chicotada de Cauda</th><th scope="col" class="t">Chute Deslizante</th><th scope="col" class="t">Arremesso</th><th scope="col" class="t">Agarrar</th><th scope="col" class="t">Cabeçada</th><th scope="col" class="t">Mordida</th><th scope="col" class="t">Arranhão</th></tr></thead><tbody><tr><th scope="row" class="r">Proteção</th><td class="hit" title="Proteção: Tigre Proteção + Coelho Proteção" aria-label="Proteção: Tigre Proteção + Coelho Proteção">1</td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Chute</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td class="hit" title="Chute Alto: Tigre Arremesso + Coelho Chute" aria-label="Chute Alto: Tigre Arremesso + Coelho Chute">2</td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Investida</th><td></td><td class="x"></td><td class="hit" title="Velocidade É Meu Jogo: Tigre Investida + Coelho Investida" aria-label="Velocidade É Meu Jogo: Tigre Investida + Coelho Investida">9</td><td class="x"></td><td class="hit" title="Pega Presa: Tigre Bote + Coelho Investida" aria-label="Pega Presa: Tigre Bote + Coelho Investida">5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Salto Mortal</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="hit" title="Ataque Surpresa: Tigre Cabeçada + Coelho Salto Mortal" aria-label="Ataque Surpresa: Tigre Cabeçada + Coelho Salto Mortal">3</td><td></td><td></td></tr><tr><th scope="row" class="r">Bote</th><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td></tr><tr><th scope="row" class="r">Derrubada</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Chicotada de Cauda</th><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td></tr><tr><th scope="row" class="r">Chute Deslizante</th><td></td><td class="x"></td><td class="hit" title="Justa: Tigre Investida + Coelho Chute Deslizante" aria-label="Justa: Tigre Investida + Coelho Chute Deslizante">10</td><td class="x"></td><td></td><td class="hit" title="De Baixo: Tigre Derrubada + Coelho Chute Deslizante" aria-label="De Baixo: Tigre Derrubada + Coelho Chute Deslizante">7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Arremesso</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Agarrar</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td class="hit" title="Bola de Demolição: Tigre Chicotada de Cauda + Coelho Agarrar" aria-label="Bola de Demolição: Tigre Chicotada de Cauda + Coelho Agarrar">8</td><td></td><td></td><td></td><td></td><td class="hit" title="Agarra-Morde: Tigre Mordida + Coelho Agarrar" aria-label="Agarra-Morde: Tigre Mordida + Coelho Agarrar">4</td><td></td></tr><tr><th scope="row" class="r">Cabeçada</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Mordida</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Arranhão</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td class="hit" title="Arranhão Mágico: Tigre Agarrar + Coelho Arranhão" aria-label="Arranhão Mágico: Tigre Agarrar + Coelho Arranhão">6</td><td></td><td></td><td></td></tr></tbody></table></div><figcaption>Matriz de combinações de habilidades: habilidades do Coelho na lateral (azul), habilidades do Tigre no topo (laranja). As células verdes numeradas são os dez contra-ataques, numerados como na tabela acima. Passe o mouse sobre um número para ver o contra-ataque. As linhas e colunas sombreadas aparecem assim na matriz original.</figcaption></figure>
+
+        <h3>Batalhas de boss</h3>
+        <p>O boss de cada ambiente reflete o tema daquele ambiente, com habilidades que definem o contra-ataque permitido. <strong>O Rochedo</strong> (Ambiente 1):</p>
+        <div class="cols two">
+          <div class="box"><h3>Perfil</h3><p><strong>Personalidade:</strong> calmo, determinado, estratégico.<br><strong>Especialidade:</strong> Defesa Inquebrável, bloqueando 100% do dano por 3 segundos.<br><strong>Ponto fraco:</strong> frontal / médio.<br><strong>Vida:</strong> 3 corações · <strong>Dificuldade:</strong> 9¾</p></div>
+          <div class="box"><h3>Habilidades</h3><p><strong>Pilares Ascendentes:</strong> um soco que ergue pilares de terra entre o boss e os jogadores.<br><strong>Esmagamento no Chão:</strong> um soco cruzado de curto alcance enterrado no chão.<br><strong>Soco Voador:</strong> ele recua para o fundo, joga uma pedra para cima e lança os punhos em três locais.</p></div>
+        </div>
+        <ul class="bl">
+          <li>Suba nos pilares erguidos para alcançá-lo.</li>
+          <li>Quando um soco fica preso no chão, ataque o cristal em seu peito.</li>
+          <li>No fundo do cenário ele é invulnerável, mas recuperar os punhos leva tempo, criando uma brecha.</li>
+        </ul>
+        <p><strong>Jornadas &amp; base.</strong> Depois que um boss cai, um personagem é desbloqueado e volta para a vila, onde os heróis reconstroem casas. Os aldeões dão missões (“Jornadas”) que mandam os jogadores de volta a fases anteriores para encontrar objetos e materiais. Concluí-las rende moeda do jogo, que também pode ser comprada com dinheiro real, usada para comprar novas habilidades.</p>
+
+        <h3>Sistema de exploração</h3>
+        <p>O jogo incentiva explorar para conectar cenário, história e personagens, com recompensas entregues por meio de <strong>portais</strong> (áreas desbloqueadas por itens-chave, quebra-cabeças, habilidades ou história) e <strong>espetáculo</strong> (cenários que carregam a narrativa, cutscenes ao entrar em lugares, objetos quebráveis e recompensas visuais depois de bosses e quebra-cabeças).</p>
+        <div class="cols two">
+          <div class="box"><h3>Objetos interativos</h3><p>Todos usados com o botão de ação: vasos, paredes frágeis e obstruções (quebrar), caixas e pedras (empurrar), portas (desbloquear áreas), alavancas (ativar), cipós (puxar, cortar, balançar, agarrar), montes de terra (cavar), placas de pressão (pressionar).</p></div>
+          <div class="box"><h3>Colecionáveis &amp; ferramentas</h3><p>Ingredientes de receitas, borboletas, pinos de boliche (malabarismo), itens de circo, esculturas de pedra em forma de animais. Objetos de exploração: pedras brilhantes (itens-chave), vaga-lumes (formam uma lanterna), Bun’n Boots™ (andar sobre espinhos), portais de viagem rápida.</p></div>
+          <div class="box"><h3>Interações inesperadas</h3><p>Chão frágil que quebra, árvores secas derrubando galhos, pedras rolando, estalactites caindo, inundação de cavernas, armadilhas de animais (colmeias, formigueiros, laços, redes) e um clarão ofuscante que confunde os controles.</p></div>
+          <div class="box"><h3>Animação de cenário</h3><p>Pássaros que levantam voo, grama reagindo aos passos e ao vento, partículas ambientes (folhas, esporos, poeira, gotas) e uma névoa roxa para tudo o que se relaciona a inimigos, que fica amarelo-brilhante quando a ameaça diminui.</p></div>
+        </div>
+        <h4>Habilidades de exploração</h4>
+        <p>Adquiridas de forma linear por meio de quebra-cabeças, exploração e história. Cada uma é apresentada em uma cena em que os personagens aprendem um com o outro.</p>
+        <div class="cols two">
+          <div class="box rabbit"><span class="tag-r">Coelho</span>
+            <p><strong>O Grande Salto</strong> · pulo mais alto (segure o pulo). Aprendido fugindo de um Tigre furioso em direção a um penhasco.</p>
+            <p><strong>Para dentro do Buraco</strong> · cavar para alcançar áreas escondidas. Aprendido prendendo mini-golems em um buraco.</p>
+            <p><strong>Abre-te Sésamo</strong> · puxar alavancas. Aprendido libertando o Tigre de uma armadilha de rede.</p>
+            <p><strong>Força Escondida</strong> · empurrar objetos pequenos. Aprendido libertando o Tigre dos escombros.</p></div>
+          <div class="box tiger"><span class="tag-t">Tigre</span>
+            <p><strong>Vida Perigosa</strong> · agarrar bordas. Aprendido quase caindo de um penhasco.</p>
+            <p><strong>Ai, Mamãe, Eu Sou Forte</strong> · empurrar objetos grandes. Aprendido resgatando o Coelho de uma caverna inundada.</p>
+            <p><strong>Aqui está o Johnny</strong> · quebrar paredes frágeis com uma investida.</p>
+            <p><strong>Sério, Estou de Dieta!</strong> · pressionar placas de pressão. Aprendido quando uma briga afunda uma placa escondida.</p></div>
+        </div>
+      </section>
+
+      <!-- UX -->
+      <section class="sec reveal" id="ux">
+        <h2>Sistema de UX</h2>
+        <h3>Look &amp; feel</h3>
+        <p>Uma interface simples que contrasta de propósito com o mundo pictórico do jogo: um tema <strong>mítico</strong> menos explorado, em cores que lembram pedra, com toques modernos. A tipografia é Josefin Sans para títulos e Mukta para textos menores, ambas atemporais. Os botões são padronizados em todos os menus e opções.</p>
+        <h3>Elementos</h3>
+        <div class="cols two">
+          <div class="box"><h3>Ícones</h3><p>Os ícones de habilidade são silhuetas dos personagens, coloridas conforme quem as usa (azul = Coelho, laranja = Tigre, verde = ambos). Há ícones para as 13 habilidades, os 10 contra-ataques (com esboços rápidos de seus efeitos), itens e as habilidades de exploração, que são ligadas por um caminho visual no menu e aparecem conforme são desbloqueadas.</p></div>
+          <div class="box"><h3>Retratos &amp; diálogo</h3><p>Dois tipos de retrato: retratos do HUD para o personagem selecionado e o estado do outro (seguir / ficar / desmaiado), e retratos de diálogo com emoções (feliz, triste, confuso, bravo, assustado). As caixas de diálogo seguem o estilo do jogo e são lidas como uma conversa entre os personagens.</p></div>
+          <div class="box"><h3>Feedback</h3><p>Uma resposta clara a cada ação significativa (nova habilidade, quebra-cabeça ou missão concluída, nova área) para reforçar recompensas intrínsecas e extrínsecas.</p></div>
+          <div class="box"><h3>HUD contextual</h3><p>O HUD mostra habilidades, retratos em silhueta e itens, e se adapta ao momento: itens durante a exploração, habilidades em batalha. Ele some após 30 segundos sem interação. O ícone de uma habilidade usada brilha. No multiplayer local, ele é espelhado à direita para que os dois jogadores vejam suas próprias habilidades e itens.</p></div>
+        </div>
+        <h4>Troca de personagem</h4>
+        <p>Dois displays de retrato: um para o estado do personagem não controlado (seguir ou ficar), outro para quem está selecionado. Um personagem em espera aparece dormindo, um em movimento aparece de quatro, e o personagem selecionado passa na frente do outro e toma seu lugar.</p>
+        <h4>Menus</h4>
+        <ul class="bl">
+          <li><strong>Menu de habilidades:</strong> habilidades com seus atributos e ícones, as combinações que podem formar (quantidade e, depois de descobertas, nomes), conexões com as habilidades selecionadas e habilidades de exploração.</li>
+          <li><strong>Inventário:</strong> itens como ícones com tooltips. O botão de ação seleciona e revela opções de uso. Itens de missão trazem uma dica.</li>
+          <li><strong>Missões / mapa:</strong> missões integradas ao mapa. Quem dá a missão e os pontos de entrega aparecem na cor da missão, pontos de viagem rápida e lugares secretos aparecem depois de descobertos, e os gatilhos filtram entre <em>Tudo · Missões · Viagem rápida · Quebra-cabeças · Lugares secretos</em>. Caminhos e itens não são exibidos.</li>
+          <li><strong>Opções e menu principal:</strong> configurações, créditos, salvar, carregar e sair.</li>
+        </ul>
+        <h4>Wireframes</h4><p>Wireframes das principais telas, em 16:9. Clique em uma tela para ampliá-la. O arquivo de trabalho está no Figma (link no topo da página).</p><div class="wfgroup"><h5>HUD</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/hud.png" data-lightbox="HUD"><img src="images/wireframes/thumbs/hud.jpg" alt="HUD" width="1000" height="563" loading="lazy"></a><figcaption>HUD</figcaption></figure></div></div><div class="wfgroup"><h5>Menu de habilidades</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/ability-system.png" data-lightbox="Menu de habilidades"><img src="images/wireframes/thumbs/ability-system.jpg" alt="Menu de habilidades" width="1000" height="563" loading="lazy"></a><figcaption>Menu de habilidades</figcaption></figure><figure class="wf"><a href="images/wireframes/ability-system-counter-attack.png" data-lightbox="Menu de habilidades · contra-ataque"><img src="images/wireframes/thumbs/ability-system-counter-attack.jpg" alt="Menu de habilidades · contra-ataque" width="1000" height="563" loading="lazy"></a><figcaption>Menu de habilidades · contra-ataque</figcaption></figure><figure class="wf"><a href="images/wireframes/ability-system-exploring-ability.png" data-lightbox="Menu de habilidades · habilidade de exploração"><img src="images/wireframes/thumbs/ability-system-exploring-ability.jpg" alt="Menu de habilidades · habilidade de exploração" width="1000" height="563" loading="lazy"></a><figcaption>Menu de habilidades · habilidade de exploração</figcaption></figure></div></div><div class="wfgroup"><h5>Inventário</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/inventory.png" data-lightbox="Inventário"><img src="images/wireframes/thumbs/inventory.jpg" alt="Inventário" width="1000" height="563" loading="lazy"></a><figcaption>Inventário</figcaption></figure><figure class="wf"><a href="images/wireframes/inventory-quick-item.png" data-lightbox="Inventário · item rápido"><img src="images/wireframes/thumbs/inventory-quick-item.jpg" alt="Inventário · item rápido" width="1000" height="563" loading="lazy"></a><figcaption>Inventário · item rápido</figcaption></figure><figure class="wf"><a href="images/wireframes/inventory-actions.png" data-lightbox="Inventário · ações do item"><img src="images/wireframes/thumbs/inventory-actions.jpg" alt="Inventário · ações do item" width="1000" height="563" loading="lazy"></a><figcaption>Inventário · ações do item</figcaption></figure></div></div><div class="wfgroup"><h5>Missões e mapa</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/quests-menu-map.png" data-lightbox="Menu de missões · mapa"><img src="images/wireframes/thumbs/quests-menu-map.jpg" alt="Menu de missões · mapa" width="1000" height="563" loading="lazy"></a><figcaption>Menu de missões · mapa</figcaption></figure><figure class="wf"><a href="images/wireframes/quests-menu-quest-selected.png" data-lightbox="Menu de missões · missão selecionada"><img src="images/wireframes/thumbs/quests-menu-quest-selected.jpg" alt="Menu de missões · missão selecionada" width="1000" height="563" loading="lazy"></a><figcaption>Menu de missões · missão selecionada</figcaption></figure></div></div><div class="wfgroup"><h5>Diálogo e história</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/interaction-dialogue-player1.png" data-lightbox="Diálogo de interação (“Você não pode fazer isso aqui…”) ao lado da HUD do Jogador 1"><img src="images/wireframes/thumbs/interaction-dialogue-player1.jpg" alt="Diálogo de interação (“Você não pode fazer isso aqui…”) ao lado da HUD do Jogador 1" width="1000" height="563" loading="lazy"></a><figcaption>Diálogo de interação (“Você não pode fazer isso aqui…”) ao lado da HUD do Jogador 1</figcaption></figure><figure class="wf"><a href="images/wireframes/interaction-dialogue-player2.png" data-lightbox="Diálogo de interação ao lado da HUD do Jogador 2"><img src="images/wireframes/thumbs/interaction-dialogue-player2.jpg" alt="Diálogo de interação ao lado da HUD do Jogador 2" width="1000" height="563" loading="lazy"></a><figcaption>Diálogo de interação ao lado da HUD do Jogador 2</figcaption></figure><figure class="wf"><a href="images/wireframes/quest-dialogue.png" data-lightbox="Diálogo de missão"><img src="images/wireframes/thumbs/quest-dialogue.jpg" alt="Diálogo de missão" width="1000" height="563" loading="lazy"></a><figcaption>Diálogo de missão</figcaption></figure><figure class="wf"><a href="images/wireframes/cutscene.png" data-lightbox="Cutscene"><img src="images/wireframes/thumbs/cutscene.jpg" alt="Cutscene" width="1000" height="563" loading="lazy"></a><figcaption>Cutscene</figcaption></figure></div></div><div class="wfgroup"><h5>Opções</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/options.png" data-lightbox="Opções"><img src="images/wireframes/thumbs/options.jpg" alt="Opções" width="1000" height="563" loading="lazy"></a><figcaption>Opções</figcaption></figure></div></div>
+      </section>
+
+      <!-- PROGRAMMING -->
+      <section class="sec reveal" id="programming">
+        <h2>Programação</h2>
+        <p>O jogo é dividido em sistemas, cada um responsável por uma área, com o menor acoplamento possível. Alguns sistemas herdam de classes-pai.</p>
+        <div class="map wsmap"><svg viewBox="0 0 1040 680" role="img" aria-label="Arquitetura de sistemas: um GameManager global acima de seis grupos de sistemas: áudio e salvamento, fase, batalha, eventos e diálogo, inventário e interface, e jogador e câmera."><defs><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#22d3ee"/></marker></defs><path class="edge hot" d="M520 88C520 140 175 124 175 168" marker-end="url(#ahc)"/><path class="edge hot" d="M520 88C520 140 520 124 520 168" marker-end="url(#ahc)"/><path class="edge hot" d="M520 88C520 140 865 124 865 168" marker-end="url(#ahc)"/><rect class="box orange" x="370" y="20" width="300" height="66" rx="14"/><text x="520.0" y="48" text-anchor="middle" font-size="15" font-weight="600">GameManager (Global)</text><text class="sub" x="520.0" y="69" text-anchor="middle">fica acima de todos os sistemas</text><rect class="box" x="20" y="170" width="310" height="106" rx="14" style="stroke:#a4a3b8"/><text class="gt" x="38" y="198" style="fill:#a4a3b8">ÁUDIO E SALVAMENTO</text><circle cx="42" cy="222" r="4" fill="#a4a3b8"/><text x="54" y="226" font-size="13" font-weight="600">SoundManager</text><circle cx="42" cy="244" r="4" fill="#a4a3b8"/><text x="54" y="248" font-size="13" font-weight="600">SaveManager</text><rect class="box" x="20" y="290" width="310" height="172" rx="14" style="stroke:#4ade80"/><text class="gt" x="38" y="318" style="fill:#4ade80">FASE</text><circle cx="42" cy="342" r="4" fill="#4ade80"/><text x="54" y="346" font-size="13" font-weight="600">LevelManager</text><circle cx="42" cy="364" r="4" fill="#4ade80"/><text x="54" y="368" font-size="13" font-weight="600">MapTrigger</text><path d="M46 374v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="64" y="390" font-size="12">LaneChange Limiter · Puzzle Actions · BattleStart</text><circle cx="42" cy="408" r="4" fill="#4ade80"/><text x="54" y="412" font-size="13" font-weight="600">LevelEvents</text><path d="M46 418v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="64" y="434" font-size="12">Puzzles · Door · Item</text><rect class="box" x="20" y="476" width="310" height="150" rx="14" style="stroke:#f08a5d"/><text class="gt" x="38" y="504" style="fill:#f08a5d">BATALHA</text><circle cx="42" cy="528" r="4" fill="#f08a5d"/><text x="54" y="532" font-size="13" font-weight="600">BattleManager</text><circle cx="42" cy="550" r="4" fill="#f08a5d"/><text x="54" y="554" font-size="13" font-weight="600">Enemy</text><path d="M46 560v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="64" y="576" font-size="12">Minions · Boss</text><circle cx="42" cy="594" r="4" fill="#f08a5d"/><text x="54" y="598" font-size="13" font-weight="600">EnemyAnimationManager</text><rect class="box" x="365" y="170" width="310" height="194" rx="14" style="stroke:#7c8cff"/><text class="gt" x="383" y="198" style="fill:#7c8cff">EVENTOS, DIÁLOGO E MISSÕES</text><circle cx="387" cy="222" r="4" fill="#7c8cff"/><text x="399" y="226" font-size="13" font-weight="600">EventManager</text><circle cx="387" cy="244" r="4" fill="#7c8cff"/><text x="399" y="248" font-size="13" font-weight="600">DialogueManager</text><path d="M391 254v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="409" y="270" font-size="12">DialogueController</text><circle cx="387" cy="288" r="4" fill="#7c8cff"/><text x="399" y="292" font-size="13" font-weight="600">ActorManager</text><path d="M391 298v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="409" y="314" font-size="12">NPCs</text><circle cx="387" cy="332" r="4" fill="#7c8cff"/><text x="399" y="336" font-size="13" font-weight="600">QuestManager</text><rect class="box" x="365" y="378" width="310" height="150" rx="14" style="stroke:#c084fc"/><text class="gt" x="383" y="406" style="fill:#c084fc">INVENTÁRIO E INTERFACE</text><circle cx="387" cy="430" r="4" fill="#c084fc"/><text x="399" y="434" font-size="13" font-weight="600">InventoryManager</text><path d="M391 440v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="409" y="456" font-size="12">Load XML</text><circle cx="387" cy="474" r="4" fill="#c084fc"/><text x="399" y="478" font-size="13" font-weight="600">InterfaceManager</text><path d="M391 484v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="409" y="500" font-size="12">Abilities</text><rect class="box" x="710" y="170" width="310" height="238" rx="14" style="stroke:#f2c14e"/><text class="gt" x="728" y="198" style="fill:#f2c14e">JOGADOR E CÂMERA</text><circle cx="732" cy="222" r="4" fill="#f2c14e"/><text x="744" y="226" font-size="13" font-weight="600">ControlManager</text><path d="M736 232v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="754" y="248" font-size="12">MapKeys</text><circle cx="732" cy="266" r="4" fill="#f2c14e"/><text x="744" y="270" font-size="13" font-weight="600">PlayerManager</text><path d="M736 276v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="754" y="292" font-size="12">Change Player · Follow / Stay</text><circle cx="732" cy="310" r="4" fill="#f2c14e"/><text x="744" y="314" font-size="13" font-weight="600">CameraManager</text><circle cx="732" cy="332" r="4" fill="#f2c14e"/><text x="744" y="336" font-size="13" font-weight="600">MasterMove</text><path d="M736 342v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="754" y="358" font-size="12">Tiger → TAnimationController</text><path d="M736 364v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="754" y="380" font-size="12">Bunny → BAnimationController</text><circle class="badge" cx="520" cy="128" r="12"/><text class="badge-t" x="520" y="132">1</text></svg><ul class="map-notes"><li><b>1</b>Um GameManager global coordena os sistemas. Cada sistema cuida de uma área, com o menor acoplamento possível, e alguns herdam de classes-pai.</li><li><b>·</b>As cores seguem o diagrama original. As chamadas entre os sistemas não foram redesenhadas aqui.</li></ul></div>
+        <h3>Movimentação em spline</h3>
+        <p>A movimentação é um sistema de física 2D na Unity, mas o mundo é 3D: o eixo X corresponde à <strong>distância ao longo de uma spline de Bézier</strong>. A cada frame, calcula-se a posição Vector3 na spline que corresponde à posição X em 2D, de modo que objetos 3D não têm colliders, e objetos com colliders ou rigid bodies não têm visual.</p>
+        <ul class="bl">
+          <li><strong>GenerateCollider</strong> roda no início da fase e constrói um polygon collider 2D a partir de raycasts ao longo da curva, representando o caminho caminhável.</li>
+          <li><strong>Position Collider</strong> aproxima a posição de um objeto em relação à curva e sua distância do início, que se torna o valor X em 2D.</li>
+          <li>Todo objeto que se move em 2D é atualizado em 3D pelo script <strong>Projector</strong>, usando a mesma lógica.</li>
+        </ul>
+        <div class="map wsmap"><svg viewBox="0 0 1040 430" role="img" aria-label="Mapa do sistema de spline: o mundo 3D alimenta os scripts de colisor, que dão um caminho caminhável à mecânica 2D; o Projector devolve cada objeto 2D à curva 3D."><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#a4a3b8"/></marker></defs><defs><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#22d3ee"/></marker></defs><defs><marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6f6e85"/></marker></defs><path class="edge hot" d="M790 62C730 62 700 62 652 62" marker-end="url(#ahc)"/><path class="edge hot" d="M790 72C720 72 700 158 652 158" marker-end="url(#ahc)"/><path class="edge hot" d="M790 86C730 100 700 238 652 238" marker-end="url(#ahc)"/><path class="edge" d="M380 62C330 62 320 62 272 62" marker-end="url(#ah)"/><path class="edge" d="M380 158C320 158 320 80 272 84" marker-end="url(#ah)"/><path class="edge" d="M380 238C300 238 300 98 272 98" marker-end="url(#ah)"/><path class="edge" d="M145 108V188" marker-end="url(#ah)"/><path class="edge dash" d="M145 258V320" marker-end="url(#ahd)"/><path class="edge" d="M272 366H378" marker-end="url(#ah)"/><path class="edge" d="M650 350C700 350 710 262 743 262" marker-end="url(#ah)"/><path class="edge" d="M650 372C720 372 740 360 788 360" marker-end="url(#ah)"/><path class="edge hot" d="M975 328V110" marker-end="url(#ahc)"/><rect class="box orange" x="20" y="30" width="250" height="78" rx="14"/><text x="145.0" y="58" text-anchor="middle" font-size="15" font-weight="600">2D MECHANICS</text><text class="sub" x="145.0" y="79" text-anchor="middle">Física 2D da Unity: o eixo X é a</text><text class="sub" x="145.0" y="95" text-anchor="middle">distância ao longo da spline</text><rect class="box orange" x="20" y="190" width="250" height="66" rx="14"/><text x="145.0" y="218" text-anchor="middle" font-size="15" font-weight="600">MasterMove</text><text class="sub" x="145.0" y="239" text-anchor="middle">move os atores em 2D</text><rect class="box gray" x="20" y="322" width="250" height="86" rx="14"/><text x="145.0" y="350" text-anchor="middle" font-size="15" font-weight="600">Atores</text><text class="sub" x="145.0" y="371" text-anchor="middle">Player · Tiger · Bunny</text><text class="sub" x="145.0" y="387" text-anchor="middle">Enemy · NPC</text><rect class="box purple" x="380" y="30" width="270" height="72" rx="14"/><text x="515.0" y="58" text-anchor="middle" font-size="15" font-weight="600">GenerateCollider</text><text class="sub" x="515.0" y="79" text-anchor="middle">monta o colisor 2D caminhável</text><text class="sub" x="515.0" y="95" text-anchor="middle">com raycasts ao longo da curva</text><rect class="box purple" x="380" y="122" width="270" height="72" rx="14"/><text x="515.0" y="150" text-anchor="middle" font-size="15" font-weight="600">PositionCollider</text><text class="sub" x="515.0" y="171" text-anchor="middle">transforma a distância na curva</text><text class="sub" x="515.0" y="187" text-anchor="middle">no valor X em 2D</text><rect class="box purple" x="380" y="214" width="270" height="50" rx="14"/><text x="515.0" y="242" text-anchor="middle" font-size="15" font-weight="600">ReverseProjector</text><rect class="box blue" x="790" y="30" width="230" height="78" rx="14"/><text x="905.0" y="58" text-anchor="middle" font-size="15" font-weight="600">3D WORLD</text><text class="sub" x="905.0" y="79" text-anchor="middle">o mundo é 3D: objetos 3D</text><text class="sub" x="905.0" y="95" text-anchor="middle">não têm colisores</text><rect class="box purple" x="380" y="322" width="270" height="78" rx="14"/><text x="515.0" y="350" text-anchor="middle" font-size="15" font-weight="600">Projector</text><text class="sub" x="515.0" y="371" text-anchor="middle">atualiza em 3D todo objeto</text><text class="sub" x="515.0" y="387" text-anchor="middle">que se move em 2D</text><rect class="box dark" x="745" y="190" width="200" height="88" rx="14"/><text x="845.0" y="218" text-anchor="middle" font-size="15" font-weight="600">Scripts de spline</text><text class="sub" x="845.0" y="239" text-anchor="middle">SplineChanger · SplineMath</text><text class="sub" x="845.0" y="255" text-anchor="middle">PathData</text><rect class="box blue" x="790" y="330" width="230" height="56" rx="14"/><text x="905.0" y="358" text-anchor="middle" font-size="15" font-weight="600">AnimationControler</text><circle class="badge" cx="715" cy="110" r="12"/><text class="badge-t" x="715" y="114">1</text><circle class="badge" cx="320" cy="130" r="12"/><text class="badge-t" x="320" y="134">2</text><circle class="badge" cx="162" cy="148" r="12"/><text class="badge-t" x="162" y="152">3</text><circle class="badge" cx="325" cy="350" r="12"/><text class="badge-t" x="325" y="354">4</text><circle class="badge" cx="975" cy="218" r="12"/><text class="badge-t" x="975" y="222">5</text></svg><ul class="map-notes"><li><b>1</b>No início da fase, o GenerateCollider lança raios ao longo da curva do mundo 3D e monta um colisor poligonal 2D: o caminho caminhável.</li><li><b>2</b>O Position Collider aproxima a posição de um objeto em relação à curva; a distância até o início vira o valor X em 2D com que a mecânica trabalha.</li><li><b>3</b>O movimento roda em 2D. O MasterMove move os atores, que têm colisores e rigid bodies, mas nenhum visual.</li><li><b>4</b>Todo objeto que se move em 2D é atualizado em 3D pelo script Projector, usando a mesma lógica.</li><li><b>5</b>O lado 3D tem os visuais e a animação: objetos 3D não têm colisores.</li></ul></div>
+      </section>
+
+      <!-- POST MORTEM -->
+      <section class="sec reveal" id="postmortem">
+        <h2>Post mortem</h2>
+        <div class="cols two">
+          <div class="box"><span class="tag-r">Semestre 1 · aprendizados</span>
+            <p>Focamos em um sistema de movimentação construído sobre as bases da Unity, mas com uma abordagem única. Sem uma referência clara, virou tentativa e erro, o que custou muito tempo. Em retrospecto, trabalhar dentro das capacidades da Unity e dedicar mais energia a conceito, narrativa e visual teria sido mais simples.</p>
+            <p>A modelagem 3D low-poly, buscando um visual de animação 2D, ajudou desde os semestres anteriores, mas precisava de mais desenvolvimento.</p></div>
+          <div class="box"><span class="tag-t">Semestre 2 · aprendizados</span>
+            <p>As estimativas de tempo foram baixas demais. O jogo ficou complexo demais para quatro pessoas em um ano, e o erro foi tentar construir um jogo completo em vez de um mais simples. As fases de ajuste (juntar scripts, refinar um ciclo de caminhada) levam muito mais tempo que a primeira execução.</p>
+            <p>Aprender novas habilidades pelo caminho, como rigging e animação 3D, significou refazer assets. O Trello facilitou a organização mais do que o HacknPlan, mas os cards se encaixam mal em elementos de jogo interdependentes.</p></div>
+        </div>
+        <h3>O que faríamos diferente</h3>
+        <ul class="bl">
+          <li><strong>Semestre 1:</strong> priorizar a pré-produção na essência central, na história e, acima de tudo, nos conceitos visuais, para que a direção de arte antecipe cada funcionalidade. Nos organizar melhor com as plataformas disponíveis e distribuir as tarefas de forma mais uniforme.</li>
+          <li><strong>Semestre 2:</strong> testar a execução das tarefas principais mais cedo para ter uma noção realista de tempo, e cortar o escopo de acordo, para um plano mais conciso e gerenciável.</li>
+        </ul>
+      </section>
+
+      <div class="docnav">
+        <a class="btn" href="../../../index.pt.html#work-gd">← Todo o trabalho de game design</a>
+        <a class="btn primary" href="../dark-maze-of-mythos/index.pt.html">Próximo: The Dark Maze of Mythos →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Feito à mão. Só o Atrium foi prototipado com IA</span>
+      <a href="../../../index.pt.html#work-gd">← Voltar a todos os trabalhos</a>
+    </div>
+  </footer>
+
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

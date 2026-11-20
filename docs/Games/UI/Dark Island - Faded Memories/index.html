@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dark Island: Faded Memories · UI design — David Smith</title>
+  <meta name="description" content="UI design for Dark Island: Faded Memories, a dark/high fantasy game: wireframes, UI kit, brand and live prototypes of the HUD, equipment and settings screens.">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+  <link rel="stylesheet" href="assets/di-page.css">
+</head>
+<body class="di-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../#work-games">← Work</a>
+        <a href="#screens">Screens</a>
+        <a href="#kit">UI kit</a>
+        <a href="#prototypes">Prototypes</a>
+        <a href="#brand">Brand</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en" aria-current="true">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a> / <a href="../../../#work">Work</a> / <a href="../../../#work-gui">Game UI</a> / Dark Island: Faded Memories</nav>
+    <section class="di-hero">
+      <div>
+        <div class="eyebrow">Games · UI/UX · Dark / High fantasy</div>
+        <h1>Dark Island:<br><span class="gold">Faded Memories</span></h1>
+        <p class="steam" lang="en">Ride dragons across forgotten islands. Explore the ruins of a world that fell long ago. Face monsters and fallen soldiers lurking in the dark. Play alone or join friends in co-op mode. Nostalgic graphics and style that bring back the magic of childhood.
+          <small lang="pt-BR">Original Steam text: “Monte dragões por ilhas esquecidas. Explore as ruínas de um mundo que caiu há muito tempo. Enfrente monstros e soldados caídos à espreita na escuridão. Jogue sozinho ou junte-se aos amigos no modo cooperativo. Gráficos e estilo nostálgicos que trazem de volta a magia da infância.”</small></p>
+        <ul class="facts-row">
+          <li><b>Platform</b>PC · Steam</li><li><b>Mode</b>Solo or co-op</li><li><b>UI style</b>Dark / High fantasy</li><li><b>Game by</b>Harpia Games &amp; Venn</li><li><b>My role</b>All UI design and the logo</li>
+        </ul>
+        <div class="btn-row" style="margin-top:26px">
+          <a class="btn gold" href="https://store.steampowered.com/app/3332120/Dark_Island_Faded_Memories/" target="_blank" rel="noopener">View on Steam ↗</a>
+          <a class="btn" href="#prototypes">Open the live prototypes</a>
+          <a class="btn" href="#kit">See the UI kit</a>
+        </div>
+      </div>
+      <div class="banner reveal"><img src="assets/web/brand/banner.jpg" alt="Dark Island: Faded Memories key art: the logo over a purple dusk with a dragon in the sky"></div>
+    </section>
+    <aside class="tldr" aria-label="In short"><h2>In short</h2><p><strong>My scope:</strong> all the UI and the logo for Dark Island: Faded Memories, a dark fantasy game on Steam with 40k wishlists.</p><p><strong>Key decision:</strong> controller first. Every screen works with a gamepad, focus is always visible and the hint bar mirrors the active device. Silver frames and gold selection over flat navy panels keep the UI ornate but readable over a busy 3D world.</p></aside>
+
+    <section class="di-sec reveal" id="pillars">
+      <h2>UI pillars</h2>
+      <div class="pillars">
+        <div class="pillar"><div class="n">01</div><h3>Ornate, never noisy</h3><p>Silver frames, gold selection and small diamond tips give the interface a high-fantasy tone, while flat navy panels keep text readable.</p></div>
+        <div class="pillar"><div class="n">02</div><h3>Readable over a busy world</h3><p>The HUD sits on foggy 3D scenes. Gold on navy and a strict resource colour code (blue, purple, red) keep it legible in day and night.</p></div>
+        <div class="pillar"><div class="n">03</div><h3>Controller first</h3><p>Every screen is driven by A / B / X, LB / RB and LT / RT. Focus is always visible, and the hint bar mirrors the active device.</p></div>
+        <div class="pillar"><div class="n">04</div><h3>Nostalgic texture</h3><p>A touch of chromatic aberration and soft scanlines echo the childhood-era look of the Steam pitch, and the player can tune both in Settings.</p></div>
+      </div>
+    </section>
+
+    <section class="di-sec" id="screens">
+      <h2>Screens</h2>
+      <p class="intro">The wireframes the prototypes are built from. Click any image to enlarge it.</p>
+
+      <div class="shots-group reveal">
+        <h3>HUD <span>4 states</span></h3>
+        <p>Boss bar, the weapon cluster with three load-out layouts, stamina / mana / health bars, currency, item-pickup notifications and NPC nameplates, over a day or a night scene.</p>
+        <div class="shots">
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-47.jpg"><img loading="lazy" src="assets/web/wireframes/wf-47.jpg" alt="HUD wireframe, day scene, empty currency box"></button><figcaption><b>Base HUD.</b> Boss bar, weapon cluster, three bars and an empty currency box.</figcaption></figure>
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-48.jpg"><img loading="lazy" src="assets/web/wireframes/wf-48.jpg" alt="HUD wireframe with currency"></button><figcaption><b>Currency.</b> Coin and amount once the player has gold.</figcaption></figure>
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-49.jpg"><img loading="lazy" src="assets/web/wireframes/wf-49.jpg" alt="HUD wireframe, night scene"></button><figcaption><b>Night.</b> The same HUD over the dusk scene, a contrast check.</figcaption></figure>
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-50.jpg"><img loading="lazy" src="assets/web/wireframes/wf-50.jpg" alt="HUD wireframe with item notifications and NPC nameplates"></button><figcaption><b>Notifications and NPCs.</b> Stacked pickups at the top right, grey and red nameplates.</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="shots-group reveal">
+        <h3>Equipment &amp; inventory <span>4 states</span></h3>
+        <p>Three load-outs, flask and armor slots around a character, and a tabbed inventory. Tooltips explain an item, and compare mode puts the equipped and candidate items side by side.</p>
+        <div class="shots">
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-40.jpg"><img loading="lazy" src="assets/web/wireframes/wf-40.jpg" alt="Equipment screen wireframe"></button><figcaption><b>Equipment.</b> Load-outs, items, armor, level and totals beside the inventory.</figcaption></figure>
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-41.jpg"><img loading="lazy" src="assets/web/wireframes/wf-41.jpg" alt="Item tooltip wireframe"></button><figcaption><b>Item tooltip.</b> Level, hand requirement, ATK / DEF / CRIT and description.</figcaption></figure>
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-42.jpg"><img loading="lazy" src="assets/web/wireframes/wf-42.jpg" alt="Compare mode wireframe, two tooltips"></button><figcaption><b>Compare.</b> Equipped and candidate tooltips, with up and down arrows on every stat.</figcaption></figure>
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-43.jpg"><img loading="lazy" src="assets/web/wireframes/wf-43.jpg" alt="Compare mode with a slot selected"></button><figcaption><b>Slot selected.</b> The chosen slot is outlined in gold while the rest recedes.</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="shots-group reveal">
+        <h3>Settings <span>2 states</span></h3>
+        <p>A rotating radial menu on the left and a tabbed panel on the right, with the same header and shoulder-button paging as Equipment.</p>
+        <div class="shots">
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-44.jpg"><img loading="lazy" src="assets/web/wireframes/wf-44.jpg" alt="Settings wireframe, Graphics selected"></button><figcaption><b>Graphics.</b> The selected button is pulled out of the wheel.</figcaption></figure>
+          <figure class="shot"><button type="button" data-full="assets/web/wireframes/wf-45.jpg"><img loading="lazy" src="assets/web/wireframes/wf-45.jpg" alt="Settings wireframe, Game selected"></button><figcaption><b>Game.</b> The wheel has rotated; the panel content follows the selection.</figcaption></figure>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="di-sec" id="kit">
+      <h2>UI kit</h2>
+      <p class="intro">The components the three screens are assembled from. Each one has states, and the prototypes rebuild them in code from these references.</p>
+      <div class="kit reveal">
+        <article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/button.png"><img loading="lazy" src="assets/web/components/button.png" alt="Ornate button with the text BUTTON TEXT"></button></div><div class="body"><h3>Ornate button</h3><p>Silver frame, notched top and bottom edges, navy glow. Turns gold when focused.</p><div class="used">Used in: settings wheel, dialogs</div></div></article>
+        <article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/list-row.png"><img loading="lazy" src="assets/web/components/list-row.png" alt="List rows: default, selected with spotlight, gold"></button></div><div class="body"><h3>List row</h3><p>Icon, name and level badge. The selected row gets a gold name, gold rule and a dark spotlight under the text.</p><div class="used">Used in: inventory, settings rows</div></div></article>
+        <article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/slots.png"><img loading="lazy" src="assets/web/components/slots.png" alt="Weapon slots: default, selected, selected with corner flourish, grid, disabled"></button></div><div class="body"><h3>Slots &amp; states</h3><p>Default, selected (gold), selected with corner flourish, grouped in a gold panel, and a greyed disabled state.</p><div class="used">Used in: equipment, HUD</div></div></article>
+        <article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/hud-weapons.png"><img loading="lazy" src="assets/web/components/hud-weapons.png" alt="Three layouts of the HUD weapon cluster"></button></div><div class="body"><h3>HUD weapon cluster</h3><p>Two large active slots and four small ones. The active pair moves left, centre or right with the load-out.</p><div class="used">Used in: HUD</div></div></article>
+        <article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/icons.png"><img loading="lazy" src="assets/web/components/icons.png" alt="Item art and glyph icons"></button></div><div class="body"><h3>Item art &amp; glyphs</h3><p>Painted item art for weapons and spells, plus single-colour glyphs for categories, shields, flasks, helms and hand requirements.</p><div class="used">Used in: slots, list rows, tooltips</div></div></article>
+        <article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/ornaments.png"><img loading="lazy" src="assets/web/components/ornaments.png" alt="Stat arrows and ornaments"></button></div><div class="body"><h3>Stat arrows &amp; ornaments</h3><p>Green up and red down arrows for comparison, a neutral diamond, and the mountain and arrowhead ornaments.</p><div class="used">Used in: tooltips, level badge</div></div></article>
+      </div>
+      <div class="tokens">
+        <div class="token"><i style="--c:#e3c61a"></i><span><b>Gold</b><code>#E3C61A</code> selection, titles</span></div>
+        <div class="token"><i style="--c:#cfd3dc"></i><span><b>Silver</b><code>#CFD3DC</code> frames, body</span></div>
+        <div class="token"><i style="--c:#1d44ad"></i><span><b>Navy glow</b><code>#1D44AD → #0A1233</code> panels</span></div>
+        <div class="token"><i style="--c:#5be08b"></i><span><b>Up</b><code>#5BE08B</code> stronger</span></div>
+        <div class="token"><i style="--c:#f0585c"></i><span><b>Down</b><code>#F0585C</code> weaker, health</span></div>
+        <div class="token"><i style="--c:#8a5ae0"></i><span><b>Mana</b><code>#8A5AE0</code></span></div>
+      </div>
+    </section>
+
+    <section class="di-sec reveal" id="flow">
+      <h2>Flow</h2>
+      <p class="intro">How the screens connect in the prototypes. LB and RB move between the main menu pages, and Continue always returns to the game.</p>
+      <div class="lane">
+        <div class="path"><h4>Menu pages</h4>
+          <div class="chain">
+            <div class="node page"><small>In game</small>HUD<em>Esc / Start opens the menu</em></div><span class="arrow">→</span>
+            <div class="node panel"><small>Menu</small>Equipment</div><span class="arrow">⇄</span>
+            <div class="node panel"><small>Menu</small>Settings</div><span class="arrow">⇄</span>
+            <div class="node external"><small>Not designed yet</small>Map</div><span class="arrow alt">Continue</span>
+            <div class="node page"><small>In game</small>HUD</div>
+          </div>
+        </div>
+        <div class="path"><h4>Equip an item</h4>
+          <div class="chain">
+            <div class="node dialog"><small>Slot or item</small>Select (A)</div><span class="arrow">→</span>
+            <div class="node drawer"><small>Compare</small>Equipped vs candidate</div><span class="arrow">→</span>
+            <div class="node toast"><small>Result</small>Equipped, stats update</div><span class="arrow alt">or X</span>
+            <div class="node popover"><small>Confirm</small>Drop item?</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="di-sec" id="prototypes">
+      <h2>Live prototypes</h2>
+      <p class="intro">Clickable, in the browser, and connected: items you equip appear in the HUD, and the graphics options change the HUD scene. They have no portfolio chrome, so they play like the game screens.</p>
+      <div class="launch reveal">
+        <a class="launch-card" href="prototype/hud/"><img loading="lazy" src="assets/web/wireframes/wf-50.jpg" alt=""><div class="body"><h3>HUD</h3><p>Day and night scenes, bars, load-out cluster, pickups, nameplates. A demo panel (<b>?</b>) triggers game events.</p><span class="go">Open HUD →</span></div></a>
+        <a class="launch-card" href="prototype/equipment/"><img loading="lazy" src="assets/web/wireframes/wf-42.jpg" alt=""><div class="body"><h3>Equipment</h3><p>Browse the inventory, compare items against a slot, equip, unequip or drop. Stats update live.</p><span class="go">Open Equipment →</span></div></a>
+        <a class="launch-card" href="prototype/settings/"><img loading="lazy" src="assets/web/wireframes/wf-44.jpg" alt=""><div class="body"><h3>Settings</h3><p>A rotating menu with real controls: toggles, sliders and selectors, saved in your browser.</p><span class="go">Open Settings →</span></div></a>
+      </div>
+      <div class="controls"><b>Controls.</b> Gamepad: D-pad / stick, A select, B back, X drop, LB / RB pages, LT / RT tabs. Keyboard: arrows or WASD, Enter, Esc, X, Q / E pages, Z / C tabs. Mouse: hover and click. Best on a desktop screen; the prototypes are in English.</div>
+    </section>
+
+    <section class="di-sec" id="brand">
+      <h2>Brand</h2>
+      <p class="intro">The logo uses a gothic serif with a flared initial, over a recurring dragon motif. The UI borrows its mood in the ornate frames and the display type, but stays quieter so the world remains the star. Brand assets appear only on this page, never inside the prototypes.</p>
+      <div class="brand-grid reveal">
+        <div><div class="logo-card light"><img loading="lazy" src="assets/web/brand/logo-black.png" alt="Dark Island: Faded Memories logo, black"></div><p class="logo-cap">Primary, black</p></div>
+        <div><div class="logo-card light"><img loading="lazy" src="assets/web/brand/logo-pixel.png" alt="Logo with a purple pixel texture"></div><p class="logo-cap">Pixel texture</p></div>
+        <div><div class="logo-card dark"><img loading="lazy" src="assets/web/brand/logo-outline.png" alt="Purple logo with a grey outline on black"></div><p class="logo-cap">Outline on dark</p></div>
+        <div><div class="logo-card light"><img loading="lazy" src="assets/web/brand/logo-stacked.png" alt="Stacked logo"></div><p class="logo-cap">Stacked</p></div>
+      </div>
+      <div class="merch reveal">
+        <figure class="shot"><button type="button" data-full="assets/web/brand/merch-30.jpg"><img loading="lazy" src="assets/web/brand/merch-30.jpg" alt="Merchandise mockups: long sleeves and tees with the logo and a dragon outline"></button><figcaption><b>Merch.</b> Logo and dragon line art on black.</figcaption></figure>
+        <figure class="shot"><button type="button" data-full="assets/web/brand/merch-31.jpg"><img loading="lazy" src="assets/web/brand/merch-31.jpg" alt="Long-sleeve mockups with red logo and a grey dragon illustration"></button><figcaption><b>Merch.</b> Red logo with the engraved dragon.</figcaption></figure>
+        <figure class="shot"><button type="button" data-full="assets/web/brand/merch-32.jpg"><img loading="lazy" src="assets/web/brand/merch-32.jpg" alt="White and black tee mockups with the dragon illustration"></button><figcaption><b>Merch.</b> Tees in white and black.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="di-sec reveal" id="credits">
+      <h2>Credits &amp; open items</h2>
+      <div class="credits">
+        <div class="box"><h3>Credits</h3><p><strong>Game:</strong> Harpia Games and Venn.<br><strong>UI design and logo design:</strong> David Smith, all of it: the HUD, equipment and settings screens, the UI kit, the prototypes on this page and the logo and brand.<br>The game is on <a class="inline" style="color:var(--gold)" href="https://store.steampowered.com/app/3332120/Dark_Island_Faded_Memories/" target="_blank" rel="noopener">Steam ↗</a>.</p></div>
+        <div class="box"><h3>Open items</h3><p>The Map screen, co-op UI and real settings content are not in the wireframes yet. The settings in the prototype are illustrative.</p></div>
+      </div>
+    </section>
+  <nav class="nextproj" aria-label="Next project"><a class="btn" href="../../../#work-gui">← Back to all work</a><a class="btn primary" href="../Tiny%20Heroes/"><small>Next project</small> Tiny Heroes →</a></nav>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Designed by hand. Only Atrium was prototyped with AI</span><a href="../../../#work-games">← Back to all work</a></div>
+  </footer>
+
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer"><button type="button" aria-label="Close">×</button><img alt=""><p></p></div>
+  <script>
+    (function () {
+      var lb = document.getElementById('lb'), im = lb.querySelector('img'), cap = lb.querySelector('p');
+      document.querySelectorAll('[data-full]').forEach(function (b) {
+        b.addEventListener('click', function () { im.src = b.getAttribute('data-full'); im.alt = b.querySelector('img').alt; var f = b.closest('figure'); f = f && f.querySelector('figcaption'); var h = b.closest('article'); h = h && h.querySelector('h3'); cap.textContent = f ? f.textContent : (h ? h.textContent : ''); lb.classList.add('open'); });
+      });
+      function close() { lb.classList.remove('open'); }
+      lb.addEventListener('click', close);
+      window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

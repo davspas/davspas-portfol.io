@@ -1,0 +1,138 @@
+{
+  "totalRequests": 20,
+  "totalUnitsLoaded": 119,
+  "totalLoadTime": {
+    "milliseconds": 34099.15800041097,
+    "seconds": 34.099158000410974
+  },
+  "averageTimePerRequest": {
+    "milliseconds": 1704.9579000205485,
+    "seconds": 1.7049579000205486
+  },
+  "averageTimePerUnit": {
+    "milliseconds": 286.54754622194093,
+    "seconds": 0.28654754622194095
+  },
+  "requests": [
+    {
+      "unitsCount": 1,
+      "loadTime": 5374.798999866471,
+      "averagePerUnit": 5374.798999866471,
+      "startedDateTime": "2026-03-02T13:31:15.607Z"
+    },
+    {
+      "unitsCount": 1,
+      "loadTime": 5943.497000029311,
+      "averagePerUnit": 5943.497000029311,
+      "startedDateTime": "2026-03-02T13:31:18.139Z"
+    },
+    {
+      "unitsCount": 5,
+      "loadTime": 550.1089999452233,
+      "averagePerUnit": 110.02179998904467,
+      "startedDateTime": "2026-03-02T13:31:23.877Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 610.1420000195503,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:31:50.423Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 590.4960001353174,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:32:09.331Z"
+    },
+    {
+      "unitsCount": 1,
+      "loadTime": 643.0990002118051,
+      "averagePerUnit": 643.0990002118051,
+      "startedDateTime": "2026-03-02T13:32:16.728Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 1092.208000132814,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:32:29.609Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 612.328999908641,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:33:00.900Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 623.1690000277013,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:33:13.618Z"
+    },
+    {
+      "unitsCount": 11,
+      "loadTime": 591.2140000145882,
+      "averagePerUnit": 53.74672727405348,
+      "startedDateTime": "2026-03-02T13:33:30.001Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 610.4000001214445,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:33:49.113Z"
+    },
+    {
+      "unitsCount": 10,
+      "loadTime": 11093.365000072374,
+      "averagePerUnit": 1109.3365000072374,
+      "startedDateTime": "2026-03-02T13:44:27.361Z"
+    },
+    {
+      "unitsCount": 2,
+      "loadTime": 704.721000045538,
+      "averagePerUnit": 352.360500022769,
+      "startedDateTime": "2026-03-02T13:44:42.444Z"
+    },
+    {
+      "unitsCount": 70,
+      "loadTime": 654.9509998876601,
+      "averagePerUnit": 9.356442855538003,
+      "startedDateTime": "2026-03-02T13:45:23.407Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 634.4380001537502,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:46:18.274Z"
+    },
+    {
+      "unitsCount": 1,
+      "loadTime": 1134.8250000737607,
+      "averagePerUnit": 1134.8250000737607,
+      "startedDateTime": "2026-03-02T13:47:01.517Z"
+    },
+    {
+      "unitsCount": 14,
+      "loadTime": 649.837999837473,
+      "averagePerUnit": 46.416999988390934,
+      "startedDateTime": "2026-03-02T13:48:19.794Z"
+    },
+    {
+      "unitsCount": 3,
+      "loadTime": 655.062000034377,
+      "averagePerUnit": 218.354000011459,
+      "startedDateTime": "2026-03-02T13:48:43.378Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 687.0899999048561,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:51:08.038Z"
+    },
+    {
+      "unitsCount": 0,
+      "loadTime": 643.4059999883175,
+      "averagePerUnit": 0,
+      "startedDateTime": "2026-03-02T13:51:30.370Z"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+No.;Permission Name;Permission Description;;
+1;changedefault;change default;;
+2;controlrun;control run;;
+3;handsfree_add;Create new handsfree schedules;;
+4;handsfree_delete;Delete handsfree schedules;;
+5;windowspartition_edit;"Edit option to create Windows partition
+on OSX restores";;
+6;ownpassword_edit;Edit own password;;
+7;stations_viewfdrtype;Edit station type FDR type field;;
+8;netboot_changestation;netboot change station;;
+9;handsfree_edit;Use hands-free with defaults only;;
+10;handsfree_view;"View handsfree schedules and their
+details";;
+11;image_view;view images;;
+12;line_view;View Lines;;
+13;log_view;View Logs;;
+14;overlay_view;View overlays;;
+15;product_viewattr;View product attribute dictionary;;
+16;product_view;View Products;;
+17;script_view;view restore scripts;;
+18;stationid_view;View Station IDs;;
+19;stationversions_view;View station versions page;;
+20;stations_view;View Stations;;
+21;testunit_view;view test stations;;
+22;user_view;view users;;

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Dark Maze of Mythos · UI prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Texturina:wght@400;600;700&family=Tilt+Prism&display=swap">
+  <link rel="stylesheet" href="dm.css">
+</head>
+<body>
+  <a class="back" href="../">← Case study</a>
+  <div class="viewport" id="vp">
+    <main class="stage" id="stage" aria-label="The Dark Maze of Mythos prototype">
+
+      <!-- Menu -->
+      <section class="screen on" id="menu" aria-label="Main menu">
+        <div class="bg"></div>
+        <h1 class="display title" style="position:absolute;top:80px;left:0;right:0;font-size:46px">The Dark Maze of Mythos</h1>
+        <div class="col" style="top:452px;gap:22px">
+          <button class="btn wide" data-go="intro"><span>Start</span></button>
+          <button class="btn wide" data-go="score"><span>Scoreboard</span></button>
+        </div>
+        <div class="credit">A game by<b>HARPIA</b><small>GAMES</small></div>
+      </section>
+
+      <!-- Intro: 3D idle scene, tap to switch to top-down and start -->
+      <section class="screen" id="intro" aria-label="Introduction">
+        <div class="bg"></div>
+        <div class="col" style="top:325px"><h2 class="display title" style="font-size:36px">Escape the beast and exit the maze</h2></div>
+        <div class="hint">Tap to start</div>
+      </section>
+
+      <!-- Game / HUD -->
+      <section class="screen" id="game" aria-label="Game">
+        <canvas class="game-canvas" id="cv" width="720" height="1600"></canvas>
+        <div class="vignette"></div>
+        <div class="hud-top">
+          <div class="hp hp-cards" aria-label="Cards collected"><img src="img/ui/hud-cards.svg" alt=""><span id="hCards">0/6</span></div>
+          <div class="hp hp-time" aria-label="Time"><img src="img/ui/hud-timer.svg" alt=""><span id="hTime">00<i>:</i>00</span></div>
+          <div class="hp hp-matches" aria-label="Matches"><img src="img/ui/hud-matches.svg" alt=""><span id="hMatches">03</span></div>
+          <button class="pause-btn" id="pauseBtn" aria-label="Pause"><img src="img/ui/act.svg" alt=""><svg viewBox="0 0 18 18" fill="#fff"><rect x="4" y="3" width="3" height="12"/><rect x="11" y="3" width="3" height="12"/></svg></button>
+        </div>
+        <div class="toast" id="toast" role="status"></div>
+        <div class="alert" id="alert">ROAAR!</div>
+        <button class="act" id="btnThrow" aria-label="Throw torch"><img class="fr" src="img/ui/act.svg" alt=""><img class="ic" src="img/ui/throw.svg" alt=""></button>
+        <button class="act" id="btnTorch" aria-label="Light or put out torch"><img class="fr" src="img/ui/act.svg" alt=""><img class="ic" src="img/ui/torch-on.svg" alt=""></button>
+        <div class="stick" id="stick"><img id="stickImg" src="img/ui/stick-idle.svg" alt=""></div>
+
+        <div id="pauseLayer">
+          <div class="col"><h2 class="display paused-title">Paused</h2>
+            <button class="btn wide" id="resume"><span>Resume</span></button>
+            <button class="btn wide" id="quit"><span>Quit</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen dead" id="dead" aria-label="Game over">
+        <div class="bg deep"></div>
+        <div class="col" style="top:325px"><h2 class="display title" style="font-size:38px">You're Dead!</h2></div>
+        <div class="col" style="top:462px"><button class="btn wide" id="retry"><span>Retry</span></button></div>
+      </section>
+
+      <section class="screen win1" id="win1" aria-label="Escaped">
+        <div class="col" style="top:240px"><div class="display time-big" data-time>00:00</div><h2 class="display title" style="margin-top:44px">You've Escaped the maze!</h2></div>
+        <div class="col" style="top:462px"><button class="btn wide" data-go="score"><span>Awesome!</span></button></div>
+      </section>
+
+      <section class="screen win2" id="win2" aria-label="Minotaur defeated">
+        <div class="col" style="top:240px"><div class="display time-big" data-time>00:00</div><h2 class="display title" style="margin-top:44px">The minotaur is defeated!</h2></div>
+        <div class="col" style="top:462px"><button class="btn wide" data-go="score"><span>Awesome!</span></button></div>
+      </section>
+
+      <section class="screen" id="score" aria-label="Scoreboard">
+        <div class="bg red"></div>
+        <h2 class="display sb-h" style="position:absolute;left:0;right:0">Scoreboard</h2>
+        <div class="sb-panel"><table><thead><tr><th>Position</th><th>Date</th><th>Score</th></tr></thead><tbody id="sbBody"></tbody></table></div>
+        <div class="col" style="top:710px"><button class="btn" data-go="menu" style="width:140px;height:48px"><span>Return</span></button></div>
+      </section>
+    </main>
+  </div>
+
+  <aside class="demo" aria-label="Screens">
+    <h4>Jump to screen</h4>
+    <button data-go="menu">Menu</button><button data-go="intro">Intro</button><button data-go="game">HUD / game</button><button data-go="pause">Pause</button><button data-go="dead">Dead</button><button data-go="win1">Win · escaped</button><button data-go="win2">Win · minotaur</button><button data-go="score">Scoreboard</button>
+    <p><b>Move</b> WASD / arrows<br><b>Torch</b> T · <b>Throw / pick up</b> G<br><b>Pause</b> P / Esc<br>Collect 6 cards or reach the green exit. Drag the stick on touch.</p>
+  </aside>
+  <script src="dm.js"></script>
+</body>
+</html>

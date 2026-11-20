@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings · Dark Island: Faded Memories (UI prototype)</title>
+  <link rel="stylesheet" href="../css/di.css">
+</head>
+<body class="di" data-device="kb">
+  <div class="di-viewport">
+    <main class="di-stage" id="stage">
+      <div class="di-bg di-bg--dark"></div>
+      <div class="di-motes"></div>
+      <div class="di-wheelbg" aria-hidden="true"></div>
+      <div class="di-wheel is-inactive" id="wheel"></div>
+
+      <h2 class="di-title" id="title" style="left:427px;width:975px;top:98px"></h2>
+      <p class="di-sub" id="sub" style="left:427px;width:975px;top:146px"></p>
+      <div class="di-tabs" style="left:427px;width:975px;top:172px" id="tabs">
+        <span class="di-cap di-cap--l di-cap--tab" data-pad="LT" data-kb="Z"></span>
+        <span style="flex:1;display:flex;padding:0 30px" id="tabBtns"></span>
+        <span class="di-cap di-cap--r di-cap--tab" data-pad="RT" data-kb="C"></span>
+      </div>
+      <div class="di-panel" id="panel" style="left:427px;top:214px;width:975px;height:782px"><div class="di-list" id="rows" style="inset:0;padding:8px 6px"></div></div>
+      <div class="eq-status" id="status"></div>
+    </main>
+  </div>
+  <script src="../js/di-data.js"></script>
+  <script src="../js/di-core.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

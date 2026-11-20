@@ -1,0 +1,941 @@
+[
+  {
+    "id": "F-001",
+    "agent": "Interaction & Flow, Accessibility, Nielsen",
+    "severity": "critical",
+    "category": [
+      "User Control",
+      "Error Prevention"
+    ],
+    "screen": "05-building-controller-dirty-footer",
+    "title": "Unsaved edits are discarded by every exit path except the one that is guarded",
+    "description": "Explicit \"Discard Changes\" raises a confirm popover, but selecting another tree node, changing a filter, changing the Campus multi-select, jumping from a search result, or closing the tab all throw the same edits away with no prompt. The guard sits on the safe path and is absent from the lossy ones.",
+    "recommendation": "Guard the state, not the button. While the panel is dirty, intercept every context switch (tree selection, filter change, campus change, search navigation, drawer open, beforeunload) with one \"Unsaved changes\" confirm offering Save, Discard and Cancel.",
+    "file_hint": "js/selection.js · js/init-search.js:136-174"
+  },
+  {
+    "id": "F-002",
+    "agent": "Interaction & Flow, Accessibility, Nielsen",
+    "severity": "critical",
+    "category": [
+      "Error Prevention",
+      "User Control"
+    ],
+    "screen": "03-campus-node-selected",
+    "title": "The campus-level Asset Registry cascade rewrites 18 records with no confirmation",
+    "description": "One switch flip plus Save writes Registry Sync to every building controller in the campus. There is no confirm step, no list of affected hosts, no count of how many actually change, and no undo. The only warning is an info notification above the control.",
+    "recommendation": "Require a confirm for any write touching more than one record, stating the exact scope and split (\"Enable Registry Sync on 18 building controllers in NORT: 11 currently disabled, 7 already enabled\") with an expandable list of hostnames and a verb-first confirm label.",
+    "file_hint": "js/selection.js · js/bulk-mode.js · index.html:151-184"
+  },
+  {
+    "id": "F-003",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "critical",
+    "category": [
+      "User Control",
+      "Error Recovery"
+    ],
+    "screen": "03-campus-node-selected, 11-bulk-selection, 19-archive-confirm",
+    "title": "No write in the product can be undone",
+    "description": "Archive, the 18-record Asset Registry cascade and every bulk write commit permanently. Archive states its consequence up front but offers no reversal, and the only recovery route (Unarchive) is reachable only through a filter that itself gives no visible feedback.",
+    "recommendation": "Attach an Undo action to the success notification for every reversible write, with a time window. Where true undo is impossible, name the reverse path explicitly in the success message and link to it.",
+    "file_hint": "js/manage-actions.js · js/bulk-mode.js · js/selection.js"
+  },
+  {
+    "id": "F-004",
+    "agent": "Interaction & Flow, Platform HIG",
+    "severity": "critical",
+    "category": [
+      "Error Prevention",
+      "User Control"
+    ],
+    "screen": "12-create-node-drawer, 14-create-drawer-close-confirm",
+    "title": "Three of the four ways to close the Create drawer bypass the data-loss guard",
+    "description": "Only the footer Close button checks _isFormDirty(). The header X, a backdrop click and Esc each call closeDrawer() directly, so a fully entered three-section form is destroyed without a prompt. A stray click beside the drawer is enough.",
+    "recommendation": "Route all four dismissal paths through one dismiss handler that runs the dirty check, so the \"Close Node Creation\" popover appears regardless of how the user tries to leave. Rename the footer action to \"Cancel\".",
+    "file_hint": "js/new-node-drawer.js:36 · js/new-node-drawer.js:71 · js/new-node-drawer.js:80"
+  },
+  {
+    "id": "F-005",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "critical",
+    "category": [
+      "Error Prevention",
+      "User Control",
+      "Consistency"
+    ],
+    "screen": "15-manage-faculties-drawer",
+    "title": "The Manage Faculties drawer has no unsaved-changes guard on any path",
+    "description": "Close, the header X, Esc and a backdrop click all call _closeDrawer() with no dirty check, so faculty changes vanish silently. The sibling Create drawer guards the same gesture, so the two teach opposite lessons about whether closing is safe.",
+    "recommendation": "Apply the Create drawer's dirty-state guard here, worded for this context (\"Discard faculty changes?\"), on all four dismissal paths. Show the dirty state in the drawer via the existing count (\"4 selected, 2 changed\").",
+    "file_hint": "js/manage-actions.js:787-793"
+  },
+  {
+    "id": "F-006",
+    "agent": "Accessibility",
+    "severity": "critical",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "07-manage-popover, 19-archive-confirm",
+    "title": "The Manage menu cannot be operated by keyboard at all",
+    "description": "Menu entries are bare <li> elements containing a <span>, with no role=menuitem, no tabindex and no button. The trigger carries no aria-haspopup, aria-expanded or aria-controls. Archive, the feature's destructive action, is unreachable without a mouse (WCAG 2.1.1).",
+    "recommendation": "Render each entry as a real <button> (or role=menuitem with managed tabindex) inside role=menu, wire aria-haspopup, aria-expanded and aria-controls on the trigger, move focus into the menu on open, support arrow keys and Esc, and return focus to the trigger on close.",
+    "file_hint": "js/manage-actions.js · index.html:82-86"
+  },
+  {
+    "id": "F-007",
+    "agent": "Accessibility, Interaction & Flow, Nielsen",
+    "severity": "critical",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "02-campus-selected, 18-registry-filter-disabled",
+    "title": "Registry Sync status is conveyed by colour alone",
+    "description": "Each building-controller row ends in a 14x14 circle that is green when Asset Registry is enabled and light grey when disabled. No text, no shape difference, no legend; the only text equivalent is a native title tooltip. This is the primary datum users scan across ~18 rows, and the exact attribute the bulk cascade rewrites (WCAG 1.4.1).",
+    "recommendation": "Pair the colour with a second cue: a filled versus hollow (or check versus slash) glyph, plus a short text tag (\"Asset Registry on\" / \"Asset Registry off\") or a persistent legend in the tree header. Follow the switch's own model, which already pairs colour with a text label.",
+    "file_hint": "js/tree-rendering.js:154-169 · css/tree-section.css"
+  },
+  {
+    "id": "F-008",
+    "agent": "Platform HIG, Interaction & Flow, Nielsen",
+    "severity": "critical",
+    "category": [
+      "Content & Copy",
+      "Error Prevention"
+    ],
+    "screen": "07-manage-popover",
+    "title": "The destructive menu item is labelled \"Building Controller\", a noun with no verb",
+    "description": "The verb \"Archive\" lives only in the grey uppercase section header above the item. Read on its own, which is how menu items are read and how a screen reader announces them, the red item names an object and not an action.",
+    "recommendation": "Put the verb in the label: \"Archive Building Controller\" and \"Manage Faculties\". Section headers should group, never complete, an item's meaning. Add a destructive glyph so severity does not rest on the red alone.",
+    "file_hint": "js/manage-actions.js"
+  },
+  {
+    "id": "F-009",
+    "agent": "Platform HIG, Interaction & Flow, Nielsen",
+    "severity": "critical",
+    "category": [
+      "Error Recovery",
+      "Feedback & Status",
+      "Error Prevention"
+    ],
+    "screen": "20-archive-blocked-timetable-release, 04-building-controller-selected",
+    "title": "The Timetable Release block is discovered only by failing, and its remedy has no route",
+    "description": "Nothing on the details panel says a building controller is scheduled for a Timetable Release, so the user opens Manage, picks the destructive item and gets a transient red toast pinned over the global navbar. It names a remedy (\"Cancel the deploy\") but offers no link, identifier or timestamp to reach it.",
+    "recommendation": "Surface the condition before the attempt: a \"Scheduled for Timetable Release\" badge on the tree row and details panel, and a disabled Archive item carrying that reason. Present the refusal as a persistent alert anchored near the action, with a \"View Timetable Release\" control.",
+    "file_hint": "js/manage-actions.js · js/config-data.js:380 · js/ui-helpers.js:509"
+  },
+  {
+    "id": "F-010",
+    "agent": "Platform HIG, Interaction & Flow, Nielsen",
+    "severity": "critical",
+    "category": [
+      "Feedback & Status"
+    ],
+    "screen": "04-building-controller-selected, 03-campus-node-selected, not-reachable",
+    "title": "No write produces any success confirmation",
+    "description": "Save, Create, Archive, the bulk cascade and Manage Faculties all complete silently. The only cue is the Save button returning to disabled, which is identical to the state before the user edited anything. Errors get a toast, successes get nothing, so silence is ambiguous between \"saved\" and \"nothing happened\".",
+    "recommendation": "Emit a success notification for every committed write, naming the object and the count of affected records (\"Registry Sync enabled on 18 building controllers in NORT\"), and pair it with the Undo action where the write is reversible.",
+    "file_hint": "js/selection.js · js/bulk-mode.js · js/manage-actions.js · js/new-node-drawer.js"
+  },
+  {
+    "id": "F-011",
+    "agent": "Platform HIG, Interaction & Flow, Nielsen",
+    "severity": "critical",
+    "category": [
+      "Feedback & Status",
+      "Content & Copy"
+    ],
+    "screen": "01-default-empty",
+    "title": "The landing state is a dead end",
+    "description": "The whole page is a tray glyph and one 14px grey line, \"Select Campus(s)\". No subtitle, no action, no statement of what the screen manages, and every other control is hidden until a campus is chosen. The one control that resolves the state sits in the subheader and is never pointed at.",
+    "recommendation": "Give the empty state a heading-size title in the primary glyph colour, a supporting line explaining what appears next, and a primary button that opens the Campus multi-select. Keep the Campus control visually emphasised while the page is empty.",
+    "file_hint": "index.html:20-24 · js/ui-helpers.js (updateLayoutVisibility)"
+  },
+  {
+    "id": "F-012",
+    "agent": "Interaction & Flow, Accessibility, Nielsen",
+    "severity": "major",
+    "category": [
+      "Feedback & Status"
+    ],
+    "screen": "05-building-controller-dirty-footer",
+    "title": "Unsaved changes are signalled only by the Save button turning solid",
+    "description": "There is no marker on the changed field, none on the tree row and no banner. The single cue is a 48x29px button at the bottom of a long scrolling panel. On the bulk panels the user cannot tell whether they have staged a change affecting 18 records or nothing at all.",
+    "recommendation": "Mark dirty state at three levels: a change indicator with a per-field revert on each modified field, an \"Unsaved changes\" marker on the selected tree row, and a pending-change count beside Save (\"Save 2 changes — affects 18 building controllers\").",
+    "file_hint": "js/selection.js · css/settings-panel.css"
+  },
+  {
+    "id": "F-013",
+    "agent": "Accessibility",
+    "severity": "major",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "12-create-node-drawer, 15-manage-faculties-drawer",
+    "title": "Drawers have no dialog semantics and no focus trap",
+    "description": "Both drawers render as plain divs with no role=dialog, no aria-modal, and no aria-labelledby pointing at the title. Focus is never moved into the panel, never trapped while open, and never returned to the trigger on close. The close control is a button containing only an inline SVG, so it has no accessible name.",
+    "recommendation": "Add role=\"dialog\" aria-modal=\"true\" and aria-labelledby referencing the drawer title, move focus to the panel on open, trap it while open, restore it to the trigger on close, and give the close button an aria-label.",
+    "file_hint": "index.html:693-700 · index.html:977-984 · js/new-node-drawer.js · js/manage-actions.js"
+  },
+  {
+    "id": "F-014",
+    "agent": "Accessibility",
+    "severity": "major",
+    "category": [
+      "Accessibility",
+      "Feedback & Status"
+    ],
+    "screen": "20-archive-blocked-timetable-release",
+    "title": "Toasts are never announced to assistive technology",
+    "description": "showToast builds a plain div with no role=\"alert\" and no aria-live region. The Timetable Release refusal is the only feedback for a blocked destructive action, and a screen-reader user receives nothing at all. Notification icons are decorative SVGs that are not aria-hidden.",
+    "recommendation": "Give the toast container role=\"alert\" (or an aria-live region, assertive for error and polite otherwise), ensure the close control has an accessible name, and mark the decorative icon SVGs aria-hidden=\"true\".",
+    "file_hint": "js/ui-helpers.js:509-540"
+  },
+  {
+    "id": "F-015",
+    "agent": "Accessibility",
+    "severity": "major",
+    "category": [
+      "Accessibility",
+      "User Control"
+    ],
+    "screen": "02-campus-selected, 03-campus-node-selected, 11-bulk-selection",
+    "title": "Bulk selection is pointer-only, with no keyboard equivalent",
+    "description": "Multi-select exists solely as Cmd/Shift+Click. There are no selection checkboxes on tree rows and no select-all control, so the entire bulk-configuration flow, the only way to change Asset Registry on more than one building controller, is unreachable for keyboard, switch and voice-control users (WCAG 2.1.1).",
+    "recommendation": "Add a selection checkbox to each building-controller row and a select-all checkbox in the tree header, the pattern the Manage Faculties drawer already uses. Keep Cmd/Shift+Click as an accelerator.",
+    "file_hint": "js/tree-rendering.js · js/bulk-mode.js · js/init-search.js:25-57"
+  },
+  {
+    "id": "F-016",
+    "agent": "Accessibility",
+    "severity": "major",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "04-building-controller-selected",
+    "title": "The Exam Lockdown and Energy Saver checkboxes have no accessible name",
+    "description": "The visible text sits in a sibling <label class=\"setting-label\"> with no for attribute, while the checkbox is wrapped in a <label class=\"checkbox\"> containing only the input and an empty span. Nothing associates the two, so both controls are announced unlabelled and the text is not part of the click target.",
+    "recommendation": "Render each as a single checkbox field with the box immediately followed by its text label inside one <label>, spanning the row rather than split across the label and value columns.",
+    "file_hint": "index.html:311-328"
+  },
+  {
+    "id": "F-017",
+    "agent": "Accessibility",
+    "severity": "major",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "02-campus-selected, 04-building-controller-selected, 12-create-node-drawer",
+    "title": "Primary button label fails AA contrast",
+    "description": "rgb(245,245,247) on rgb(0,113,227) measures 4.31:1, below the 4.5:1 required for 14px normal text. This affects Create Node, Save and Create, the most important control in every view.",
+    "recommendation": "Set the label to pure white (4.70:1) or darken the accent fill to about rgb(0,102,204) for roughly 5.5:1. Apply the same correction to every filled accent control.",
+    "file_hint": ".davinci/assets/design-system tokens · css/base.css"
+  },
+  {
+    "id": "F-018",
+    "agent": "Accessibility",
+    "severity": "major",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "02-campus-selected, 04-building-controller-selected, 01-default-empty",
+    "title": "Secondary grey text fails AA contrast at 3.62:1",
+    "description": "rgb(134,134,139) on white measures 3.62:1, below the 4.5:1 threshold. It is used for the faculty tags in every tree row and in the Associated Faculties grid, and for every empty-state subtitle. Faculty codes identify building controllers and are real content, not decoration.",
+    "recommendation": "Step this text to at least rgb(110,110,115) (5.07:1), which the panel already uses elsewhere. If tags need to read as secondary, create the separation with a light fill rather than by lightening the text.",
+    "file_hint": "css/tree-section.css · css/info-display.css · design-system tokens"
+  },
+  {
+    "id": "F-019",
+    "agent": "Accessibility",
+    "severity": "major",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "02-campus-selected, 18-registry-filter-disabled",
+    "title": "The Asset Registry indicator fails non-text contrast in its disabled state",
+    "description": "The indicator is the sole carrier of a meaningful state, so it needs 3:1 against white. The enabled green rgb(3,161,14) sits at 3.44:1, only just clearing it, and the light grey disabled fill falls well below 3:1, making the disabled state effectively invisible for low-vision users (WCAG 1.4.11).",
+    "recommendation": "Darken both fills to at least 3:1 against white, or give the disabled state a visible outline ring so its silhouette is perceivable independent of fill lightness.",
+    "file_hint": "css/tree-section.css"
+  },
+  {
+    "id": "F-020",
+    "agent": "Accessibility",
+    "severity": "major",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "04-building-controller-selected, 02-campus-selected, 12-create-node-drawer",
+    "title": "Icon-only controls fall below the 24x24 minimum target size",
+    "description": "The open-in-new-tab buttons, the circular-arrow reset-filters button, and the toast and drawer close glyphs all render at an 11px glyph with no padding, putting their hit box well under 24x24 CSS px (WCAG 2.5.8). These are also among the least forgiving controls: reset wipes the filter set, the drawer X abandons a form.",
+    "recommendation": "Give each a minimum 24x24px hit box (28x28pt is the better macOS target) by adding padding, and raise the glyph to 16px, the foundations band for control icons. Keep 8px clear space between adjacent icon buttons.",
+    "file_hint": "css/settings-list.css · css/tree-section.css · css/info-display.css"
+  },
+  {
+    "id": "F-021",
+    "agent": "Accessibility, Interaction & Flow, Nielsen",
+    "severity": "major",
+    "category": [
+      "Error Prevention",
+      "Accessibility"
+    ],
+    "screen": "12-create-node-drawer, 13-create-drawer-all-sections",
+    "title": "Required fields carry no marker",
+    "description": "Node Type, Hostname and IP Address are enforced on submit, yet nothing distinguishes them from the fields explicitly marked \"(optional)\". The user fills the form top to bottom and learns the rules by failing. Enabling the Campus Hub and Relay sections adds two more blocks of unmarked required fields.",
+    "recommendation": "Mark required fields with the required attribute and a visible indicator, plus a short key at the top of the form. Since \"(optional)\" is already in use, pick one convention and apply it consistently.",
+    "file_hint": "index.html:734-945"
+  },
+  {
+    "id": "F-022",
+    "agent": "Accessibility, Interaction & Flow, Nielsen",
+    "severity": "major",
+    "category": [
+      "Error Prevention",
+      "Error Recovery"
+    ],
+    "screen": "12-create-node-drawer, not-reachable",
+    "title": "Nothing validates on input and no error state exists",
+    "description": "There is no designed appearance for an invalid hostname, a duplicate IP or a malformed Proxy URL. The IP field promises \"Must be unique across all nodes\", a rule nothing checks before submit, which is worse than no help text because the user trusts it. Feedback arrives only at submit, with no indication of which field failed.",
+    "recommendation": "Design the field error state (red border, warning glyph, specific message beneath the field, aria-invalid plus aria-describedby) and validate on blur. Enforce the IP uniqueness rule for real or remove the claim. Add a form-level summary since the form scrolls past one viewport.",
+    "file_hint": "index.html:749-753 · js/new-node-drawer.js"
+  },
+  {
+    "id": "F-023",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "major",
+    "category": [
+      "Feedback & Status",
+      "Error Prevention"
+    ],
+    "screen": "not-reachable",
+    "title": "No loading or pending state exists, and writes can be double-submitted",
+    "description": "All data is seeded synchronously, so the design has never had to answer what the UI does during a real round trip. Save and Create stay enabled while a request is in flight; for Create that means duplicate nodes, for the cascade a duplicate 18-record write.",
+    "recommendation": "Specify a pending state per write (button enters loading and disables, form controls lock) and a skeleton for the tree and details grid on load. Disable the submit control from first click until the response resolves.",
+    "file_hint": "js/selection.js · js/new-node-drawer.js · js/bulk-mode.js"
+  },
+  {
+    "id": "F-024",
+    "agent": "Interaction & Flow",
+    "severity": "major",
+    "category": [
+      "Error Recovery",
+      "Feedback & Status"
+    ],
+    "screen": "not-reachable",
+    "title": "No error state is defined for a failed or partially applied write",
+    "description": "The Timetable Release block is the only error path in the feature. There is nothing for a failed Save, a rejected duplicate IP or a connection lost mid-cascade. A partially applied bulk write has no representation at all: the user would see a clean panel with no hint that 6 of 18 building controllers were updated.",
+    "recommendation": "Define an error notification per write path stating what failed and how to recover, keep entered values in place on failure, and for partial bulk failures list the records that did not apply with a retry action.",
+    "file_hint": "js/bulk-mode.js · js/selection.js"
+  },
+  {
+    "id": "F-025",
+    "agent": "Verified in code",
+    "severity": "major",
+    "category": [
+      "Error Prevention",
+      "Consistency"
+    ],
+    "screen": "02-campus-selected, 17-show-archived",
+    "title": "Reset Filters silently ignores the Faculties filter",
+    "description": "init-search.js calls window.ProjMultiSelect.getItems(), a method the plugin does not export, inside a try/catch that swallows the TypeError. Confirmed live: narrowing Faculties from 18 to 1 leaves the reset button disabled, and pressing Reset restores Asset Registry and Show Archived but leaves Faculties narrowed at 1.",
+    "recommendation": "Add a getItems accessor to the ProjMultiSelect plugin, or derive the item list from the same source that populates it. Remove the blanket try/catch so a missing API surfaces instead of silently degrading, and include Faculties in both the isDefault check and the reset action.",
+    "file_hint": "js/init-search.js:222 · js/init-search.js:267 · .davinci/plugins/proj-multi-select.js:583-593"
+  },
+  {
+    "id": "F-026",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "major",
+    "category": [
+      "Error Prevention",
+      "User Control"
+    ],
+    "screen": "03-campus-node-selected",
+    "title": "Clicking the campus row silently selects all 18 of its building controllers",
+    "description": "One gesture does two unrelated things: it selects the campus and enters a bulk-edit mode with an 18-controller blast radius, turning the whole tree blue. Every other row in the tree is a single-item selection, so the campus row overloads the same click.",
+    "recommendation": "Separate the intents. Clicking the campus row selects the campus only; selecting all its building controllers requires an explicit control (the proposed select-all checkbox, or a \"Configure all 18 building controllers\" action inside the campus panel).",
+    "file_hint": "js/init-search.js:33-56 · js/selection.js · js/bulk-mode.js"
+  },
+  {
+    "id": "F-027",
+    "agent": "Interaction & Flow, Accessibility, Nielsen",
+    "severity": "major",
+    "category": [
+      "Feedback & Status",
+      "Consistency"
+    ],
+    "screen": "11-bulk-selection",
+    "title": "The multi-select bulk panel drops the scope notice the campus panel shows",
+    "description": "The same destructive write is explained on one entry path and unexplained on the other. The safety information is attached to how the user arrived rather than to the action itself.",
+    "recommendation": "Attach the scope notification to the bulk write so it appears in every bulk panel, stating the exact record count and naming the affected hosts.",
+    "file_hint": "js/bulk-mode.js · index.html:123-130"
+  },
+  {
+    "id": "F-028",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "major",
+    "category": [
+      "Feedback & Status",
+      "User Control"
+    ],
+    "screen": "11-bulk-selection",
+    "title": "The bulk panel never names the selected building controllers and offers no per-item deselect",
+    "description": "The panel reports only a count. To verify the selection the user must scroll the tree hunting for highlighted rows, which move off-screen. Correcting one mis-Cmd+click means \"Clear Selection\" and rebuilding the whole set, so users will proceed with a selection they know is wrong.",
+    "recommendation": "List the selected hostnames as removable chips under the panel title, each with its own remove control and its current value for the setting being changed, and make Cmd+Click on a selected row deselect it.",
+    "file_hint": "js/bulk-mode.js"
+  },
+  {
+    "id": "F-029",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "major",
+    "category": [
+      "Content & Copy",
+      "Feedback & Status"
+    ],
+    "screen": "03-campus-node-selected, 18-registry-filter-disabled",
+    "title": "The cascade scope copy contradicts the actual filter-scoped behaviour",
+    "description": "The notification says the change \"updates every building controller in this campus\", but the write actually targets every building controller visible under the current filters. With the Asset Registry filter set to Disabled the same panel would write to 2 building controllers, not 18, while the copy still claims the whole campus.",
+    "recommendation": "Make the scope literal and live: \"Applies to the 18 building controllers currently visible in NORT (filters: Asset Registry = All, archived hidden)\". Drive the header count and the body copy from the same source.",
+    "file_hint": "js/bulk-mode.js (_updateBulkFSNNotice) · js/selection.js (_updateSiteFSNNotice)"
+  },
+  {
+    "id": "F-030",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "major",
+    "category": [
+      "Error Recovery",
+      "User Control"
+    ],
+    "screen": "09-campus-hub-selected",
+    "title": "Campus Hub Hostname is locked behind a remedy the panel does not offer",
+    "description": "The disabled field says \"Remove all associated Building Controllers to edit\". The ASSOCIATED BUILDING CONTROLLERS list sits further down the same panel but provides no control to remove an association, so the system states a precondition and withholds every means of satisfying it.",
+    "recommendation": "Add a remove control to each row of the ASSOCIATED BUILDING CONTROLLERS list with its own confirm, and turn the note into a link that scrolls to that list with the count inline.",
+    "file_hint": "index.html:448-454 · index.html:491-504 · js/selection.js"
+  },
+  {
+    "id": "F-031",
+    "agent": "Interaction & Flow",
+    "severity": "major",
+    "category": [
+      "Feedback & Status",
+      "Error Prevention"
+    ],
+    "screen": "04-building-controller-selected, 09-campus-hub-selected",
+    "title": "Renaming propagates to other records with no warning",
+    "description": "Renaming a building controller or a Campus Hub rewrites the name on association records elsewhere. The user edits what looks like a local text field and triggers an invisible multi-record write with no preview, no count and no confirmation.",
+    "recommendation": "Warn at edit time (\"Renaming updates 3 association records\") and restate the count in the Save confirmation and the success notification.",
+    "file_hint": "js/selection.js (propagateLineServerRename, propagateGHDSRename)"
+  },
+  {
+    "id": "F-032",
+    "agent": "Interaction & Flow",
+    "severity": "major",
+    "category": [
+      "Feedback & Status",
+      "Error Prevention"
+    ],
+    "screen": "04-building-controller-selected",
+    "title": "Save silently rewrites the Proxy URL the user did not touch",
+    "description": "Proxy URL re-derives on Save when the stored value is empty or still matches what the old hostname produced, so renaming a hostname quietly changes the URL too. The \"Manually edited.\" hint and Reset link appear only conditionally, so a user who never edited the field sees no sign it is system-managed.",
+    "recommendation": "Label the field as auto-generated whenever it is in derived mode, and preview the pending result inline before Save (\"Proxy URL will update to https://...\"). Confirm the derived change in the success notification.",
+    "file_hint": "js/selection.js (commitEditableFields) · js/config-data.js (deriveLineServerProxyURL)"
+  },
+  {
+    "id": "F-033",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "major",
+    "category": [
+      "Error Prevention"
+    ],
+    "screen": "15-manage-faculties-drawer",
+    "title": "Unchecking the last faculty orphans the building controller with no warning",
+    "description": "A building controller is stored once per faculty, so unchecking a faculty deletes a record and unchecking the last one leaves an orphan shown as \"No Faculties selected\". The drawer warns about neither case, marks no difference between existing and newly added rows, and asks for no confirmation on Save.",
+    "recommendation": "Summarise the delta on Save (\"Removing GENERAL and TEMPLATE will delete 2 records\"). Hard-warn on the zero-faculty case in plain language and require explicit confirmation.",
+    "file_hint": "js/manage-actions.js"
+  },
+  {
+    "id": "F-034",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "major",
+    "category": [
+      "Content & Copy",
+      "Feedback & Status"
+    ],
+    "screen": "12-create-node-drawer, 13-create-drawer-all-sections",
+    "title": "The Create form's dependency chain has to be reverse-engineered",
+    "description": "The gating rule is stated only as placeholder text inside two disabled controls, both reading \"Select a Campus Hub first\". There is a second hidden level: Alert says \"Requires Relay connection to enable\", but Relay Association is itself locked behind Campus Hub, so a user wanting Alert must infer a two-step chain from three dead controls.",
+    "recommendation": "State the dependency positively on the controlling field (\"Selecting a Campus Hub enables Faculties, Relay Association and Alert Service\") and flag the newly unlocked fields when Campus Hub is set.",
+    "file_hint": "index.html:755-782 · index.html:810-818 · js/new-node-drawer.js"
+  },
+  {
+    "id": "F-035",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "major",
+    "category": [
+      "Error Prevention",
+      "Feedback & Status"
+    ],
+    "screen": "13-create-drawer-all-sections",
+    "title": "Create commits up to three linked nodes with no review step",
+    "description": "Enabling the Campus Hub and Relay toggles appends two blocks of required fields entirely below the fold with no in-viewport signal that the form grew, and the visible fields mutate silently. The highest-consequence action in the feature has the least ceremony.",
+    "recommendation": "Add a sticky footer summary reflecting the toggles (\"Will create: 1 Building Controller, 1 Campus Hub, 1 Relay\") with per-section completion state, and a review step on Create listing each node and its key fields. Label the final action with the outcome.",
+    "file_hint": "index.html:718-945 · js/new-node-drawer.js"
+  },
+  {
+    "id": "F-036",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "major",
+    "category": [
+      "Consistency"
+    ],
+    "screen": "04-building-controller-selected, 03-campus-node-selected",
+    "title": "Switches are used for settings that only apply on Save, and mixed with checkboxes",
+    "description": "A switch signals immediate effect, but every switch here is staged behind the footer Save, so flipping Asset Registry and navigating away feels done while the change is silently discarded. The same panel then mixes models arbitrarily: Alert Service is a switch while Energy Saver and Exam Lockdown are checkboxes, though all four are binary settings committed by the same button.",
+    "recommendation": "Pick one model for deferred settings and apply it throughout. With a Save/Discard footer governing the panel, checkboxes are the honest control; if switches stay, add an \"Applies on Save\" note and convert Exam Lockdown and Energy Saver to switches.",
+    "file_hint": "index.html:199-210 · index.html:300-328"
+  },
+  {
+    "id": "F-037",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "major",
+    "category": [
+      "Feedback & Status",
+      "Consistency"
+    ],
+    "screen": "22-tree-search-results",
+    "title": "Search has no result count, no empty state, and does not filter the tree",
+    "description": "A query matching nothing shows an empty dropdown indistinguishable from a not-yet-loaded one, and a query with 40 matches gives no sense of scale. The tree is not filtered, so Search and Filters are two unrelated scoping mechanisms with nothing explaining how they differ or whether search respects the active filters.",
+    "recommendation": "Add a count header and an explicit no-match state naming the query. Decide and show one search model, either filter the tree live or label it as a jump-to list, and expose the query as a removable chip alongside the other active filters.",
+    "file_hint": "js/tree-search.js · .davinci/canvas-navigation-data.json"
+  },
+  {
+    "id": "F-038",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "major",
+    "category": [
+      "Feedback & Status"
+    ],
+    "screen": "17-show-archived",
+    "title": "Show Archived Building Controllers gives no feedback that it did anything",
+    "description": "Ticking the box produces no visible change, no count and no banner; the only cue is an unrelated reset button becoming enabled. The user cannot distinguish \"the filter worked and there are none\" from \"the filter is broken\". This is also the only recovery route from Archive.",
+    "recommendation": "Always report the outcome: an inline note when the set is empty (\"No archived building controllers in NORT\"), or a count plus a visible \"Archived\" tag and muted treatment on archived rows.",
+    "file_hint": "js/init-search.js:136-158 · js/ui-helpers.js (buildAllServersTree)"
+  },
+  {
+    "id": "F-039",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "major",
+    "category": [
+      "Feedback & Status",
+      "User Control"
+    ],
+    "screen": "18-registry-filter-disabled",
+    "title": "Filters report no result count and silently drop the current selection",
+    "description": "The tree falls from 18 rows to 2 with no \"2 of 18\" and no active-filter summary, so a filtered list is indistinguishable from an empty campus. When a filter hides the selected node the panel reverts to \"No Selection\" with no explanation, and any unsaved edits go with it.",
+    "recommendation": "Show a result count and removable active-filter chips above the tree. When the selected node is filtered out, keep the panel loaded and show an inline notice with a \"Clear filters\" action instead of dropping to the empty state.",
+    "file_hint": "js/init-search.js:161-174 · js/ui-helpers.js"
+  },
+  {
+    "id": "F-040",
+    "agent": "Nielsen",
+    "severity": "major",
+    "category": [
+      "Content & Copy"
+    ],
+    "screen": "all",
+    "title": "Domain vocabulary is unexplained and there is no help entry point",
+    "description": "Registry Sync, Campus Hub, Relay, Building Controller, Timetable Release, Alert Service, Energy Saver, Exam Lockdown, Standalone Campus, aria2c, rsync, Bridge Service and orphan all appear with no definition, tooltip or glossary. A new operator cannot tell what \"Classify as an Exam Lockdown controller\" will do to a live room before toggling it.",
+    "recommendation": "Attach an info affordance to every domain term revealing a one-line plain-language definition and its consequence, expand acronyms on first use per panel, and add a persistent help link in the subheader to the feature documentation.",
+    "file_hint": "index.html · .davinci/canvas-navigation-data.json"
+  },
+  {
+    "id": "F-041",
+    "agent": "Nielsen, Interaction & Flow",
+    "severity": "major",
+    "category": [
+      "Content & Copy",
+      "Feedback & Status"
+    ],
+    "screen": "11-bulk-selection, 15-manage-faculties-drawer",
+    "title": "The per-faculty storage model leaks into user-facing counts",
+    "description": "A hostname exists once per associated faculty, so \"Bulk Configuration (3 Building Controllers)\" may describe fewer than three physical controllers. The user's mental model is \"a building controller\", the system's is \"a controller-faculty record\", and the UI never reconciles them, which makes the stated blast radius of a bulk write unreliable.",
+    "recommendation": "Present the building controller as the primary object and its faculty records as an attribute. Deduplicate counts by hostname (\"3 records across 2 building controllers\") and name the zero-faculty condition explicitly rather than exposing the internal orphan concept implicitly.",
+    "file_hint": "js/config-data.js · js/bulk-mode.js"
+  },
+  {
+    "id": "F-042",
+    "agent": "Nielsen",
+    "severity": "major",
+    "category": [
+      "Feedback & Status"
+    ],
+    "screen": "04-building-controller-selected",
+    "title": "Read-only values and editable fields are not visually distinguished",
+    "description": "The info grid (IP Address, Node ID, Campus Hub Association, Network Protocol, Associated Faculties) and the editable fields (Hostname, Node Type, Proxy URL, Description, Location and the toggles) sit in one section separated only by a thin rule. Nothing announces which values can be changed, so the user probes by clicking.",
+    "recommendation": "Split them into two clearly headed sections, \"Node information\" read-only and \"Settings\" editable, and give the editable controls an input treatment the read-only values do not share.",
+    "file_hint": "index.html:225-331 · css/settings-categories.css"
+  },
+  {
+    "id": "F-043",
+    "agent": "Nielsen, Platform HIG",
+    "severity": "major",
+    "category": [
+      "Feedback & Status",
+      "Accessibility"
+    ],
+    "screen": "02-campus-selected",
+    "title": "Faculty tags truncate into a \"+N\" badge that reveals nothing",
+    "description": "Tags are cut by row width and folded into an unlabelled \"+2\". Faculty membership determines what a bulk change touches and whether removing a faculty orphans the building controller, so the truncated information is decision-critical and the hidden remainder is unnamed.",
+    "recommendation": "Make the overflow badge reveal the full list on hover and on keyboard focus, label it \"+2 more\", and show the complete set untruncated in the details panel.",
+    "file_hint": "js/tree-rendering.js:93-151 · js/tree-rendering.js:241-287"
+  },
+  {
+    "id": "F-044",
+    "agent": "Platform HIG, Interaction & Flow",
+    "severity": "minor",
+    "category": [
+      "User Control",
+      "Feedback & Status"
+    ],
+    "screen": "03-campus-node-selected, 11-bulk-selection",
+    "title": "The tri-state \"Mixed\" switch is unpredictable and cannot be restored",
+    "description": "A switch is a two-position control carrying a third amber position here. Nothing shows whether flipping from Mixed enables all, disables all, or restores per-controller values, and it cannot be returned to Mixed once moved, so an accidental tap is unrecoverable short of Discard.",
+    "recommendation": "State the outcome next to the control (\"Mixed: 11 enabled, 7 disabled. Setting this applies to all 18.\") or replace it with a segmented \"Enable all / Disable all / Leave unchanged\" defaulting to Leave unchanged, which makes the no-op safe.",
+    "file_hint": "js/bulk-mode.js · js/selection.js · css/settings-list.css"
+  },
+  {
+    "id": "F-045",
+    "agent": "Accessibility",
+    "severity": "minor",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "all",
+    "title": "No visible focus indicator appears in any state",
+    "description": "No focus ring was observable on any interactive element across 24 captured states, and several places would make one hard to read even if present: the blue selected tree rows, the small icon buttons, and the tags. Popovers and the search dropdown also cover the controls that precede them.",
+    "recommendation": "Define one focus indicator in the design system, at least 2px with 3:1 contrast against both the white surface and the blue selected-row fill, and specify it for tree rows, switches, checkboxes, menu items and icon buttons.",
+    "file_hint": "css/base.css · design-system tokens"
+  },
+  {
+    "id": "F-046",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "minor",
+    "category": [
+      "User Control"
+    ],
+    "screen": "02-campus-selected",
+    "title": "The Cmd/Shift instruction banner cannot be dismissed",
+    "description": "A 563px instructional notification sits permanently above the tree with no close control, spending a full row of the primary work surface on a tip that stops being useful after first use and goes unread through habituation.",
+    "recommendation": "Give it a dismiss control that persists per user, or demote it to an info affordance beside the tree header. If selection checkboxes are added, the tip reduces to a hint next to the select-all control.",
+    "file_hint": "index.html:54-68"
+  },
+  {
+    "id": "F-047",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Consistency",
+      "Content & Copy"
+    ],
+    "screen": "06-discard-confirm-popover, 14-create-drawer-close-confirm, 19-archive-confirm",
+    "title": "Confirmation dialogs are structurally and verbally inconsistent",
+    "description": "Two confirms are untitled (Discard, Archive) while one has a title (\"Close Node Creation\"). The cancel action is variously \"Cancel\" and \"Keep Creating\"; the confirm is variously \"Discard\", \"Archive\" and \"Yes, Close\". \"Close\" is also used for a control that abandons entered data, where \"Cancel\" is used elsewhere for the same meaning.",
+    "recommendation": "Standardise: a short question as the title, one line of consequence in the body, and a fixed footer of neutral \"Cancel\" plus a verb-first confirm echoing the title. Drop \"Yes,\" prefixes and reserve \"Close\" for read-only panels.",
+    "file_hint": "index.html:673-687 · index.html:952-966 · index.html:87-96"
+  },
+  {
+    "id": "F-048",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Feedback & Status"
+    ],
+    "screen": "07-manage-popover, 06-discard-confirm-popover, 19-archive-confirm",
+    "title": "Popovers cover the content they are asking about",
+    "description": "The Manage menu hides the CONFIGURATION section it acts on, the Discard popover covers the Hostname field and Associated Faculties tags, and the Archive popover covers the panel header and the Asset Registry switch. The user weighs a decision while the evidence for it is hidden. The Discard popover also sits flush to the viewport edge and wraps into four short lines.",
+    "recommendation": "Promote consequential confirmations to a centred alert over a scrim. If they stay anchored, widen them, add margin from the viewport edge, and flip placement so they never cover the fields named in the message.",
+    "file_hint": "css/manage-actions.css · index.html:87-96 · index.html:673-687"
+  },
+  {
+    "id": "F-049",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Consistency",
+      "Content & Copy"
+    ],
+    "screen": "21-relay-selected, 09-campus-hub-selected, 04-building-controller-selected",
+    "title": "The same field is called \"Network Protocol\" on two panels and \"Network Transport\" on a third",
+    "description": "One concept with two labels forces the user to work out whether they are looking at the same attribute, and the drift will propagate into search, Export and any future table column.",
+    "recommendation": "Pick one term, whichever the API and the Export file use, and apply it across all three panels. Sweep the remaining panel labels for the same class of drift.",
+    "file_hint": "index.html:549-552 · index.html:241-244 · index.html:437-440"
+  },
+  {
+    "id": "F-050",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Feedback & Status"
+    ],
+    "screen": "21-relay-selected",
+    "title": "The Proxy URL field clips its value, hiding the trailing slash",
+    "description": "The stored value ends \"/relay/\" but the field displays \"…/relay\". A trailing slash determines whether a proxy URL resolves, and there is no tooltip, wrap or expansion, so the user can read the field, believe it correct, and be wrong.",
+    "recommendation": "Let URL fields use the panel's full width and show the complete value on focus. Where a value still overflows, truncate in the middle so the tail stays visible, and add a copy affordance.",
+    "file_hint": "index.html:566-574 · css/settings-list.css"
+  },
+  {
+    "id": "F-051",
+    "agent": "Accessibility, Nielsen, Platform HIG",
+    "severity": "minor",
+    "category": [
+      "Accessibility",
+      "Consistency"
+    ],
+    "screen": "04-building-controller-selected, 12-create-node-drawer",
+    "title": "The type scale inverts hierarchy and is inconsistent across controls",
+    "description": "In every read-only grid the value is 12px while its own label is 14px, so the caption outranks the datum, applied to precise strings like \"10.207.130.62\" where one misread character matters. Separately, selects render at 12px while text inputs in the same form render at 14px.",
+    "recommendation": "Set the value to 14px in the primary glyph colour with a 12px secondary label, bump monospace one step since it reads smaller, and set all form control values to 14px. Reserve 12px for help text and captions.",
+    "file_hint": "css/info-display.css · css/settings-list.css · design-system tokens"
+  },
+  {
+    "id": "F-052",
+    "agent": "Platform HIG, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Content & Copy"
+    ],
+    "screen": "12-create-node-drawer, 20-archive-blocked-timetable-release",
+    "title": "Copy defects in the primary creation flow and the error toast",
+    "description": "\"e.g.,192.168.1.100\" has no space after the comma and \"e.g, https://<hostname>/campus/\" is a malformed abbreviation, while the hostname placeholders correctly use \"e.g. meds-bc1-4.atrium.test\". The toast writes \"This Building controller\" where the rest of the product writes \"Building Controller\".",
+    "recommendation": "Correct to \"e.g. 192.168.1.100\" and \"e.g. https://<hostname>/campus/\", and normalise the object name to \"Building Controller\". Standardise on sentence case for all help text.",
+    "file_hint": "index.html:751-752 · index.html:765 · index.html:853 · index.html:908 · js/manage-actions.js"
+  },
+  {
+    "id": "F-053",
+    "agent": "Platform HIG, Nielsen, Interaction & Flow",
+    "severity": "minor",
+    "category": [
+      "Content & Copy",
+      "Error Prevention"
+    ],
+    "screen": "13-create-drawer-all-sections",
+    "title": "\"NONE\" is presented as a faculty, and silent defaults determine how many records are created",
+    "description": "The help text says \"GENERAL, TEMPLATE, and NONE are pre-selected by default\" while only two chips show, mixing a sentinel value with real faculty names. Because a building controller is stored once per faculty, these unreviewed defaults decide how many records the submit creates.",
+    "recommendation": "Keep NONE out of user-facing copy unless it is a real faculty record. Make the help text match what is on screen and state the consequence (\"Creates one record per selected faculty\"), and surface the defaults in the footer summary.",
+    "file_hint": "index.html:772-776 · js/new-node-drawer.js"
+  },
+  {
+    "id": "F-054",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Consistency",
+      "Feedback & Status"
+    ],
+    "screen": "18-registry-filter-disabled",
+    "title": "The Asset Registry filter does not apply to the Campus Hub and Relay sections, and nothing says so",
+    "description": "Building controllers collapse from 18 to 2 while Campus Hubs still lists all 3 entries. The tree looks partly filtered and the user cannot tell whether those sections are out of scope by design or simply have 3 matches.",
+    "recommendation": "Scope-label the filter (\"Registry Sync — building controllers only\") and show a per-section count, or dim the unaffected sections while a building-controller-only filter is active.",
+    "file_hint": "index.html:35-43 · js/ui-helpers.js (buildAllServersTree)"
+  },
+  {
+    "id": "F-055",
+    "agent": "Nielsen",
+    "severity": "minor",
+    "category": [
+      "Content & Copy"
+    ],
+    "screen": "15-manage-faculties-drawer, 02-campus-selected",
+    "title": "Faculty codes have no human-readable names",
+    "description": "Faculties appear only as opaque codes (EDU, MED, SCI, BUS, ART, ENG) in the list, the tags and the search results. Picking the wrong one from 18 near-identical codes is a one-character mistake with consequences for live rooms.",
+    "recommendation": "Render each faculty as code plus name (\"MED — Medicine\") everywhere it appears, and let the search field match on either.",
+    "file_hint": "js/config-data.js · js/manage-actions.js · js/tree-rendering.js"
+  },
+  {
+    "id": "F-056",
+    "agent": "Interaction & Flow, Platform HIG, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Content & Copy"
+    ],
+    "screen": "15-manage-faculties-drawer",
+    "title": "An unexplained controller glyph sits on every faculty row",
+    "description": "Each of the 18 rows carries a small controller glyph at its right edge with no label, count, tooltip or legend. It either means something and is undecodable, or it is decorative noise in a list the user must scan carefully.",
+    "recommendation": "Give it meaning, most likely a count of building controllers already in that faculty shown as glyph plus number with a tooltip, or remove it.",
+    "file_hint": "js/manage-actions.js"
+  },
+  {
+    "id": "F-057",
+    "agent": "Interaction & Flow",
+    "severity": "minor",
+    "category": [
+      "Feedback & Status"
+    ],
+    "screen": "15-manage-faculties-drawer",
+    "title": "The faculty search has no no-match state",
+    "description": "Searching for a faculty that does not exist yields a blank list, indistinguishable from a loading or broken state, in a drawer where a blank list could also plausibly mean \"no faculties available\".",
+    "recommendation": "Add a no-match empty state naming the query and offering to clear it.",
+    "file_hint": "js/manage-actions.js"
+  },
+  {
+    "id": "F-058",
+    "agent": "Interaction & Flow",
+    "severity": "minor",
+    "category": [
+      "Feedback & Status",
+      "Content & Copy"
+    ],
+    "screen": "04-building-controller-selected",
+    "title": "The orphan state is presented as neutral information",
+    "description": "A building controller with zero faculties shows only the hint \"No Faculties selected\". This is a degraded and probably unintended state, but it reads as a neutral fact with no explanation of the consequence and no route to fix it.",
+    "recommendation": "Treat it as a warning: explain the consequence in one line and place an \"Add faculties\" action beside it that opens the Manage Faculties drawer.",
+    "file_hint": "js/tree-rendering.js:143-150 · js/selection.js"
+  },
+  {
+    "id": "F-059",
+    "agent": "Interaction & Flow",
+    "severity": "minor",
+    "category": [
+      "Feedback & Status",
+      "Content & Copy"
+    ],
+    "screen": "02-campus-selected, 18-registry-filter-disabled",
+    "title": "Export gives no indication of its scope or its outcome",
+    "description": "Export writes a CSV of the currently visible building controllers, so its contents depend entirely on the active filters, but the button says only \"Export\" with no row count, no preview and no confirmation that a file was produced. Exporting while the Asset Registry filter is set to Disabled yields 2 rows with no reason to suspect the file is incomplete.",
+    "recommendation": "State the scope on the control or in a confirm (\"Export 18 visible building controllers\") and show a success notification when the file is generated.",
+    "file_hint": "js/export.js · .davinci/canvas-navigation-data.json"
+  },
+  {
+    "id": "F-060",
+    "agent": "Interaction & Flow, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Content & Copy",
+      "Accessibility"
+    ],
+    "screen": "02-campus-selected",
+    "title": "The reset-filters control is icon-only with no text label",
+    "description": "A circular-arrow glyph with no label carries an action that wipes the entire filter set. Its meaning depends on recognising the glyph, and when disabled it gives no reason for being disabled.",
+    "recommendation": "Label it \"Reset filters\" as an icon-plus-text button, and add a tooltip stating why it is disabled when no filters are active.",
+    "file_hint": "index.html:49-51 · css/tree-section.css"
+  },
+  {
+    "id": "F-061",
+    "agent": "Platform HIG, Nielsen",
+    "severity": "minor",
+    "category": [
+      "Consistency"
+    ],
+    "screen": "23-site-node-rvrs, 02-campus-selected",
+    "title": "Building controllers have no section header, and tree hierarchy rests on letter case",
+    "description": "Building controllers hang directly off the campus row while Campus Hub and Relay peers sit in uppercase collapsible sections, so the primary object is the only group the user cannot collapse, count or address. Selectable rows and grouping headers are distinguished only by case and indentation.",
+    "recommendation": "Give building controllers their own collapsible \"BUILDING CONTROLLERS\" section with a count, and differentiate header rows from object rows with a tinted background and no hover or selection affordance rather than by casing.",
+    "file_hint": "js/ui-helpers.js (buildAllServersTree) · js/tree-rendering.js:52-68 · css/tree-section.css"
+  },
+  {
+    "id": "F-062",
+    "agent": "Nielsen",
+    "severity": "minor",
+    "category": [
+      "Consistency",
+      "Content & Copy"
+    ],
+    "screen": "02-campus-selected, 09-campus-hub-selected",
+    "title": "The details pane is titled \"Building Controller Details\" when nothing is selected",
+    "description": "The same pane hosts Campus Hub and Relay content under different titles, so the header mislabels the empty state and misrepresents the pane's scope before any selection exists.",
+    "recommendation": "Use a neutral title (\"Details\") for the empty state and switch to the concrete object type only once a selection is made.",
+    "file_hint": "index.html:79 · js/tree-rendering.js:345-359"
+  },
+  {
+    "id": "F-063",
+    "agent": "Platform HIG",
+    "severity": "minor",
+    "category": [
+      "Accessibility",
+      "Content & Copy"
+    ],
+    "screen": "04-building-controller-selected, 21-relay-selected",
+    "title": "Association values should be links rather than an 11px glyph beside them",
+    "description": "Navigating to a related node is offered as a tiny accent glyph parked next to the value. The destination is not named by the control, the target is small, and the relationship between \"hub.atrium.test (Standalone Campus)\" and the arrow beside it must be inferred.",
+    "recommendation": "Make the association value itself the link, accent-coloured and self-describing, and keep the glyph only as a trailing new-context indicator. Apply the same treatment to the Proxy URL open control.",
+    "file_hint": "index.html:237-240 · index.html:278-281 · js/selection.js (initProxyOpenButtons)"
+  },
+  {
+    "id": "F-064",
+    "agent": "Nielsen",
+    "severity": "minor",
+    "category": [
+      "User Control",
+      "Consistency"
+    ],
+    "screen": "02-campus-selected, 11-bulk-selection",
+    "title": "The selection model lacks accelerators and excludes Campus Hub and Relay rows",
+    "description": "Scoping a bulk change means either \"everything visible\" (click the campus) or manual row-by-row clicking. There is no select-all-in-view, no invert, no select-by-filter-result and no saved views. Multi-select also silently does not apply to Campus Hub and Relay rows, an exception documented only in the tip banner.",
+    "recommendation": "Add Select all visible, Invert and Clear to the tree header with a live count, allow filter combinations to be saved as named views, and either extend selection to Campus Hub and Relay rows or make those rows visibly non-selectable.",
+    "file_hint": "js/bulk-mode.js · js/tree-rendering.js"
+  },
+  {
+    "id": "F-065",
+    "agent": "Accessibility",
+    "severity": "minor",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "all",
+    "title": "Section headings are not real headings and the page has no h1",
+    "description": "Panel section titles render as spans inside buttons rather than heading elements, so assistive technology cannot use them to navigate the details panel. The page content has no h1 at all.",
+    "recommendation": "Promote the section titles to real heading elements at the right level inside the disclosure buttons, and give the page content a single h1.",
+    "file_hint": "index.html:112-121 · index.html:215-224 · index.html:411-420"
+  },
+  {
+    "id": "F-066",
+    "agent": "Accessibility",
+    "severity": "info",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "02-campus-selected, 15-manage-faculties-drawer",
+    "title": "Several labels have line-height equal to their font size",
+    "description": "Checkbox labels and button labels are set at 14px/14, leaving no leading. Any label that wraps, and \"Show Archived Building Controllers\" or a long faculty name in a narrow drawer will wrap, collides with its own next line, and the layout cannot absorb increased text spacing (WCAG 1.4.12).",
+    "recommendation": "Set line-height to at least 1.4 for any text that can wrap and at least 1.2 for single-line button labels, and let the containers grow rather than clip.",
+    "file_hint": "css/settings-list.css · design-system tokens"
+  },
+  {
+    "id": "F-067",
+    "agent": "Platform HIG",
+    "severity": "info",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "09-campus-hub-selected",
+    "title": "The locked Campus Hub Hostname reads as muted rather than locked",
+    "description": "The field's only visual signal is a grey fill, the same treatment the design uses for placeholders and low-emphasis text, so at a glance it looks empty rather than disabled. The explanatory note beneath is good but does the work alone.",
+    "recommendation": "Add a lock glyph at the field's trailing edge and keep the note, or present locked values in the read-only info grid instead of as a dead input.",
+    "file_hint": "index.html:448-453 · js/selection.js"
+  },
+  {
+    "id": "F-068",
+    "agent": "Platform HIG",
+    "severity": "info",
+    "category": [
+      "Accessibility"
+    ],
+    "screen": "12-create-node-drawer, 20-archive-blocked-timetable-release",
+    "title": "No Reduce Motion variant is specified",
+    "description": "The drawer slides in from the right and the toast slides down from the top. These are the two largest moving surfaces in the feature and the toast enters in peripheral vision unannounced, with no reduced-motion alternative defined.",
+    "recommendation": "Specify a prefers-reduced-motion variant that cross-fades the drawer and toast in place instead of translating them, keeping durations under 200ms in both variants.",
+    "file_hint": "css/wizard.css · js/ui-helpers.js:509"
+  },
+  {
+    "id": "F-069",
+    "agent": "Nielsen",
+    "severity": "info",
+    "category": [
+      "Content & Copy"
+    ],
+    "screen": "12-create-node-drawer",
+    "title": "Help text is too terse to help",
+    "description": "\"Filtered by selected campus\" does not say which campus or what is excluded, and \"Requires Relay connection to enable.\" does not say how to obtain one from within the form the user is already in.",
+    "recommendation": "Name the value (\"Showing Campus Hubs in NORT\") and make the Alert hint actionable (\"Turn on Create Timetable Relay above, or pick an existing Relay association, to enable this\").",
+    "file_hint": "index.html:760 · index.html:817"
+  }
+]

@@ -1,0 +1,109 @@
+/* proj-wizard.css */
+/* Plugin component: Wizard — built on the large modal (modal-overlay + modal--large). */
+/* The design system owns the backdrop, centered panel, sizing, and scrollable body; this file styles the */
+/* header internals (close, title, stepper) only. */
+
+/* ── Header (title · close, then stepper below) ── */
+.modal__header.proj-wizard__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "title close"
+    "stepper stepper";
+  align-items: center;
+  column-gap: var(--space-m);
+  row-gap: var(--space-m);
+  padding: var(--space-m) var(--space-mp) var(--space-m);
+}
+.proj-wizard__title {
+  grid-area: title;
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-default);
+  font-weight: var(--font-weight-semibold);
+}
+.proj-wizard__close {
+  grid-area: close;
+  order: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  background: none;
+  border: none;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  color: var(--color-glyph-gray-secondary);
+  font-size: 20px;
+  padding: 0;
+  margin: 0;
+}
+.proj-wizard__close:hover { background-color: var(--color-fill-gray-quaternary); }
+.proj-wizard__stepper { grid-area: stepper; min-width: 0; }
+
+/* ── Stepper (rendered by proj-timeline via custom template) ── */
+.proj-wizard__steps {
+  display: flex;
+  align-items: center;
+  counter-reset: proj-wizard-step;
+}
+.proj-wizard__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  counter-increment: proj-wizard-step;
+  white-space: nowrap;
+}
+.proj-wizard__step:not(:last-child) { flex: 1; }
+.proj-wizard__step:not(:last-child)::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-fill-gray-quaternary);
+  margin-left: var(--space-m);
+}
+.proj-wizard__step--past:not(:last-child)::after {
+  background: var(--color-base-accent);
+}
+
+.proj-wizard__step-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  font-size: var(--font-size-tiny);
+  font-weight: var(--font-weight-semibold);
+}
+.proj-wizard__step-num::before { content: counter(proj-wizard-step); }
+.proj-wizard__step-check { display: none; font-size: 12px; }
+
+/* future — gray outline + gray number */
+.proj-wizard__step--future .proj-wizard__step-circle {
+  border: 1px solid var(--color-fill-gray-tertiary);
+  color: var(--color-glyph-gray-tertiary);
+}
+/* current — filled accent + white number */
+.proj-wizard__step--current .proj-wizard__step-circle {
+  background: var(--color-base-accent);
+  color: #fff;
+}
+/* past — filled accent + checkmark (number hidden) */
+.proj-wizard__step--past .proj-wizard__step-circle {
+  background: var(--color-base-accent);
+  color: #fff;
+}
+.proj-wizard__step--past .proj-wizard__step-num { display: none; }
+.proj-wizard__step--past .proj-wizard__step-check { display: inline-flex; }
+
+.proj-wizard__step-label {
+  font-size: var(--font-size-xxs);
+  color: var(--color-glyph-gray);
+}
+.proj-wizard__step--future .proj-wizard__step-label {
+  color: var(--color-glyph-gray-secondary);
+}

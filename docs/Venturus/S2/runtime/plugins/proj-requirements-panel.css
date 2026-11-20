@@ -1,0 +1,291 @@
+/* Requirements Panel — ribbon button + docked, resizable panel showing the
+   prototype's requirements.md. No overlay: the whole app shifts left via body
+   padding-right.
+
+   Ported from the canvas `canvas-styles.css` block added in 421fde72 and lost in the
+   .davinci/ migration. Two things here are shared, not private:
+
+   1. `body { transition: padding-right }` — proj-qa-panel.css assumes it exists
+      (its `is-resizing-proj-qa { transition: none }` rule has nothing to cancel
+      otherwise).
+   2. `.requirements-drawer__markdown` — proj-qa-panel.js applies this class to its
+      own rendered content so both panels share one set of typography rules.
+      Renaming it silently un-styles the Q&A panel. */
+
+/* --- Ribbon button --- */
+
+.proj-requirements-ribbon__label {
+    white-space: nowrap;
+}
+
+/* The canvas only sets `justify-content` on the last ribbon cell, so with more than
+   one button they sit flush together — the original added this gap in canvas-styles. */
+.prototype-ribbon__cell:last-child {
+    gap: var(--space-s);
+}
+
+/* Both panels inject their button after an async file-existence probe, so DOM order
+   is nondeterministic. Pin the visual order on the (already flex) cell instead. */
+#projQaBtn { order: 1; }
+#requirementsBtn { order: 2; }
+#changeHistoryBtn { order: 3; }
+
+/* --- App shift while the panel is open --- */
+
+/* Shift the ENTIRE app (ribbon, navbar, sub-header, content, footer) left by the
+   panel width so nothing is covered. The panel itself is fixed full-height and lives
+   above the UI (see below). */
+body {
+    transition: padding-right 0.2s ease-in-out;
+}
+
+body.has-requirements-open {
+    padding-right: var(--requirements-width, 480px);
+}
+
+/* Disable transitions while dragging so resize feels immediate */
+body.is-resizing-requirements {
+    transition: none;
+    cursor: col-resize;
+    user-select: none;
+}
+
+/* --- Panel shell --- */
+
+.requirements-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    z-index: 1000; /* above the sticky header (z-index: 999) */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-fill);
+    border-left: 2px solid var(--color-glyph-gray);
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+    transition: width 0.2s ease-in-out;
+}
+
+body.has-requirements-open .requirements-drawer {
+    width: var(--requirements-width, 480px);
+}
+
+body.is-resizing-requirements .requirements-drawer {
+    transition: none;
+}
+
+.requirements-drawer__resizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 2;
+    background: transparent;
+}
+
+.requirements-drawer__resizer:hover,
+body.is-resizing-requirements .requirements-drawer__resizer {
+    background: var(--color-base-accent);
+    opacity: 0.4;
+}
+
+/* --- Header --- */
+
+.requirements-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding: var(--space-m) var(--space-mp);
+    border-bottom: 1px solid var(--color-fill-gray-tertiary);
+    flex: 0 0 auto;
+}
+
+.requirements-drawer__title {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+    white-space: nowrap;
+}
+
+.requirements-drawer__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    flex: 0 0 auto;
+}
+
+.requirements-drawer__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: none;
+    background: transparent;
+    color: var(--color-glyph-gray-secondary);
+    font-size: 1.6rem;
+    cursor: pointer;
+    border-radius: 0.6rem;
+}
+
+.requirements-drawer__close:hover {
+    background: var(--color-fill-secondary);
+    color: var(--color-glyph-gray);
+}
+
+/* --- Body --- */
+
+.requirements-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-mp);
+}
+
+/* --- Missing-file hint (shown inside the error notification block) --- */
+
+.requirements-drawer__hint {
+    margin-top: var(--space-m);
+    padding: var(--space-m);
+    background: var(--color-fill-secondary);
+    border-radius: 0.8rem;
+}
+
+.requirements-drawer__hint-title {
+    margin: 0 0 var(--space-xs) 0;
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+}
+
+.requirements-drawer__hint-path {
+    margin: 0;
+    font-size: var(--font-size-xxs);
+    font-family: inherit;
+    color: var(--color-glyph-gray-secondary);
+}
+
+/* --- Markdown typography ---------------------------------------------------
+   SHARED with proj-qa-panel: its renderMarkdown() applies this class alongside
+   its own, so the two panels stay visually identical. Do not rename. */
+
+.requirements-drawer__markdown {
+    color: var(--color-glyph-gray);
+    font-size: var(--font-size-xxs);
+    line-height: var(--line-height-default);
+    word-wrap: break-word;
+}
+
+.requirements-drawer__markdown h1,
+.requirements-drawer__markdown h2,
+.requirements-drawer__markdown h3,
+.requirements-drawer__markdown h4 {
+    color: var(--color-glyph-gray);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.3;
+    margin: var(--space-l) 0 var(--space-s) 0;
+}
+
+.requirements-drawer__markdown h1:first-child,
+.requirements-drawer__markdown h2:first-child,
+.requirements-drawer__markdown h3:first-child {
+    margin-top: 0;
+}
+
+.requirements-drawer__markdown h1 { font-size: var(--font-size-sm); }
+.requirements-drawer__markdown h2 { font-size: var(--font-size-xs); }
+.requirements-drawer__markdown h3 { font-size: var(--font-size-xxs); text-transform: none; }
+.requirements-drawer__markdown h4 { font-size: var(--font-size-xxs); color: var(--color-glyph-gray-secondary); }
+
+.requirements-drawer__markdown p {
+    margin: 0 0 var(--space-m) 0;
+}
+
+.requirements-drawer__markdown ul,
+.requirements-drawer__markdown ol {
+    margin: 0 0 var(--space-m) 0;
+    padding-left: var(--space-ml);
+    color: var(--color-glyph-gray-secondary);
+}
+
+.requirements-drawer__markdown li {
+    margin-bottom: var(--space-xxs);
+}
+
+.requirements-drawer__markdown a {
+    color: var(--color-base-accent);
+    text-decoration: none;
+}
+
+.requirements-drawer__markdown a:hover {
+    text-decoration: underline;
+}
+
+.requirements-drawer__markdown strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+.requirements-drawer__markdown code {
+    font-family: inherit;
+    font-size: 0.92em;
+    background: var(--color-fill-secondary);
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.4rem;
+}
+
+.requirements-drawer__markdown pre {
+    background: var(--color-fill-secondary);
+    padding: var(--space-m);
+    border-radius: 0.8rem;
+    overflow-x: auto;
+    margin: 0 0 var(--space-m) 0;
+}
+
+.requirements-drawer__markdown pre code {
+    background: transparent;
+    padding: 0;
+}
+
+.requirements-drawer__markdown blockquote {
+    margin: 0 0 var(--space-m) 0;
+    padding: var(--space-xs) var(--space-m);
+    border-left: 3px solid var(--color-fill-gray-tertiary);
+    color: var(--color-glyph-gray-secondary);
+}
+
+.requirements-drawer__markdown hr {
+    border: none;
+    border-top: 1px solid var(--color-fill-gray-tertiary);
+    margin: var(--space-l) 0;
+}
+
+.requirements-drawer__markdown table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 var(--space-m) 0;
+    font-size: var(--font-size-xxxs);
+}
+
+.requirements-drawer__markdown th,
+.requirements-drawer__markdown td {
+    border: 1px solid var(--color-fill-gray-tertiary);
+    padding: var(--space-xs) var(--space-s);
+    text-align: left;
+    vertical-align: top;
+}
+
+.requirements-drawer__markdown th {
+    background: var(--color-fill-secondary);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+.requirements-drawer__markdown img {
+    max-width: 100%;
+    height: auto;
+}

@@ -1,0 +1,93 @@
+<!-- PROJ-POPOVER-EDITOR -->
+<!-- Content-agnostic floating editor panel built on the MDS popover component. -->
+<!-- The plugin owns the wrapper, positioning, arrow placement, and dismissal lifecycle. -->
+<!-- Callers supply the title, body HTML, and footer HTML per use case. -->
+
+<!-- METADATA
+Component: Popover Editor
+Category: Overlays
+Complexity: Medium
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- MUST be created via JavaScript — there is no static markup to copy
+- MUST pass a `trigger` element (the button/link the popover anchors to) when calling `open()` or `position()`
+- Body/footer HTML is injected as-is into `.popover__body` / `.popover__footer` — escape untrusted content
+- Use the MDS popover placement classes (`popover--top` / `popover--bottom`) applied automatically by `position()`
+- The wrapper class `.proj-popover-editor` is reserved by this plugin — do not reuse it
+
+COMMON MISTAKES TO AVOID:
+[X] Rebuilding the MDS popover structure manually — call `ProjPopoverEditor.create()` instead
+[X] Appending the wrapper to the DOM before calling `position()` — `position()` handles that
+[X] Forgetting to call `close()` / `destroy()` when the caller's own dismiss logic fires
+[X] Binding outside-click handlers twice — use `closeOnOutsideClick: true` instead of rolling your own
+[X] Relying on the arrow being visible when the trigger is clipped — off-screen triggers will look off
+
+JAVASCRIPT INTEGRATION:
+
+High-level (recommended for most cases):
+  var editor = ProjPopoverEditor.open({
+    trigger: btnEl,
+    title: 'Bulk Configure 3 Jobs',
+    bodyHTML: '<p>...</p>',
+    footerHTML: '<button class="btn btn--primary">Save</button>',
+    minWidth: '50rem',
+    closeOnOutsideClick: true,
+    closeOnEscape: true,
+    onOpen: function(wrapper) { /* bind form handlers */ },
+    onClose: function() { /* cleanup */ }
+  });
+  // Later:
+  editor.close();
+
+Low-level (full control over lifecycle, e.g. multiple popovers or custom outside-click logic):
+  var wrapper = ProjPopoverEditor.create({ title, bodyHTML, footerHTML, minWidth });
+  ProjPopoverEditor.position(wrapper, triggerEl);
+  // ...
+  ProjPopoverEditor.destroy(wrapper);
+
+API options (open / create):
+  trigger:             HTMLElement — anchor element (required for open/position)
+  title:               string       — header title (optional; header hidden if absent)
+  bodyHTML:            string       — body content (optional)
+  footerHTML:          string       — footer content (optional; footer hidden if absent)
+  minWidth:            string       — CSS min-width (optional, e.g. '36rem')
+  closeOnOutsideClick: boolean      — auto-dismiss on outside click (open() only, default false)
+  closeOnEscape:       boolean      — auto-dismiss on Escape key    (open() only, default false)
+  onOpen:              function     — called with the wrapper after positioning (open() only)
+  onClose:             function     — called after destroy (open() only)
+
+Return value of `open(opts)`:
+  { el: HTMLElement, close: function }
+
+COMPANION FILES:
+- CSS: proj-popover-editor.css
+- JS: proj-popover-editor.js
+
+CORRECT STRUCTURE TEMPLATE:
+<!-- The plugin renders this structure at runtime — do NOT write it manually: -->
+<div class="proj-popover-editor">
+  <div class="popover popover--open popover--bottom">
+    <div class="popover__content">
+      <div class="popover__header"><h4 class="popover__title">Title</h4></div>
+      <div class="popover__body">...body HTML...</div>
+      <div class="popover__footer">...footer HTML...</div>
+    </div>
+    <div class="popover__arrow"></div>
+  </div>
+</div>
+
+When to prompt: If a designer asks for a floating editor/configure/filter/confirmation panel
+anchored to a trigger, default to this plugin. Only skip it when the existing MDS popover
+(without dynamic positioning) already fits the context.
+
+Variants: none (the panel is a single-variant container — vary content via body/footer HTML)
+-->
+
+<!-- USAGE:
+- Uses MDS popover tokens and `.popover` class — stays visually consistent with MDS popover
+- Positions itself inside `document.body` — survives scroll containers with clipping
+- The arrow auto-points at the trigger's horizontal center and clamps to the popover edge
+- `position()` prefers opening below the trigger; flips above when vertical space is tight
+- Horizontal alignment is right-anchored when the trigger sits past viewport center
+- Final clamp keeps the popover at least 8px inside the viewport on either side
+-->

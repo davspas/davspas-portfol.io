@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HSF · App de serviços financeiros, antes e depois — David Smith</title>
+  <meta name="description" content="Redesign UX/UI do app mobile de serviços financeiros da HSF: o cartão de consórcio e sua tela de detalhe, antes e depois, com uma comparação interativa.">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+  <link rel="stylesheet" href="../assets/s1-page.css">
+</head>
+<body class="s1-page hsf-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../index.pt.html"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../index.pt.html#work-ux">← Trabalhos</a><a href="#context">Contexto</a><a href="#card">Cartão</a><a href="#detail">Detalhe</a><a href="#components">Componentes</a><a href="#tokens">Cores de status</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt" aria-current="true">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.pt.html">Início</a> / <a href="../../../index.pt.html#work">Trabalhos</a> / <a href="../../../index.pt.html#work-ux">UX de software</a> / HSF · Serviços Financeiros</nav>
+    <section class="s1-hero">
+      <div>
+        <div class="eyebrow">Venturus · S1 · HSF</div>
+        <h1>HSF <span class="gold">Financial Services</span></h1>
+        <p class="steam">Um redesign das telas de consórcio do app mobile da HSF: o cartão que as pessoas veem primeiro e a tela de detalhe por trás dele. Esta página compara as telas antes e depois, lado a lado ou com um controle deslizante, e mostra a folha de componentes de que a nova versão é feita.</p>
+        <ul class="facts-row"><li><b>Cliente</b>HSF</li><li><b>Plataforma</b>App mobile</li><li><b>Idioma da interface</b>Português (Brasil)</li><li><b>Período</b>fev 2021 – jul 2021</li><li><b>Meu papel</b>Design UX/UI na Venturus</li></ul>
+        <div class="btn-row" style="margin-top:26px"><a class="btn gold" href="#card">Comparar o cartão</a><a class="btn" href="#detail">Comparar o detalhe</a><a class="btn" href="../../../index.pt.html#work-ux">Voltar a todos os trabalhos</a></div>
+      </div>
+      <div class="ba reveal"><figure><img src="assets/web/card-paid.jpg" alt="Before: the consortium card"><figcaption>Antes</figcaption></figure><figure><img src="assets/web/card-late.jpg" alt="After: the redesigned consortium card"><figcaption>Depois</figcaption></figure></div>
+    </section>
+
+    <section class="s1-sec reveal" id="context"><h2>Contexto</h2><p class="intro">Um app de serviços financeiros para veículos que já vinha sendo trabalhado antes de eu entrar. O problema era principalmente a organização dos protótipos e a falta de componentes para os ativos de design.</p><div class="states"><div class="box"><h3>Plano</h3><p>Criei um plano para organizar e refatorar partes da UI.</p></div><div class="box"><h3>Design system</h3><p>Criei um design system inicial para o app, remapeei todas as telas já desenhadas e planejei os componentes para elas.</p></div><div class="box"><h3>Processo</h3><p>Melhorei a UX das próximas funcionalidades e criei um processo para o desenvolvimento da UI.</p></div></div></section>
+
+    <section class="s1-sec reveal" id="pillars"><h2>O que o redesign busca</h2><div class="pillars"><div class="pillar"><div class="n">01</div><h3>Status em primeiro lugar</h3><p>A barra de progresso continua no topo do cartão, e o rótulo que a explica, como “Em atraso 60%”, agora fica logo abaixo da barra.</p></div><div class="pillar"><div class="n">02</div><h3>Mais fácil de ler</h3><p>O texto fica alinhado à esquerda e Grupo, Cota e RD viraram um rótulo sobre um valor, no lugar de uma pílula centralizada.</p></div><div class="pillar"><div class="n">03</div><h3>Um jeito claro de abrir mais</h3><p>Uma barra “Expandir” sobre a base da foto avisa que o cartão abre, e as ações abaixo dela são menos e mais claras.</p></div><div class="pillar"><div class="n">04</div><h3>Um detalhe que vai ao ponto</h3><p>A foto vira um cabeçalho desfocado, então a lista de ações começa mais acima e comporta mais do que as pessoas precisam.</p></div></div></section>
+
+    <section class="s1-sec reveal" id="flow"><h2>Fluxo</h2><p class="intro">O caminho não mudou: do carrossel de cartões aos detalhes de um produto.</p><div class="lane"><div class="path"><h4>Consórcio</h4><div class="chain"><div class="node page"><small>Cartões</small>Deslizar entre os produtos</div><span class="arrow">→</span><div class="node panel"><small>Ação rápida</small>Extrato · Lance</div><span class="arrow">→</span><div class="node drawer"><small>Expandir</small>Tela de detalhe</div><span class="arrow">→</span><div class="node page"><small>Apólice · Cartão digital · Sinistros</small></div></div></div></div></section>
+<section class="s1-sec" id="card"><h2>O cartão</h2><p class="intro">A primeira tela do fluxo: um cartão por produto, com status, dados e ações rápidas. Arraste a alça para comparar, ou mude para lado a lado.</p><div class="cmpwrap reveal"><div class="cmp" data-cmp style="--ar:1000/1779"><div class="cmp-bar"><div class="cmp-modes" role="group" aria-label="Modo de visualização"><button type="button" data-m="slide" class="on">Deslizar</button><button type="button" data-m="side">Lado a lado</button></div><span class="cmp-hint">Arraste a alça</span></div><div class="cmp-stage"><div class="pane pb"><img src="assets/web/card-paid.jpg" alt="Antes"><span class="lab">Antes</span></div><div class="pane pa"><img src="assets/web/card-late.jpg" alt="Depois"><span class="lab">Depois</span></div><div class="cmp-handle" aria-hidden="true"><i>⇆</i></div><input class="cmp-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois"></div></div><div class="changes"><h3>O que mudou</h3><ul><li><b>Cabeçalho.</b> O título vermelho “Consórcios” vira um título preto “Consórcio”.</li><li><b>Status.</b> Barra de progresso no topo, com o status e a porcentagem agora abaixo dela.</li><li><b>Nome e dados.</b> O apelido e o modelo centralizados, mais uma pílula com Grupo, Cota e RD, viram texto alinhado à esquerda com rótulos sobre valores.</li><li><b>Foto.</b> O veículo vai até a borda de baixo e leva uma barra “Expandir”.</li><li><b>Ações.</b> Três ações (Devolução, Extrato, Recibos) dão lugar a duas (Extrato, Ofertar lance), cada uma com seu ícone e um divisor.</li></ul></div></div></section><section class="s1-sec" id="detail"><h2>A tela de detalhe</h2><p class="intro">O que abre ao tocar em Expandir: o produto, seu status e a lista do que dá para fazer com ele.</p><div class="cmpwrap reveal"><div class="cmp" data-cmp style="--ar:1000/2073"><div class="cmp-bar"><div class="cmp-modes" role="group" aria-label="Modo de visualização"><button type="button" data-m="slide" class="on">Deslizar</button><button type="button" data-m="side">Lado a lado</button></div><span class="cmp-hint">Arraste a alça</span></div><div class="cmp-stage"><div class="pane pb"><img src="assets/web/detail-paid.jpg" alt="Antes"><span class="lab">Antes</span></div><div class="pane pa"><img src="assets/web/detail-late.jpg" alt="Depois"><span class="lab">Depois</span></div><div class="cmp-handle" aria-hidden="true"><i>⇆</i></div><input class="cmp-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois"></div></div><div class="changes"><h3>O que mudou</h3><ul><li><b>Cabeçalho.</b> Uma foto inteira com título e ícone de edição vira uma foto desfocada atrás da barra de status, do nome e dos dados.</li><li><b>Linhas principais.</b> Duas linhas cinza continuam no topo da lista: Devolução de valores e Próxima assembleia viram Detalhes da apólice e Acionar seguro.</li><li><b>Lista secundária.</b> Três itens (Extrato, Recibos de pagamento, Assembleias) viram quatro (Cartão digital, Alterar ou cancelar apólice, Renovação ou nova cotação, Acompanhar sinistros), cada um com uma descrição de uma linha.</li><li><b>Ícones.</b> As setas continuam, e Cartão digital ganha um ícone de download porque emite um arquivo.</li></ul></div></div></section><section class="s1-sec" id="components"><h2>Componentes</h2><p class="intro">A folha de que a nova versão é feita: cada layout do cartão de ações e o cartão de progresso em cada status. Clique para ampliar.</p><div class="shots-group reveal"><h3>Folha de componentes <span>3 colunas</span></h3><p>À esquerda: o cartão de ações com três, duas ou uma ação. No centro: o cartão de progresso em cada status. À direita: a lista vertical de todas as ações.</p><div class="shots small"><figure class="shot"><button type="button" data-full="assets/web/components.jpg"><img loading="lazy" src="assets/web/components.jpg" alt="Card Produto: ações e progresso"></button><figcaption><b>Card Produto: ações e progresso.</b> Clique para ampliar e arrastar.</figcaption></figure></div></div></section><section class="s1-sec reveal" id="states"><h2>Ações na folha</h2><p class="intro">Treze ações, cada uma com ícone e rótulo curto, combinadas de três em três conforme o estado do produto.</p><div class="states"><div class="box"><h3>Pagamentos e documentos</h3><p>Pagamentos, Meu Contrato, Extrato, Recibos, Detalhes.</p></div><div class="box"><h3>Lances e assembleias</h3><p>Ofertar lance, Editar lance, Contemplação, Antecipar parcelas, Devolução de valores.</p></div><div class="box"><h3>Seguro e reativação</h3><p>Acionar, Renovar seguro, Reativar consórcio.</p></div></div></section><section class="s1-sec reveal" id="tokens"><h2>Cores de status</h2><p class="intro">Cada status tem sua cor de barra; as cores abaixo são aproximadas, lidas da folha.</p><div class="tokens"><div class="token"><i style="--c:#5de27f"></i><span><b>Verde</b><code>Em andamento · Ativo</code></span></div><div class="token"><i style="--c:#e8404f"></i><span><b>Vermelho</b><code>Em atraso · Cobrança</code></span></div><div class="token"><i style="--c:#4aa8f0"></i><span><b>Azul</b><code>Contemplado · Quitado · Vigência encerrada</code></span></div><div class="token"><i style="--c:#b9b9b9"></i><span><b>Cinza</b><code>Cancelado · Contemplado excluído</code></span></div></div></section><section class="s1-sec reveal" id="credits"><h2>Créditos e pendências</h2><div class="credits"><div class="box"><h3>Créditos</h3><p><strong>Design UX/UI:</strong> David Smith, na Venturus.</p></div><div class="box"><h3>Pendências</h3><p>As telas de antes e depois mostram veículos e status de exemplo diferentes (um Civic quitado e um HR-V atrasado), então compare o layout e a estrutura, não os dados. As diferenças listadas são o que dá para ver nas telas, não um registro das decisões por trás delas. Não há protótipo ao vivo nesta página.</p></div></div></section>  <nav class="nextproj" aria-label="Próximo projeto"><a class="btn" href="../../../index.pt.html#work-ux">← Voltar a todos os trabalhos</a><a class="btn primary" href="../../../Daitan/index.pt.html"><small>Próximo projeto</small> Projetos da Daitan →</a></nav>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>© David Simonsen Paes de Almeida Smith</span><span>Feito à mão. Só o Atrium foi prototipado com IA</span><a href="../../../index.pt.html#work-ux">← Voltar a todos os trabalhos</a></div>
+  </footer>
+  <script src="../assets/viewer.js"></script>
+  <script>
+    (function () {
+      document.querySelectorAll('[data-cmp]').forEach(function (c) {
+        var st = c.querySelector('.cmp-stage'), r = c.querySelector('.cmp-range'), wrap = c.parentNode;
+        function set(v) { st.style.setProperty('--p', v + '%'); }
+        r.addEventListener('input', function () { set(r.value); }); set(r.value);
+        c.querySelectorAll('.cmp-modes button').forEach(function (b) {
+          b.addEventListener('click', function () {
+            var side = b.dataset.m === 'side'; c.classList.toggle('side', side); wrap.classList.toggle('side', side);
+            c.querySelectorAll('.cmp-modes button').forEach(function (x) { x.classList.toggle('on', x === b); });
+          });
+        });
+      });
+    })();
+  </script>
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

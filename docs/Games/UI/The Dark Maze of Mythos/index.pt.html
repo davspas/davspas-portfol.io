@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Dark Maze of Mythos · Design de UI — David Smith</title>
+  <meta name="description" content="Design de UI para The Dark Maze of Mythos, um jogo mobile de labirinto de terror: telas, UI kit e um protótipo jogável do menu, HUD, pausa e telas de vitória e derrota.">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+  <link rel="stylesheet" href="assets/dm-page.css">
+</head>
+<body class="dm-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../index.pt.html"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../index.pt.html#work-games">← Trabalhos</a>
+        <a href="#screens">Telas</a>
+        <a href="#kit">UI kit</a>
+        <a href="#level">Fase</a>
+        <a href="#flow">Fluxo</a>
+        <a href="#prototype">Protótipo</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt" aria-current="true">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.pt.html">Início</a> / <a href="../../../index.pt.html#work">Trabalhos</a> / <a href="../../../index.pt.html#work-gui">UI de jogos</a> / The Dark Maze of Mythos</nav>
+    <section class="dm-hero">
+      <div>
+        <div class="eyebrow">Games · UI/UX · Terror mobile</div>
+        <h1>The Dark Maze<br><span class="gold">of Mythos</span></h1>
+        <p class="steam">Uma fuga em visão de cima de um Minotauro que decorou o labirinto. A tocha é seus olhos e também seu farol. Esta página mostra a interface: as telas, o UI kit e um protótipo jogável.</p>
+        <ul class="facts-row">
+          <li><b>Plataforma</b>Android</li><li><b>Gênero</b>Labirinto de terror, fuga</li><li><b>Estúdio</b>Harpia Games</li><li><b>Meu papel</b>Game design e toda a UI</li>
+        </ul>
+        <div class="btn-row" style="margin-top:26px">
+          <a class="btn gold" href="prototype/">Jogar o protótipo ao vivo</a>
+          <a class="btn" href="#kit">Ver o UI kit</a>
+          <a class="btn" href="../../Game%20Design/dark-maze-of-mythos/index.pt.html">Ler o documento de game design</a>
+        </div>
+      </div>
+      <div class="phones-hero reveal"><img src="assets/web/screens/Menu.jpg" alt="Menu screen: the title in red outlined letters, Start and Scoreboard buttons"><img src="assets/web/screens/HUD.jpg" alt="HUD over the dark maze: cards, time, matches, pause, torch buttons and a stick"></div>
+    </section>
+
+    <section class="dm-sec reveal" id="pillars"><h2>Pilares da UI</h2><div class="pillars">
+      <div class="pillar"><div class="n">01</div><h3>A luz é a interface</h3><p>A cena é quase preta, então o HUD toma emprestado o visual do mundo: placas de metal frio com brilho vermelho, nunca painéis claros que entregariam o jogador.</p></div><div class="pillar"><div class="n">02</div><h3>Primeiro o polegar</h3><p>Todo controle fica no terço inferior, onde o polegar descansa: um direcional flutuante e duas ações da tocha. Os contadores ficam no topo, longe das mãos.</p></div><div class="pillar"><div class="n">03</div><h3>Três números, só</h3><p>Cartas de 6, tempo e fósforos são as únicas leituras do HUD. Cada um tem sua placa, e um olhar mostra a partida inteira.</p></div><div class="pillar"><div class="n">04</div><h3>Pavor, depois alívio</h3><p>Títulos vermelhos com contorno e um degradê vinho dão o tom do menu e da derrota. O degradê azul-petróleo da vitória é o único momento frio e calmo do jogo.</p></div>
+    </div></section>
+
+    <section class="dm-sec" id="screens"><h2>Telas</h2><p class="intro">As telas mobile em que o protótipo se baseia, na ordem de uma partida. Clique em qualquer imagem para ampliar.</p>
+<div class="shots-group reveal"><h3>Menu e início <span>3 estados</span></h3><p>O título, Iniciar e Placar sobre o herói parado. Ao tocar em Start vem a introdução, depois a câmera sai da vista 3D para a de cima e a partida começa.</p><div class="shots phones three">
+<figure class="shot"><button type="button" data-full="assets/web/screens/Menu.jpg"><img loading="lazy" src="assets/web/screens/Menu.jpg" alt="Menu screen"></button><figcaption><b>Menu.</b> Título, botões Start e Scoreboard, crédito do estúdio.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/Intro.jpg"><img loading="lazy" src="assets/web/screens/Intro.jpg" alt="Introdução screen"></button><figcaption><b>Introdução.</b> O objetivo em uma linha, enquanto a cena 3D espera um toque.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/HUD.jpg"><img loading="lazy" src="assets/web/screens/HUD.jpg" alt="HUD screen"></button><figcaption><b>HUD.</b> Cartas, tempo, fósforos e pausa no topo; duas ações da tocha e o direcional embaixo.</figcaption></figure>
+</div></div>
+<div class="shots-group reveal"><h3>Pausa, derrota e vitórias <span>4 estados</span></h3><p>A pausa escurece o HUD em vermelho e oferece Resume ou Quit. Os dois finais têm climas distintos: a fuga é azul-petróleo frio, vencer o Minotauro continua vermelho escuro.</p><div class="shots phones">
+<figure class="shot"><button type="button" data-full="assets/web/screens/Pause.jpg"><img loading="lazy" src="assets/web/screens/Pause.jpg" alt="Pausa screen"></button><figcaption><b>Pausa.</b> O HUD segue visível mas escurecido; o botão de pausa vira um ícone de fechar.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/Dead.jpg"><img loading="lazy" src="assets/web/screens/Dead.jpg" alt="Derrota screen"></button><figcaption><b>Derrota.</b> Uma frase e uma ação: Retry.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/Win1.jpg"><img loading="lazy" src="assets/web/screens/Win1.jpg" alt="Vitória · fuga screen"></button><figcaption><b>Vitória · fuga.</b> Tempo final, degradê azul-petróleo, “Awesome!”.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/Win2.jpg"><img loading="lazy" src="assets/web/screens/Win2.jpg" alt="Vitória · Minotauro screen"></button><figcaption><b>Vitória · Minotauro.</b> As seis cartas coletadas invocam Exodia e o Minotauro é derrotado.</figcaption></figure>
+</div></div>
+<div class="shots-group reveal"><h3>Placar <span>1 estado</span></h3><p>Posição, data e tempo das doze melhores fugas, em uma moldura de metal sobre o menu vermelho.</p><div class="shots phones three">
+<figure class="shot"><button type="button" data-full="assets/web/components/scoreboard.png"><img loading="lazy" src="assets/web/components/scoreboard.png" alt="Placar screen"></button><figcaption><b>Placar.</b> Doze linhas; no protótipo a última partida fica destacada.</figcaption></figure>
+</div></div>
+</section>
+<section class="dm-sec" id="kit"><h2>UI kit</h2><p class="intro">Os componentes com que as telas são montadas. O protótipo os reconstrói em código a partir destas referências.</p><div class="kit reveal">
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/button.png"><img loading="lazy" src="assets/web/components/button.png" alt="Botão de metal"></button></div><div class="body"><h3>Botão de metal</h3><p>Moldura de aço chanfrada com face escovada e rótulo serifado branco. É o único estilo de botão, usado em todas as ações dos menus.</p><div class="used">Usado em: menu, pausa, derrota, vitória, placar</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/hud-timer.png"><img loading="lazy" src="assets/web/components/hud-timer.png" alt="Placas do HUD"></button></div><div class="body"><h3>Placas do HUD</h3><p>Placas escuras com borda prateada. O tempo usa a fonte de exibição com dígitos em anel e dois-pontos vermelho; cartas e fósforos usam a fonte de texto com um ícone.</p><div class="used">Usado em: HUD</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/dpad.png"><img loading="lazy" src="assets/web/components/dpad.png" alt="Direcional virtual"></button></div><div class="body"><h3>Direcional virtual</h3><p>Um direcional flutuante com botão facetado e brilho vermelho. O arco vermelho mostra a direção pressionada: cima, direita, baixo ou esquerda.</p><div class="used">Usado em: HUD</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/scoreboard.png"><img loading="lazy" src="assets/web/components/scoreboard.png" alt="Painel do placar"></button></div><div class="body"><h3>Painel do placar</h3><p>Painel grafite com moldura cinza e três colunas centralizadas. A serifa leve mantém doze linhas legíveis.</p><div class="used">Usado em: placar</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/hud-cards.png"><img loading="lazy" src="assets/web/components/hud-cards.png" alt="Contadores"></button></div><div class="body"><h3>Contadores</h3><p>Cartas coletadas (uma carta vermelha com alvo) e o contador de fósforos com um fósforo aceso, no vermelho da chama.</p><div class="used">Usado em: HUD</div></div></article>
+
+</div><div class="tokens"><div class="token"><i style="--c:#7a0000"></i><span><b>Vermelho sangue</b><code>#7A0000 títulos, cartas</code></span></div><div class="token"><i style="--c:#2d0000"></i><span><b>Vinho</b><code>#2D0000 degradê do menu</code></span></div><div class="token"><i style="--c:#080303"></i><span><b>Preto</b><code>#080303 cena</code></span></div><div class="token"><i style="--c:#8a8a8a"></i><span><b>Aço</b><code>#8A8A8A molduras</code></span></div><div class="token"><i style="--c:#19a79a"></i><span><b>Azul-petróleo</b><code>#19A79A fuga</code></span></div></div><p class="intro" style="margin-top:22px"><b>Tilt Prism</b> para títulos e cronômetro, uma fonte de exibição prismática que parece entalhada. <b>Texturina</b> para botões, contadores e placar, uma serifa robusta que segue legível em tamanhos pequenos.</p></section>
+<section class="dm-sec reveal" id="flow"><h2>Fluxo</h2><p class="intro">Como uma partida passa pelas telas. Pausa e Retry sempre levam a uma partida nova ou retomada, nunca a um beco sem saída.</p><div class="lane">
+<div class="path"><h4>Começar uma partida</h4><div class="chain">
+<div class="node page"><small>Menu</small>Start</div>
+<span class="arrow">→</span>
+<div class="node panel"><small>Intro</small>Toque para iniciar</div>
+<span class="arrow">→</span>
+<div class="node page"><small>HUD</small>Partida em visão de cima</div>
+</div></div>
+<div class="path"><h4>Fim da partida</h4><div class="chain">
+<div class="node toast"><small>HUD</small>O Minotauro te pega</div>
+<span class="arrow">→</span>
+<div class="node dialog"><small>Derrota</small>Retry →</div>
+<span class="arrow">→</span>
+<div class="node page"><small>HUD</small>Nova partida</div>
+</div></div>
+<div class="path"><h4>Vitória</h4><div class="chain">
+<div class="node page"><small>HUD</small>Saída ou 6 cartas</div>
+<span class="arrow">→</span>
+<div class="node drawer"><small>Vitória</small>Awesome!</div>
+<span class="arrow">→</span>
+<div class="node panel"><small>Placar</small>Return</div>
+<span class="arrow">→</span>
+<div class="node page"><small>Menu</small></div>
+</div></div>
+</div></section>
+<section class="dm-sec reveal" id="level"><h2>Layout da fase</h2><p class="intro">O protótipo roda no labirinto do documento de game design, reconstruído tile a tile a partir do mapa. Branco é corredor e cinza é uma câmara maior; a entrada é a saída curta embaixo e a saída com luz do sol é a de cima. Cartas e fósforos são espalhados ao acaso a cada partida.</p>
+      <div class="shots phones three"><figure class="shot"><button type="button" data-full="assets/web/level/labirinto.png"><img loading="lazy" src="assets/web/level/labirinto.png" alt="Mapa do labirinto: corredores brancos, paredes pretas e câmaras cinza"></button><figcaption><b>Mapa do labirinto.</b> 34 × 39 tiles, um único conjunto conectado da entrada à saída.</figcaption></figure></div></section>
+    <section class="dm-sec" id="prototype"><h2>Protótipo ao vivo</h2><p class="intro">Uma versão jogável de toda a interface, não só cliques. Um pequeno labirinto, uma tocha que ilumina apenas o que está perto, um Minotauro em patrulha e todas as telas acima ligadas na ordem do fluxo.</p>
+      <div class="launch one reveal"><a class="launch-card wide" href="prototype/"><div class="imgs"><img loading="lazy" src="assets/web/screens/Menu.jpg" alt=""><img loading="lazy" src="assets/web/screens/HUD.jpg" alt=""><img loading="lazy" src="assets/web/screens/Win1.jpg" alt=""></div><div class="body"><h3>The Dark Maze of Mythos</h3><p>Do menu à vitória, no navegador. Melhor no celular ou em janela estreita; no desktop há um painel para pular entre telas.</p><p>Percorra um labirinto gerado com o direcional ou WASD, acenda e apague a tocha (reacender custa um fósforo), jogue-a para atrair o Minotauro, colete as seis cartas ou encontre a saída verde.</p><span class="go">Abrir o protótipo →</span></div></a></div>
+      <div class="controls"><b>Controles.</b> Toque: arraste o direcional e toque nos dois botões à esquerda. Teclado: WASD ou setas, T tocha, G jogar / pegar, P ou Esc pausa. Os placares ficam salvos no seu navegador. O protótipo está em inglês.</div></section>
+    <section class="dm-sec reveal" id="credits"><h2>Créditos e pendências</h2><div class="credits"><div class="box"><h3>Créditos</h3><p><strong>Game design e UI/UX:</strong> David Smith.<br><strong>Desenvolvimento:</strong> Bruno Poor.<br><strong>Estúdio:</strong> Harpia Games, feito para uma game jam com o tema “Monster Escape”.<br>As regras e a história estão no <a class="inline" style="color:var(--gold)" href="../../Game%20Design/dark-maze-of-mythos/index.pt.html">documento de game design</a>.</p></div><div class="box"><h3>Pendências</h3><p>O quick-time event do ataque do Minotauro, a invocação de Exodia e a câmera lateral estão no design, mas não neste protótipo. Esconderijos e armadilhas também ficaram de fora, e os corredores de 1 tile ainda não têm espaço para a câmera lateral.</p></div></div></section>
+  <nav class="nextproj" aria-label="Próximo projeto"><a class="btn" href="../../../index.pt.html#work-gui">← Voltar a todos os trabalhos</a><a class="btn primary" href="../../Asset%20Pack/Unity%20Character%20Selector/index.pt.html"><small>Próximo projeto</small> Unity Character Selector →</a></nav>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Feito à mão. Só o Atrium foi prototipado com IA</span><a href="../../../index.pt.html#work-games">← Voltar a todos os trabalhos</a></div>
+  </footer>
+
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer"><button type="button" aria-label="Close">×</button><img alt=""><p></p></div>
+  <script>
+    (function () {
+      var lb = document.getElementById('lb'), im = lb.querySelector('img'), cap = lb.querySelector('p');
+      document.querySelectorAll('[data-full]').forEach(function (b) {
+        b.addEventListener('click', function () { im.src = b.getAttribute('data-full'); im.alt = b.querySelector('img').alt; var f = b.closest('figure'); f = f && f.querySelector('figcaption'); var h = b.closest('article'); h = h && h.querySelector('h3'); cap.textContent = f ? f.textContent : (h ? h.textContent : ''); lb.classList.add('open'); });
+      });
+      function close() { lb.classList.remove('open'); }
+      lb.addEventListener('click', close);
+      window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

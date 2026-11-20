@@ -1,0 +1,80 @@
+<!-- PROJ-SOURCE-TOGGLE -->
+<!-- Pill toggle that switches between two data sources (Faculty-registered / IT-managed). -->
+<!-- Ported from the Atrium React component `SourceToggle`. -->
+
+<!-- METADATA
+Component: Source Toggle
+Category: Forms
+Complexity: Low
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- MUST wrap the two options in a `.proj-source-toggle` container
+- MUST use `<button type="button">` for each option (keyboard a11y)
+- MUST mark the active option with class `.proj-source-toggle__option--active`
+- MUST mark disabled options with `.proj-source-toggle__option--disabled` AND `aria-disabled="true"`
+- MUST set `data-source` on each option (e.g. "groundhog", "kodiak") — the JS reads this to emit the change event
+- Container should expose current selection via `data-active="<source>"`
+
+COMMON MISTAKES TO AVOID:
+[X] Using <div> or <a> instead of <button> for options
+[X] Hard-coding colors instead of using MDS tokens
+[X] Forgetting `data-source` — the change event payload depends on it
+[X] Adding more than two options (the component is designed for binary switching)
+
+JAVASCRIPT INTEGRATION:
+- Plugin auto-initializes all `.proj-source-toggle` elements on canvas ready
+- Listen for changes:
+    el.addEventListener('proj-source-toggle:change', e => console.log(e.detail.source));
+- Programmatic update:
+    ProjSourceToggle.setActive(el, 'kodiak');
+
+COMPANION FILES:
+- CSS: proj-source-toggle.css
+- JS:  proj-source-toggle.js
+
+CORRECT STRUCTURE TEMPLATE:
+<div class="proj-source-toggle" data-active="groundhog">
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--active" data-source="groundhog">Faculty-registered</button>
+  <button type="button" class="proj-source-toggle__option" data-source="kodiak">IT-managed</button>
+</div>
+
+When to prompt: When the designer asks for a source / version / environment switcher and hasn't specified which value should start active or whether either side is disabled.
+Variants: default (Faculty-registered active), IT-managed-active, Faculty-registered-disabled, IT-managed-disabled, both-disabled
+-->
+
+<!-- DEFAULT — Faculty-registered active -->
+<div class="proj-source-toggle" data-active="groundhog">
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--active" data-source="groundhog">Faculty-registered</button>
+  <button type="button" class="proj-source-toggle__option" data-source="kodiak">IT-managed</button>
+</div>
+
+<!-- IT-MANAGED ACTIVE -->
+<div class="proj-source-toggle" data-active="kodiak">
+  <button type="button" class="proj-source-toggle__option" data-source="groundhog">Faculty-registered</button>
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--active" data-source="kodiak">IT-managed</button>
+</div>
+
+<!-- FACULTY-REGISTERED DISABLED -->
+<div class="proj-source-toggle" data-active="kodiak">
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--disabled" data-source="groundhog" aria-disabled="true">Faculty-registered</button>
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--active" data-source="kodiak">IT-managed</button>
+</div>
+
+<!-- IT-MANAGED DISABLED -->
+<div class="proj-source-toggle" data-active="groundhog">
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--active" data-source="groundhog">Faculty-registered</button>
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--disabled" data-source="kodiak" aria-disabled="true">IT-managed</button>
+</div>
+
+<!-- BOTH DISABLED -->
+<div class="proj-source-toggle">
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--disabled" data-source="groundhog" aria-disabled="true">Faculty-registered</button>
+  <button type="button" class="proj-source-toggle__option proj-source-toggle__option--disabled" data-source="kodiak" aria-disabled="true">IT-managed</button>
+</div>
+
+<!-- USAGE:
+- Place in sub-headers, toolbars, or settings panels to switch data source
+- The container's `data-active` attribute is kept in sync with the current selection
+- Disabled options never receive the active class and ignore clicks
+- The `proj-source-toggle:change` event bubbles, so a single listener on a parent can handle multiple toggles
+-->

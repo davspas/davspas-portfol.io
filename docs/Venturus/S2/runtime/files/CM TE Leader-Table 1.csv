@@ -1,0 +1,30 @@
+No;Permission Description;Permission Name;;
+1;add line;line_add;;
+2;add station type;stations_add;;
+3;add test stations;testunit_add;;
+4;change default;changedefault;;
+5;control run;controlrun;;
+6;Edit line stage;line_editstage;;
+7;Edit line/station bindings;binding_edit;;
+8;"Edit option to create Windows partition
+on OSX restores";windowspartition_edit;;
+9;Edit own password;ownpassword_edit;;
+10;Edit station type FDR type field;stations_viewfdrtype;;
+11;Edit testunit stage;testunit_editstage;;
+12;Edit the line setting for control run;line_editcontrolrun;;
+13;"Edit the testunit setting for control
+run";testunit_editcontrolrun;;
+14;netboot change station;netboot_changestation;;
+15;Nuke LIVE;nukelive;;
+16;Use hands-free with defaults only;handsfree_edit;;
+17;view images;image_view;;
+18;View Lines;line_view;;
+19;View Logs;log_view;;
+20;View overlays;overlay_view;;
+21;View product attribute dictionary;product_viewattr;;
+22;View Products;product_view;;
+23;view restore scripts;script_view;;
+24;View Station IDs;stationid_view;;
+25;View station versions page;stationversions_view;;
+26;View Stations;stations_view;;
+27;view test stations;;;

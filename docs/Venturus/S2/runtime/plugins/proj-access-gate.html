@@ -1,0 +1,31 @@
+<!-- PROJ-ACCESS-GATE -->
+<!-- Sends an impersonated persona to a single landing prototype. Zero markup required in prototypes. -->
+
+<!-- METADATA
+Component: Access Gate
+Category: Navigation
+Complexity: Low
+
+WHAT IT DOES:
+- Reads an optional `landingPage` field on the active persona in `.davinci/davinci-users.json`
+- `landingPage` is a prototype folder name (e.g. "manage-devices"), not a path
+- On `davinci:canvas:ready` (wired in plugins.js), any page other than that prototype is
+  replaced with `../<landingPage>/`. The landing page itself never redirects, so there is no loop.
+- Before redirecting it stores the original URL in sessionStorage. Switching to a persona
+  without `landingPage` reloads the landing page, and the gate sends it back to that URL.
+
+USAGE (davinci-users.json):
+{
+  "id": "viewer-no-campuses",
+  "landingPage": "manage-devices",
+  "permissions": { "hide": [], "disable": ["nav.nav-menu .nav-menu__list > .nav-menu__item"], "readonly": [] }
+}
+
+Pair it with `disable` rules on the left nav so the persona still sees the header items but
+cannot leave the landing page. The user menu (`#userMenu`) is outside `nav.nav-menu`, so
+switching persona keeps working.
+
+JAVASCRIPT INTEGRATION:
+- `ProjAccessGate.apply(user)` where `user` is `event.detail.impersonatedUser`
+- No init; plugins.js calls apply() on canvas:ready
+-->

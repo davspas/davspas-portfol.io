@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Dark Maze of Mythos — Documento de Game Design</title>
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+</head>
+<body class="gd-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../index.pt.html"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../index.pt.html">← Início</a>
+        
+        <a href="../wild-saga/index.pt.html">Wild Saga</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Idioma">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt" aria-current="true">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap about">
+    <aside class="rail">
+      <h2 style="margin-top:0">Resumo rápido</h2>
+      <dl class="facts">
+        <div><dt>Gênero</dt><dd>Labirinto de terror em visão top-down, fuga</dd></div>
+        <div><dt>Plataforma</dt><dd>Mobile Android</dd></div>
+        <div><dt>Origem</dt><dd>Game jam, tema “Fuga do Monstro”</dd></div>
+        <div><dt>Prazo</dt><dd>31 dez 2023</dd></div>
+        <div><dt>Estúdio</dt><dd>Harpia Games Studio</dd></div>
+        <div><dt>Minha função</dt><dd>Designer de Jogos e de UI/UX</dd></div>
+      </dl>
+      <h2>Nesta página</h2>
+      <nav class="toc" aria-label="Nesta página">
+        <a href="#concept">Conceito inicial</a>
+        <a href="#style">Plataforma e estilo</a>
+        <a href="#story">História, com IA</a>
+        <a href="#characters">Personagens</a>
+        <a href="#gameplay">Gameplay</a>
+        <a href="#ai">IA do inimigo</a>
+        <a href="#rules">Vitória e derrota</a>
+        <a href="#level">Level design</a>
+        <a href="#ui">Interface</a>
+      </nav>
+    </aside>
+
+    <div class="doc">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.pt.html">Início</a> / <a href="../../../index.pt.html#work">Trabalhos</a> / <a href="../../../index.pt.html#work-gd">Game design</a> / The Dark Maze of Mythos (GDD)</nav>
+      <div class="eyebrow">Documento de Game Design · 02</div>
+      <h1>The Dark Maze <span class="grad">of Mythos</span></h1>
+      <p class="headline">Acenda uma tocha para enxergar, apague-a para se esconder. Uma fuga mobile tensa de um Minotauro que se lembra de cada corredor do labirinto.</p>
+      <p class="loc">Bruno Poor (Desenvolvedor de Jogos) · David Smith (Designer de Jogos e de UI/UX) · Harpia Games Studio</p>
+
+      <div class="res">
+        <a class="btn primary" href="https://miro.com/app/board/uXjVPg-YTuE=/?share_link_id=49132223269">Board no Miro <small>(em português)</small> ↗</a>
+        <a class="btn" href="../../UI/The%20Dark%20Maze%20of%20Mythos/index.pt.html">Design de UI e protótipo jogável →</a>
+        <a class="btn" href="https://www.figma.com/file/NE81TMBvJub6XI6LtoRdEP/UI?type=design&amp;node-id=20%3A120&amp;mode=design&amp;t=q2uvef9vWie6SJqj-1">Arquivo de UI (Figma) ↗</a>
+      </div>
+
+      <!-- CONCEPT -->
+      <section class="sec reveal" id="concept">
+        <h2>Conceito inicial</h2>
+        <p>O jogo nasceu de um <strong>desafio de game jam gerado com o ChatGPT</strong>, com prazo de 31 de dezembro de 2023:</p>
+        <div class="cols">
+          <div class="box"><span class="tag-r">Tema</span><p>Fuga do Monstro</p></div>
+          <div class="box"><span class="tag-r">Descrição</span><p>O jogador está preso em um labirinto escuro e precisa escapar antes que o monstro o alcance. O monstro é letal, então é preciso se mover rápido e se esconder quando ele estiver perto. Os muitos caminhos e obstáculos do labirinto podem ser usados para bloquear o monstro e ajudar na fuga.</p></div>
+          <div class="box"><span class="tag-r">Regra</span><p>O jogo precisa ser criado para mobile.</p></div>
+        </div>
+        <div class="figrow"><figure class="fig"><img src="images/references-maze-render.png" alt="Referência: um labirinto luminoso no escuro, o clima de luz contra a escuridão." width="284" height="223" loading="lazy"><figcaption>Referência: um labirinto luminoso no escuro, o clima de luz contra a escuridão.</figcaption></figure><figure class="fig"><img src="images/references-low-poly-landscape.png" alt="Referência low-poly: uma paisagem com penhascos, árvores e animais." width="400" height="253" loading="lazy"><figcaption>Referência low-poly: uma paisagem com penhascos, árvores e animais.</figcaption></figure><figure class="fig"><img src="images/references-low-poly-village.png" alt="Referência low-poly: uma vila vista de cima." width="400" height="225" loading="lazy"><figcaption>Referência low-poly: uma vila vista de cima.</figcaption></figure></div>
+      </section>
+
+      <!-- STYLE -->
+      <section class="sec reveal" id="style">
+        <h2>Plataforma, público e estilo</h2>
+        <p><strong>Plataforma:</strong> mobile Android.</p>
+        <p><strong>Jogadores:</strong> jogadores casuais que curtem jogos de perseguição de monstros com muita tensão, como Slender Man e Amnesia, e jogadores de roguelike que gostam de tentar de novo e de novo até vencer.</p>
+        <p><strong>Estilo:</strong> um jogo de labirinto em visão top-down, com uma câmera próxima que muda de perspectiva em situações específicas (ao se esconder e quando o monstro te pega). Os jogadores só veem até onde a tocha ilumina, então <strong>luz e escuridão</strong> são o conceito central. Os assets seguem um estilo de arte low-poly.</p>
+      </section>
+
+      <!-- STORY -->
+      <section class="sec reveal" id="story">
+        <h2>História, criada com IA</h2>
+        <p>Usamos o ChatGPT para rascunhar o esqueleto da história e depois fizemos a curadoria. Cada prompt gerou uma versão, e as nossas decisões entre uma rodada e outra moldaram o jogo.</p>
+        <div class="acts">
+          <div class="act"><h4 style="margin-top:0">Prompt 1 · Teseu</h4>
+            <p>Um jovem aventureiro, Teseu, entra em um antigo labirinto com uma tocha, foge do Minotauro e escapa arremessando nele uma pedra amarrada a uma corda.</p>
+            <p><strong>Decisão:</strong> rebatizamos o herói como <strong>Alex</strong>.</p></div>
+          <div class="act"><h4 style="margin-top:0">Prompt 2 · Alex</h4>
+            <p>Alex é perseguido por corredores cada vez mais escuros, joga a tocha contra uma parede frágil para abrir uma passagem secreta e acaba de frente com o monstro.</p>
+            <p><strong>Decisão:</strong> o monstro já está solto no labirinto.</p></div>
+          <div class="act"><h4 style="margin-top:0">Prompt 3 · Perseguido</h4>
+            <p>Com o Minotauro já solto, Alex precisa manter a tocha acesa para ver o caminho e evitar armadilhas enquanto o monstro o caça sem descanso.</p></div>
+        </div>
+        <div class="callout"><strong>História final.</strong> Alex, um jovem aventureiro, ouve falar de um antigo labirinto no centro da cidade de onde ninguém jamais voltou. Ele entra com uma tocha. O ar fica úmido, as paredes se erguem e um rugido ecoa: um monstro gigante, parecido com um touro, de garras afiadas e olhos em chamas, o está caçando. Em um beco sem saída, ele joga a tocha contra uma parede frágil e foge por uma passagem secreta, correndo em direção à luz do sol. Na saída, uma corda amarrada a uma pedra pesada nocauteia o Minotauro. Ele sai com a tocha ainda acesa, sabendo que a experiência o tornará mais corajoso.
+        <br><br><strong>A partir dessa história criamos os personagens, as mecânicas e o estilo do jogo.</strong></div>
+      </section>
+
+      <!-- CHARACTERS -->
+      <section class="sec reveal" id="characters">
+        <h2>Personagens</h2>
+        <div class="cols">
+          <div class="box rabbit">
+            <span class="tag-r">Jogador</span>
+            <h3>Alex, o aventureiro</h3>
+            <p>Cerca de 25 anos, magro mas surpreendentemente forte, de cabelo castanho e barba por fazer. Um amante de emoções fortes, rápido e que nunca desiste. Ele entra no labirinto mal equipado, armado apenas com uma tocha, então a criatividade é sua verdadeira ferramenta.</p>
+          </div>
+          <div class="box tiger">
+            <span class="tag-t">Inimigo</span>
+            <h3>O Minotauro</h3>
+            <p>Uma fera massiva e musculosa, vermelha e parecida com um touro, com uma expressão permanente de raiva, mãos humanas maiores que o normal, pernas de boi, um machado enorme e olhos negros penetrantes. Sua visão é ruim na escuridão constante, então ele <strong>memorizou o labirinto inteiro</strong> como um mapa mental.</p>
+          </div>
+          <div class="box">
+            <span class="tag-r" style="color:var(--violet)">Aliado · Em desenvolvimento</span>
+            <h3>Exodia (nome provisório)</h3>
+            <p>A fera fragmentada da luz, inspirada no Exodia de Yu-Gi-Oh: o jogador o invoca ao coletar <strong>6 cartas</strong>. O arqui-inimigo do Minotauro e a única coisa capaz de detê-lo de vez e abrir caminho até a saída. Um contador acompanha as cartas coletadas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- GAMEPLAY -->
+      <section class="sec reveal" id="gameplay">
+        <h2>Gameplay</h2>
+        <h3>Movimentação</h3>
+        <p>O jogador se move com um direcional (D-pad). O personagem sempre olha para a frente e <strong>não pode andar de costas</strong>. A câmera top-down acompanha e gira junto com o personagem, de modo que o caminho escolhido seja sempre “para a frente”. A tocha ilumina tudo o que o jogador pode ver.</p>
+        <h3>A tocha é o jogo inteiro</h3>
+        <div class="cols two">
+          <div class="box"><h3>Apagar a tocha</h3><p>Esconda-se de um Minotauro próximo, ao preço de quase toda a visibilidade.</p></div>
+          <div class="box"><h3>Acender a tocha</h3><p>Veja para onde está indo, mas fique visível para o Minotauro. <strong>Custa um fósforo.</strong></p></div>
+          <div class="box"><h3>Arremessar a tocha</h3><p>Atraia o Minotauro: jogue-a por um dos lados de uma bifurcação e corra para o outro, e o monstro segue a luz e perde você. Ela também quebra paredes frágeis.</p></div>
+          <div class="box"><h3>Pegar a tocha</h3><p>Fixa a luz no personagem novamente.</p></div>
+        </div>
+      </section>
+
+      <!-- AI -->
+      <section class="sec reveal" id="ai">
+        <h2>IA do inimigo</h2>
+        <p>O Minotauro é uma máquina de estados, projetada para que a perseguição pareça justa e tensa.</p>
+        <div class="chain" style="margin:18px 0">
+          <div class="node page"><small>Estado</small>Ocioso</div><span class="arrow">→</span>
+          <div class="node panel"><small>Estado</small>Patrulhando<em>alvo inteligente ou aleatório</em></div><span class="arrow">→</span>
+          <div class="node popover"><small>Jogador encontrado</small>Rugido<em>pausa no lugar</em></div><span class="arrow">→</span>
+          <div class="node dialog"><small>Estado</small>Perseguindo</div><span class="arrow">→</span>
+          <div class="node toast" style="--c:#f87171"><small>Estado</small>Atacando<em>câmera lateral + quick-time event</em></div><span class="arrow">→</span>
+          <div class="node drawer"><small>Estado</small>Atordoado<em>10 segundos</em></div><span class="arrow">→</span>
+          <div class="node page"><small>Estado</small>Ocioso</div>
+        </div>
+        <p style="color:var(--faint);font-size:.9rem">Se o Minotauro perder o jogador de vista durante a perseguição, ele volta a Patrulhando. Se nunca encontrar o jogador, continua patrulhando.</p>
+        <ul class="bl">
+          <li><strong>Ocioso.</strong> O estado básico de descanso do Minotauro.</li>
+          <li><strong>Patrulhando.</strong> A patrulha “inteligente” mantém o jogo interessante. Ele caminha até um ponto totalmente aleatório do labirinto ou até um ponto <strong>a 20 unidades do jogador</strong>. Ao chegar, escolhe um novo ponto, então a patrulha alterna entre inteligente e aleatória. Um ponto precisa ser alcançável para ser válido.</li>
+          <li><strong>Perseguindo.</strong> Ele vai atrás do jogador, que pode se esconder em esconderijos, arremessar a tocha ou apagá-la. Alcançar o jogador dispara um ataque.</li>
+          <li><strong>Atacando.</strong> Quando o jogador está ao alcance, a câmera muda para uma visão lateral e os controles de movimento são desativados. O jogador precisa <strong>tocar nos pontos certos da tela</strong> para escapar. Se conseguir, o Minotauro fica atordoado.</li>
+          <li><strong>Atordoado.</strong> Ele para por 10 segundos. Enquanto isso, Alex corre aleatoriamente pelo labirinto, fora do controle do jogador, e uma luz mostra o caminho até a saída.</li>
+        </ul>
+      </section>
+
+      <!-- RULES -->
+      <section class="sec reveal" id="rules">
+        <h2>Vitória e derrota, contadores</h2>
+        <div class="cols">
+          <div class="box"><span class="tag-r">Vitória</span><p>Encontrar a saída do labirinto ou encontrar as 6 cartas do Exodia.</p></div>
+          <div class="box"><span class="tag-t">Derrota</span><p><strong>O Minotauro pega o Alex:</strong> um quick-time event dá uma chance de desviar tocando onde for indicado. Falhar é Game Over. Ter sucesso revela o caminho da saída com uma luz, e Alex corre aleatoriamente enquanto o Minotauro está atordoado.<br><strong>Uma armadilha:</strong> cair em uma delas é Game Over.</p></div>
+          <div class="box"><span class="tag-r" style="color:var(--violet)">Contadores</span><p><strong>Fósforos:</strong> diminuem conforme são usados.<br><strong>Cartas:</strong> coletadas de um total de 6.<br><strong>Tempo:</strong> avança enquanto se procura a saída.</p></div>
+        </div>
+      </section>
+
+      <!-- LEVEL -->
+      <section class="sec reveal" id="level">
+        <h2>Level design</h2>
+        <p>O labirinto, com todas as suas interações, está montado no board do Miro do projeto (veja o link no topo).</p>
+        <div class="cols two">
+          <div class="box"><h3>Coletáveis</h3><p><strong>Cartas (6):</strong> coletar todas invoca o Exodia.<br><strong>Fósforos (14):</strong> espalhados pelo labirinto e usados para reacender a tocha, de modo que o jogador sempre precise decidir quando a luz vale o custo.</p></div>
+          <div class="box"><h3>Armadilhas</h3><p>Só o Alex é afetado; o Minotauro é imune.<br><strong>Armadilhas de parede:</strong> espinhos saem das paredes.<br><strong>Armadilhas de chão:</strong> o chão se abre sobre um poço de fogo.<br><em>Desarmar armadilhas ainda está por definir.</em></p></div>
+        </div>
+        <figure class="fig"><img src="images/trap-floor-diagram.png" alt="Armadilha de chão: o chão se abre e revela um poço de fogo sob o Alex." width="768" height="400" loading="lazy"><figcaption>Armadilha de chão: o chão se abre e revela um poço de fogo sob o Alex.</figcaption></figure>
+        <figure class="fig"><img src="images/level-map-annotated.png" alt="Mapa anotado do labirinto, do board do Miro: caminho de saída, caminhos alternativos, salas, partes do Exodia, fósforos, paredes quebráveis, esconderijos, armadilhas e botões para desativá-las." width="800" height="645" loading="lazy"><figcaption>Mapa anotado do labirinto, do board do Miro: caminho de saída, caminhos alternativos, salas, partes do Exodia, fósforos, paredes quebráveis, esconderijos, armadilhas e botões para desativá-las.</figcaption></figure>
+        <figure style="margin:18px 0 0"><img src="images/Labirinto.png" alt="Mapa do labirinto: corredores brancos, paredes pretas, câmaras cinza" style="max-width:420px;width:100%;border-radius:6px;border:1px solid var(--line-2);display:block"><figcaption style="color:var(--faint);font-size:.88rem;margin-top:8px">Mapa do labirinto. O protótipo jogável usa este layout: <a class="inline" href="../../UI/The%20Dark%20Maze%20of%20Mythos/index.pt.html#prototype">jogar</a>.</figcaption></figure>
+      </section>
+
+      <!-- UI -->
+      <section class="sec reveal" id="ui">
+        <h2>Interface do usuário</h2>
+        <h3>Interações do labirinto</h3>
+        <div class="cols"><div class="box"><h3>Desativar armadilhas</h3><p>Encontre o botão da mesma cor do fogo ou dos espinhos para desativar a armadilha.</p></div><div class="box"><h3>Paredes quebráveis</h3><p>Paredes que o jogador pode quebrar jogando a tocha contra elas.</p></div><div class="box"><h3>Esconderijos</h3><p>Lugares com uma névoa roxa misteriosa onde nem o Minotauro ousa pisar. O jogador pode se esconder ali com a tocha acesa.</p></div></div>
+        <h3>Estilo e elementos</h3>
+        <p>Uma UI semi-realista e pesada, de pedra e energia, embora a experiência em si deva ser simples. A tipografia deve lembrar da Idade Média à Grécia antiga: leve, serifada, fácil de ler em elementos pequenos e muito estruturada em outros, para complementar o estilo low-poly. <strong>Tilt Prism</strong> é usada em títulos e textos grandes e <strong>Texturina</strong> em textos pequenos e botões.</p>
+        <div class="cols two"><div class="box"><h3>Botões</h3><p>Os botões têm ângulos agudos e cantos irregulares para parecerem botões de pedra, com bordas que simulam um movimento para dentro e para baixo quando ativos.</p><figure class="fig"><img src="images/ui-button.png" alt="Exemplo de botão: ângulos agudos e cantos irregulares, como um botão de pedra." width="400" height="171" loading="lazy"><figcaption>Exemplo de botão: ângulos agudos e cantos irregulares, como um botão de pedra.</figcaption></figure></div><div class="box"><h3>D-pad</h3><p>O D-pad lembra um losango sobre uma base de energia transparente. Ao se mover, um halo vermelho aparece na direção do movimento.</p><figure class="fig"><img src="images/ui-dpad.png" alt="Exemplo de D-pad: um losango sobre uma base de energia transparente, com um halo vermelho na direção do movimento." width="400" height="226" loading="lazy"><figcaption>Exemplo de D-pad: um losango sobre uma base de energia transparente, com um halo vermelho na direção do movimento.</figcaption></figure></div><div class="box"><h3>Ícones</h3><p>Para serem legíveis e se destacarem dos elementos escuros da UI, os ícones são simples e não lembram o estilo realista do resto da UI.</p><figure class="fig"><img src="images/ui-icon-torch.png" alt="Exemplo de ícone: a tocha, simples e legível sobre a UI escura." width="243" height="240" loading="lazy"><figcaption>Exemplo de ícone: a tocha, simples e legível sobre a UI escura.</figcaption></figure></div><div class="box"><h3>Painéis</h3><p>Os painéis de informação lembram o estilo dos botões, mas são claramente não interativos e puramente informativos.</p><figure class="fig"><img src="images/ui-panels-counters.png" alt="Painéis de contadores, só informativos, ao lado do botão de pausa." width="400" height="158" loading="lazy"><figcaption>Painéis de contadores, só informativos, ao lado do botão de pausa.</figcaption></figure></div></div>
+        <h3>Menus e indicadores</h3>
+        <p>Os menus são simples, com interações óbvias e texto claro sobre o que o jogador está fazendo, sobre um gradiente vermelho escuro que reforça o clima. Quando o Minotauro está perto, uma vinheta vermelha vibrante sobre a tela toda mostra sua direção, com pistas sonoras: respiração do Minotauro, passos e um som de desespero.</p>
+        <figure class="fig narrow"><img src="images/ui-pause-menu.png" alt="Menu de pausa: interações simples e óbvias sobre um gradiente vermelho escuro." width="374" height="837" loading="lazy"><figcaption>Menu de pausa: interações simples e óbvias sobre um gradiente vermelho escuro.</figcaption></figure>
+      </section>
+
+      <div class="docnav">
+        <a class="btn" href="../wild-saga/index.pt.html">← Anterior: Wild Saga</a>
+        <a class="btn" href="../../UI/The%20Dark%20Maze%20of%20Mythos/index.pt.html">Design de UI e protótipo jogável →</a>
+        <a class="btn primary" href="../../../index.pt.html#work-gd">Todo o trabalho de game design</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Feito à mão. Só o Atrium foi prototipado com IA</span>
+      <a href="../../../index.pt.html#work-gd">← Voltar a todos os trabalhos</a>
+    </div>
+  </footer>
+
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

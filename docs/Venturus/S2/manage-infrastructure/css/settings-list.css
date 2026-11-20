@@ -1,0 +1,179 @@
+/* ============================================
+   SETTINGS LIST
+   ============================================ */
+
+/* Tri-state (mixed) switch — used by the site-level FSN API Calls toggle when
+   the site's active line servers are partly enabled, partly disabled. Amber
+   slider with the knob centred to read as neither on nor off. */
+.settings-panel .switch__input:indeterminate ~ .switch__slider {
+    background-color: var(--color-fill-orange, #f59e0b);
+}
+.settings-panel .switch__input:indeterminate ~ .switch__slider::before {
+    transform: translateX(0.8rem);
+}
+.settings-panel .switch__input:indeterminate ~ .switch__slider::after {
+    content: none;
+}
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+    padding: 0;
+}
+
+.setting-row {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: var(--space-m);
+    align-items: start;
+    min-width: 0;
+}
+
+.setting-label {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-glyph-gray);
+    letter-spacing: 0.05em;
+    margin: 0;
+    padding-top: 0.8rem;
+    text-align: left;
+}
+
+.setting-label--with-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.setting-label__icon {
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.setting-value {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    align-items: stretch;
+    width: 100%;
+    /* The `1fr` track's automatic minimum is min-content, so a child that can't
+       wrap would push the column past the panel, which clips it on
+       `overflow-x: hidden`. Let the track shrink. */
+    min-width: 0;
+}
+
+.setting-value .form-input,
+.setting-value .form-select {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Input paired with a trailing icon action (Proxy URL open link) */
+.setting-value__input-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    width: 100%;
+}
+
+.setting-value__input-row .form-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.setting-editable {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-tiny);
+    color: #16a34a;
+    font-weight: var(--font-weight-medium);
+}
+
+.setting-editable svg {
+    flex-shrink: 0;
+}
+
+.setting-note {
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray-secondary);
+    text-align: left;
+    line-height: 1.4;
+    width: 100%;
+}
+
+/* Checkbox alignment in setting rows */
+.setting-value .checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0.4rem 0;
+}
+
+.setting-value .checkbox__input {
+    margin: 0;
+}
+
+.setting-value .checkbox__box {
+    margin: 0;
+}
+
+/* Align checkbox rows properly */
+.setting-row:has(.checkbox) {
+    align-items: center;
+}
+
+.setting-row:has(.checkbox) .setting-label {
+    padding-top: 0;
+}
+
+/* Align switch rows properly */
+.setting-row:has(.switch) {
+    align-items: center;
+}
+
+.setting-row:has(.switch) .setting-label {
+    padding-top: 0;
+}
+
+/* Input with prefix */
+.input-with-prefix {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 0.1rem solid var(--color-fill-gray-quaternary);
+    border-radius: var(--radius-s);
+    overflow: hidden;
+    background-color: var(--color-fill);
+}
+
+.input-prefix {
+    padding: 0.8rem 1.2rem;
+    background-color: var(--color-fill-secondary);
+    color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-xxs);
+    border-right: 0.1rem solid var(--color-fill-gray-quaternary);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.form-input--with-prefix {
+    border: none;
+    border-radius: 0;
+    flex: 1;
+}
+
+.form-input--with-prefix:focus {
+    box-shadow: none;
+}
+
+.input-with-prefix:focus-within {
+    border-color: var(--color-fill-blue);
+    box-shadow: 0 0 0 0.3rem rgba(79,70,229, 0.1);
+}

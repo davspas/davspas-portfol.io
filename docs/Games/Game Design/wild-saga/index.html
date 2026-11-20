@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wild Saga — Game Design Document</title>
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+</head>
+<body class="gd-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../">← Home</a>
+        
+        <a href="../dark-maze-of-mythos/">Dark Maze of Mythos</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en" aria-current="true">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap about">
+    <aside class="rail">
+      <h2 style="margin-top:0">Quick facts</h2>
+      <dl class="facts">
+        <div><dt>Genre</dt><dd>2.5D co-op story adventure</dd></div>
+        <div><dt>Audience</dt><dd>Casual players, 10+</dd></div>
+        <div><dt>Engine</dt><dd>Unity</dd></div>
+        <div><dt>Context</dt><dd>Digital Games course, PUC Campinas (two semesters)</dd></div>
+        <div><dt>My role</dt><dd>Game and UI/UX Designer</dd></div>
+      </dl>
+      <h2>On this page</h2>
+      <nav class="toc" aria-label="On this page">
+        <a href="#audience">Audience &amp; guidelines</a>
+        <a href="#story">World &amp; story</a>
+        <a href="#characters">Characters</a>
+        <a href="#levels">Scenarios &amp; levels</a>
+        <a href="#mechanics">Mechanics</a>
+        <a href="#ux">UX system</a>
+        <a href="#programming">Programming</a>
+        <a href="#postmortem">Post mortem</a>
+      </nav>
+    </aside>
+
+    <div class="doc">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a> / <a href="../../../#work">Work</a> / <a href="../../../#work-gd">Game design</a> / Wild Saga</nav>
+      <div class="eyebrow">Game Design Document · 01</div>
+      <h1>Wild <span class="grad">Saga</span></h1>
+      <p class="headline">A cooperative 2.5D adventure about a rabbit and a tiger who have to trust each other to save the forest, without a single act of gratuitous violence.</p>
+      <p class="loc">David Smith (Game and UI/UX Designer) · Leonardo Yuji (3D Artist) · Otavio Colombini (3D Artist, story designer) · Victor Perrotte (Game Designer, Developer, General Artist)</p>
+
+      <aside class="tldr" aria-label="In short"><h2>In short</h2><p><strong>The game:</strong> a cooperative 2.5D adventure for ages 10+ where cooperation is the mechanic, from puzzles to a counter-attack combat system. My part: game design and the UX system (HUD, menus, iconography).</p><p><strong>The lesson:</strong> the scope was too big for four people in a year. The post mortem says what I would cut and test earlier. <a href="#postmortem">Jump to the post mortem →</a></p></aside>
+
+      <div class="res">
+        <a class="btn primary" href="https://drive.google.com/file/d/1xdxE2Y5rcnF2fUnfB-_MD1bTxlI6WjxL/view?usp=drive_link">Download build ↗</a>
+        <a class="btn" href="https://drive.google.com/file/d/1agGCfXzocHCXqtuxKh43fKgq_CFUe0t-/view?usp=drive_link">Video ↗</a>
+        <a class="btn" href="https://www.figma.com/file/VQEszKh23lR1tCfwc5s9DReU/Wild-Saga?type=design&amp;node-id=0%3A1&amp;mode=design&amp;t=kU0X2KOanz0WEEFy-1">UI wireframes ↗</a>
+        <a class="btn" href="https://drive.google.com/file/d/1wegheyQw3IcUc2Ueh6zRRILMOYgLmjGS/view?usp=drive_link">Original GDD <small>(Portuguese)</small> ↗</a>
+        <a class="btn" href="https://docs.google.com/presentation/d/1KFN48VXxpk2lj9BNw9waS0AfW4LwAgkDFzewJabm67o/edit?usp=sharing">Presentation <small>(Portuguese)</small> ↗</a>
+      </div>
+
+      <!-- AUDIENCE -->
+      <section class="sec reveal" id="audience">
+        <h2>Audience &amp; design guidelines</h2>
+        <h3>Who is this game for?</h3>
+        <p>A broad audience (10+) of casual players who enjoy indie games and level exploration with a touch of battle. People who want an immersive, story-driven game and are willing to uncover every piece of its world, and who like to alternate slower parts (exploration, dialogue) with exciting combat or fast segments such as runner moments.</p>
+        <h3>Why this audience?</h3>
+        <p>Our brief research (a sample of 17 answers) showed that players today lean strongly towards shooting, fighting and strategy games. We wanted to step away from that trend and offer something more sincere and captivating, with no gratuitous violence, while passing on values we feel are missing in the world.</p>
+        <figure class="fig"><img src="images/survey-destruction.png" alt="Survey result for “Exploding, wrecking, crushing and destroying” (1 to 5, 17 responses): 9 answered 4 and 4 answered 5, with 1 answering 2 and 3 answering 3." width="567" height="247" loading="lazy"><figcaption>Survey result for “Exploding, wrecking, crushing and destroying” (1 to 5, 17 responses): 9 answered 4 and 4 answered 5, with 1 answering 2 and 3 answering 3.</figcaption></figure>
+        <h3>How do we reach them?</h3>
+        <ul class="bl">
+          <li><strong>A distinctive art style.</strong> 2.5D graphics with painting-like textures and a “brushstroke” effect, saturated colours and intriguing characters. The aim is to attract younger players and anyone who enjoys exploring a universe as an artistic work.</li>
+          <li><strong>An emotional, profound story</strong> that appeals to all ages and raises questions, values and learning, with new mechanics for exploration, puzzles and <em>defensive</em> combat that avoids direct conflict while staying exciting.</li>
+        </ul>
+        <h3>What is the market missing?</h3>
+        <p>Games for children and teenagers rarely offer <strong>cooperative play with a deep storyline</strong>. Wild Saga teaches friendship, loyalty, trust and real collaboration between two very different characters, mixing thrilling action and mystery with quieter moments. It also challenges players with new cooperative mechanics, platforming, puzzles and combat, updating classic ideas in creative combinations.</p>
+        <h3>Inspirations</h3>
+        <ul class="chips"><li>Tomba · PS1</li><li>Super Mario Odyssey · Switch</li><li>Donkey Kong Country Returns / Tropical Freeze · Wii</li><li>Odin Sphere · PS2</li><li>Prinny 2 · PS2</li><li>Dark Cloud 2 · PS2</li><li>Breath of Fire IV · PSX</li></ul>
+        <h3>Project scope</h3>
+        <p>Before committing to the full game, we adapted every key feature (map progression, puzzles, dialogue, cooperative mechanics and spline gameplay) into one streamlined <strong>demo scenario</strong>. It combines all mechanics for testing and adaptation and works as a tutorial that showcases the game.</p>
+        <figure class="fig"><img src="images/demo-scenario-island.png" alt="Concept art of the demo scenario: a floating island with a mountain, forest, ruins and a waterfall. By Victor Perrotte." width="800" height="560" loading="lazy"><figcaption>Concept art of the demo scenario: a floating island with a mountain, forest, ruins and a waterfall. By Victor Perrotte.</figcaption></figure>
+      </section>
+
+      <!-- STORY -->
+      <section class="sec reveal" id="story">
+        <h2>World &amp; story</h2>
+        <h3>World building</h3>
+        <p>A world at roughly an 1850s level of technology, with only a few isolated city-states connected by train. Most of the game happens far from them: forests, plains, caves, ruins and valleys. The ruins of earlier civilisations, animal or human, are central to the narrative, and the goal is a mystical feeling in every environment, because supernatural forces drive the story.</p>
+        <h3>Synopsis</h3>
+        <ul class="bl">
+          <li>Deep in a forest, something awakens dormant forces inside a ruin and causes an earthquake.</li>
+          <li>A circus train is shaken, and a wagon falls off a bridge into the forest. Inside the cage is a <strong>Tiger</strong>.</li>
+          <li>A nearby <strong>Rabbit</strong> finds the cage and, after reluctance and conflict, decides to help. A loose piece of the bridge falls and breaks the cage open before he can.</li>
+          <li>Lost and disoriented, the two must work together despite different goals: the Tiger wants to go home, the Rabbit wants to save his. The only way for both is to find what caused the earthquake.</li>
+          <li>Deeper in the forest they find “moving rocks” and an unknown ruin guarded by a giant stone golem, woken and distorted by an evil energy. It recognises the Rabbit’s lineage of protectors and asks the heroes to help the other elemental guardians break free.</li>
+        </ul>
+
+        <h3>Three acts</h3>
+        <div class="acts">
+          <div class="act"><h4 style="margin-top:0">Act 1 · Coexisting</h4>
+            <p>The Rabbit must cooperate with a predator to get home. The Tiger is somewhere unfamiliar and lost. Pilot scenes:</p>
+            <ul class="bl">
+              <li><strong>Scene 01.</strong> The Rabbit finds the cage and faces a moral dilemma: open it for a predator? As he reaches for the key, a stone falls and opens it. He insists he would have done it. The Tiger is never fully sure.</li>
+              <li><strong>Scene 02.</strong> An obstacle only the Tiger can cross. The Rabbit refuses at first, then changes his mind and convinces him to go on together.</li>
+              <li><strong>Scene 03.</strong> They meet a strange creature and avoid a fight.</li>
+              <li><strong>Scene 04.</strong> Resting, they talk. The Tiger remembers circus life and wanting to go “home”. The Rabbit worries about his changing village.</li>
+              <li><strong>Further scenes (draft).</strong> A quadrupedal golem grows after being defeated, and the Rabbit flees with the Tiger. The Tiger admits circus life wasn’t as good as he remembered. A Wolf jokes that the Tiger should eat the Rabbit, then asks for help finding food. A golem kidnaps an animal and they follow to rescue it.</li>
+            </ul>
+          </div>
+          <div class="act"><h4 style="margin-top:0">Act 2 · Venturing out</h4>
+            <p>They learn where the strange events come from, and that much of what the Rabbit knew has changed or been destroyed. The Rabbit sees his chance to prove his worth but knows he can’t do it alone. The Tiger, after tasting freedom, begins to rethink going back to the circus.</p>
+          </div>
+          <div class="act"><h4 style="margin-top:0">Act 3 · The fusion</h4>
+            <p>After a gruelling fight with the last golem, the Tiger is knocked unconscious. The Rabbit fights on alone and wins, but the Artifact still shines and his friend is dying. He fuses his magic with the Tiger to save him. The Tiger rises and becomes a golem unlike the others, and the Rabbit must fight his best friend to free him.</p>
+            <ul class="bl">
+              <li><strong>Ending A: Rabbit wins.</strong> The Artifact shatters, the Tiger is cured, and together they return to the village, recognised for their friendship. The Rabbit becomes a humble guardian and they help it flourish.</li>
+              <li><strong>Ending B: Fusion.</strong> The Rabbit fuses with the Tiger into an even larger golem and they harness the Artifact’s power as guardians of the region.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHARACTERS -->
+      <section class="sec reveal" id="characters">
+        <h2>Characters</h2>
+        <div class="cols two">
+          <div class="box tiger">
+            <span class="tag-t">Main · Tiger</span>
+            <h3>Born to perform</h3>
+            <p>Raised in a circus, his life was performances and training, and his world was confined. He never knew freedom, so he feels safe in what he has and fears losing it. He dreams of joining bigger, more famous circuses.</p>
+            <p>His best memories are his first applause and playing with other animals. He hides suppressed memories of the suffering of other animals, including his mother. His greatest joy is making others happy, and he turns playful to avoid heavy emotions. Naive, easily bored, overreacting, and confident even when unsure.</p>
+          </div>
+          <div class="box rabbit">
+            <span class="tag-r">Main · Rabbit</span>
+            <h3>The underestimated observer</h3>
+            <p>The youngest child of an important family in a village of many animal species. His job is to watch the surroundings and make sure all is safe. Creative and intelligent, yet always underestimated by his family. Responsible, idealistic and friendly, with a taste for solitude.</p>
+            <p>Lacking courage but loving to investigate the unknown and stay in control. He remembers playing in the woods fondly, but he has suffered while trying to prove himself, which shows up as perfectionism and insecurity.</p>
+          </div>
+        </div>
+        <div class="figrow"><figure class="fig"><img src="images/tiger-concept.png" alt="The Tiger, concept art by Victor Perrotte." width="400" height="267" loading="lazy"><figcaption>The Tiger, concept art by Victor Perrotte.</figcaption></figure><figure class="fig"><img src="images/rabbit-concept.png" alt="The Rabbit, concept art by Victor Perrotte." width="392" height="390" loading="lazy"><figcaption>The Rabbit, concept art by Victor Perrotte.</figcaption></figure></div>
+
+        <h3>Bosses: the elemental Golems</h3>
+        <p>One Golem per environment, each a distinct element. They are ancient guardians, created to keep natural balance and stop unrestrained destruction. The mysterious energy has woken them, weakened and corrupted, and the player’s task is to help them regain their sanity. The first is <strong>The Boulder</strong>, the Forest Golem: perhaps the eldest of the guardians, aware of the animals in its forest, grateful to the Rabbit’s family, and puzzled by the relaxed, circus-raised Tiger.</p>
+        <div class="figrow"><figure class="fig"><img src="images/golem-concept.png" alt="The Forest Golem, concept art by Victor Perrotte." width="423" height="458" loading="lazy"><figcaption>The Forest Golem, concept art by Victor Perrotte.</figcaption></figure><figure class="fig"><img src="images/golem-sheet.png" alt="Golem character sheet (“Golem 1B”): front, side and fist detail." width="759" height="400" loading="lazy"><figcaption>Golem character sheet (“Golem 1B”): front, side and fist detail.</figcaption></figure></div>
+        <h3>Enemies &amp; other characters</h3>
+        <ul class="bl">
+          <li><strong>Enemies:</strong> the golems’ minions, “extensions” that spread through each environment, plus dangerous animals such as wolves that lead to chases or quests ending in battle.</li>
+          <li><strong>Rescued animals:</strong> animals from the Rabbit’s village hurt by the Artifact. They give quests whose rewards help rebuild the village.</li>
+        </ul>
+      </section>
+
+      <!-- LEVELS -->
+      <section class="sec reveal" id="levels">
+        <h2>Scenarios &amp; levels</h2>
+        <h3>Environments</h3>
+        <div class="cols two">
+          <div class="box"><h3>1 · Home, the Rabbit’s Hole</h3><p>A forest where the “uncivilised” animals live, thought dangerous by the city, but really a place of freedom, benevolent magic, wide green fields and nature-covered ruins. When the Artifact’s energy shifts, the open fields become exposed hunting grounds, the dense woods turn nearly lightless, and the ruins radiate malevolence.</p></div>
+          <div class="box"><h3>2 · Underground, the Unknown Darkness</h3><p>Caves lit only by moonlight on aquatic caverns, narrow and airless, yet full of sound: dripping water, sonar from bats. Ruins resemble aqueducts and giant pipes. Here the Artifact brings <em>light</em> instead of darkness, with an intense glow held back only by a pile of rocks at the entrance.</p></div>
+        </div>
+        <h3>Levels (Environment 1)</h3>
+        <ul class="bl">
+          <li><strong>Part I · Open Fields.</strong> Starts at the fallen wagon after the first cutscene. A dialogue shows each character claiming they don’t need the other. Three puzzles teach switching characters, role reversal and a combined long jump, so the player learns that cooperating works better. Open fields and mountains give a sense of freedom, then darker areas and enemies appear towards the dense forest.</li>
+          <li><strong>Part II · The Dense Forest.</strong> Dimmer and more enclosed, already affected by the Artifact, and longer than Part I. It introduces combat with at least three golems and more intricate puzzles, and ends at the ruin entrance.</li>
+          <li><strong>Part III · The First Ruins.</strong> More geometric puzzles and structures, with enemies integrated into puzzles. Weathered, vine-covered temple architecture with a purple particle effect marking the Artifact’s influence. Ends with the boss fight against the Stone Golem.</li>
+        </ul>
+        <p><strong>Base.</strong> The Rabbit’s lost and destroyed village, which he swears to protect and rebuild. <strong>Map.</strong> Clear division of environments, showing the path of every level taken so far. The game is linear, with interconnected ruins.</p>
+      </section>
+
+      <!-- MECHANICS -->
+      <section class="sec reveal" id="mechanics">
+        <h2>Mechanics</h2>
+        <h3>Movement</h3>
+        <p>2D platforming inside a 3D world: movement follows straight and curved paths, and a <strong>path-switching</strong> feature adds depth and exploration. It also removes “endless pits”: falling just means backtracking along a parallel path, and the same mechanic can surprise the player.</p>
+        <h3>Co-op</h3>
+        <p>The two characters are interdependent, a symbiotic pair. They fight together, solve puzzles with each other’s help, and overcome obstacles as a team. The relationship grows stronger through the game, matching the story, and players should feel the characters learning from one another. The interface also supports local two-player.</p>
+
+        <h3>Dialogue system</h3>
+        <div class="cols">
+          <div class="box"><h3>Interaction</h3><p>Short, quick exchanges from minimal interactions: a non-interactive object, a blocked path, an NPC with an open quest. Can overlap when several objects are nearby, never obstruct, time out, and often have no portrait.</p></div>
+          <div class="box"><h3>Quest</h3><p>Quest narratives with NPCs, shown with a character portrait that changes with emotion. They don’t block movement and are advanced or skipped with the action button.</p></div>
+          <div class="box"><h3>Main story</h3><p>The most complex: long exchanges, possibly with cutscene-style animation. They can’t be skipped outright, but a “skip story” option is available from the start/esc button.</p></div>
+        </div>
+
+        <h3>Puzzles</h3>
+        <p>One character always helps the other past an obstacle: a lever only the Rabbit can reach, a wall only the Tiger can break. Puzzles share a structure but are themed to each environment. <strong>Type 1:</strong> five floor buttons, three stones and a balance linked to a door. Stones and the characters’ own weight must even out the balance to open it.</p>
+        <h3>Platforms</h3>
+        <p>Themed to each level segment, for example field → dense forest → swamp → ruin entrance. Varied obstacles prevent fatigue, and colour palettes darken as the game progresses.</p>
+
+        <h3>Combat system</h3>
+        <p>Combat is <strong>defensive and cooperative</strong>, built around counter-attacks, not button-mashing.</p>
+        <div class="chain" style="margin:14px 0 6px">
+          <div class="node page"><small>1 · Before</small>Enemy at rest (camouflaged) or patrolling</div><span class="arrow">→</span>
+          <div class="node dialog"><small>2 · Start</small>Players enter its range; HUD swaps items for abilities</div><span class="arrow">→</span>
+          <div class="node wizard"><small>3 · Climax</small>Dodge, regroup, visual cue, 2-ability counter-attack</div><span class="arrow">→</span>
+          <div class="node toast"><small>4 · Resolution</small>Win: enough weak-point hits · Lose: both unconscious</div>
+        </div>
+        <div class="figrow states"><figure class="fig"><img src="images/battle-1-patrol.png" alt="1 · Before the fight: the golem patrols a pre-defined area, or stays idle as part of the scenery, until the players enter the danger area." width="461" height="389" loading="lazy"><figcaption>1 · Before the fight: the golem patrols a pre-defined area, or stays idle as part of the scenery, until the players enter the danger area.</figcaption></figure><figure class="fig"><img src="images/battle-2-detected-attack.png" alt="2 · Player detected: the golem rises, notices the players and prepares to attack. The golem always attacks first." width="452" height="393" loading="lazy"><figcaption>2 · Player detected: the golem rises, notices the players and prepares to attack. The golem always attacks first.</figcaption></figure><figure class="fig"><img src="images/battle-3-retreat-counter.png" alt="3 · The players dodge the attack and a visual cue shows the counter is available. After the enemy finishes its attack, each player selects an ability and the animation begins." width="470" height="427" loading="lazy"><figcaption>3 · The players dodge the attack and a visual cue shows the counter is available. After the enemy finishes its attack, each player selects an ability and the animation begins.</figcaption></figure><figure class="fig"><img src="images/battle-4-escape.png" alt="Alternative: the players escape. Leaving the area ends the battle and the golem goes back to its starting point." width="456" height="372" loading="lazy"><figcaption>Alternative: the players escape. Leaving the area ends the battle and the golem goes back to its starting point.</figcaption></figure><figure class="fig"><img src="images/battle-5-success-fail.png" alt="4 · Resolution: if the counter hits the weak spot the enemy is destroyed and the battle is resolved. If both characters are hit, the battle fails, and the game is over only if both have fainted." width="459" height="393" loading="lazy"><figcaption>4 · Resolution: if the counter hits the weak spot the enemy is destroyed and the battle is resolved. If both characters are hit, the battle fails, and the game is over only if both have fainted.</figcaption></figure></div>
+        <ul class="bl">
+          <li><strong>Counter-attack.</strong> After dodging, a visual cue opens a window to combine <em>one ability from each character</em>. Depending on the combination, it hits a different weak point (High, Mid or Low Frontal, Back, or combinations) and only deals damage if it matches the enemy’s weak point.</li>
+          <li><strong>Getting hit.</strong> If a player is hit, no counter-attack happens. They fall unconscious until their partner rescues them in the next window. <em>Suggestion:</em> the weak point may shift during the fight.</li>
+          <li><strong>Avoiding combat.</strong> Enemies have a maximum activation distance. Leave it and they stop chasing and go back.</li>
+          <li><strong>Loadout.</strong> Up to four abilities per character, chosen from: Protection, Kick, Rush, Somersault, Pounce, Tackle, Tail Whip, Slide Kick, Throw, Grab, Head-butt, Bite, Scratch.</li>
+        </ul>
+
+        <h4>The ten counter-attacks</h4>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Counter-attack</th><th><span class="tag-t">Tiger</span></th><th><span class="tag-r">Rabbit</span></th><th>Target</th><th>What happens</th></tr></thead>
+          <tbody>
+            <tr><td>Protection</td><td>Protection</td><td>Protection</td><td>Player</td><td>Prevents damage to either player.</td></tr>
+            <tr><td>High Kick</td><td>Throw</td><td>Kick</td><td>High frontal</td><td>The Tiger tosses the Rabbit upward and he kicks the enemy’s head mid-air.</td></tr>
+            <tr><td>Surprise Attack</td><td>Head-butt</td><td>Somersault</td><td>Back</td><td>The Rabbit leaps over the enemy to face it while the Tiger attacks from behind.</td></tr>
+            <tr><td>Grabite</td><td>Bite</td><td>Grab</td><td>Mid / Low frontal</td><td>The Rabbit jumps on the Golem’s head, blinding and stunning it, while the Tiger bites.</td></tr>
+            <tr><td>Pray Catcher</td><td>Pounce</td><td>Rush</td><td>High frontal / Back</td><td>The Rabbit runs between the enemy’s legs to distract it while the Tiger pounces.</td></tr>
+            <tr><td>Etch a Scratch</td><td>Grab</td><td>Scratch</td><td>Low / Mid frontal</td><td>The Tiger pins the enemy from behind while the Rabbit jumps high, scratching and kicking its front.</td></tr>
+            <tr><td>From Below</td><td>Tackle</td><td>Slide Kick</td><td>Low frontal / Back</td><td>The Tiger knocks the enemy backwards so it rolls, and the Rabbit kicks it from behind.</td></tr>
+            <tr><td>Wrecking Ball</td><td>Tail Whip</td><td>Grab</td><td>Mid frontal</td><td>The Rabbit holds the Tiger’s tail and spins into the enemy’s stomach.</td></tr>
+            <tr><td>Speed Is My Game</td><td>Rush</td><td>Rush</td><td>Player</td><td>Increases both players’ speed for a limited time.</td></tr>
+            <tr><td>Jousting</td><td>Rush</td><td>Slide Kick</td><td>High / Mid frontal</td><td>The Rabbit rides the Tiger with a branch as a lance while the Tiger charges.</td></tr>
+          </tbody></table></div>
+        <figure class="matrixfig"><div class="tblwrap"><table class="matrix"><thead><tr><th class="corner">Rabbit ↓ · Tiger →</th><th scope="col" class="t">Protection</th><th scope="col" class="t">Kick</th><th scope="col" class="t">Rush</th><th scope="col" class="t">Somersault</th><th scope="col" class="t">Pounce</th><th scope="col" class="t">Tackle</th><th scope="col" class="t">Tail Whip</th><th scope="col" class="t">Slide Kick</th><th scope="col" class="t">Throw</th><th scope="col" class="t">Grab</th><th scope="col" class="t">Headbutt</th><th scope="col" class="t">Bite</th><th scope="col" class="t">Scratch</th></tr></thead><tbody><tr><th scope="row" class="r">Protection</th><td class="hit" title="Protection: Tiger Protection + Rabbit Protection" aria-label="Protection: Tiger Protection + Rabbit Protection">1</td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Kick</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td class="hit" title="High Kick: Tiger Throw + Rabbit Kick" aria-label="High Kick: Tiger Throw + Rabbit Kick">2</td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Rush</th><td></td><td class="x"></td><td class="hit" title="Speed Is My Game: Tiger Rush + Rabbit Rush" aria-label="Speed Is My Game: Tiger Rush + Rabbit Rush">9</td><td class="x"></td><td class="hit" title="Pray Catcher: Tiger Pounce + Rabbit Rush" aria-label="Pray Catcher: Tiger Pounce + Rabbit Rush">5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Somersault</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="hit" title="Surprise Attack: Tiger Headbutt + Rabbit Somersault" aria-label="Surprise Attack: Tiger Headbutt + Rabbit Somersault">3</td><td></td><td></td></tr><tr><th scope="row" class="r">Pounce</th><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td></tr><tr><th scope="row" class="r">Tackle</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Tail Whip</th><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td><td class="x"></td></tr><tr><th scope="row" class="r">Slide Kick</th><td></td><td class="x"></td><td class="hit" title="Jousting: Tiger Rush + Rabbit Slide Kick" aria-label="Jousting: Tiger Rush + Rabbit Slide Kick">10</td><td class="x"></td><td></td><td class="hit" title="From Below: Tiger Tackle + Rabbit Slide Kick" aria-label="From Below: Tiger Tackle + Rabbit Slide Kick">7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Throw</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Grab</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td class="hit" title="Wrecking Ball: Tiger Tail Whip + Rabbit Grab" aria-label="Wrecking Ball: Tiger Tail Whip + Rabbit Grab">8</td><td></td><td></td><td></td><td></td><td class="hit" title="Grabite: Tiger Bite + Rabbit Grab" aria-label="Grabite: Tiger Bite + Rabbit Grab">4</td><td></td></tr><tr><th scope="row" class="r">Headbutt</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Bite</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th scope="row" class="r">Scratch</th><td></td><td class="x"></td><td></td><td class="x"></td><td></td><td></td><td></td><td></td><td></td><td class="hit" title="Etch a Scratch: Tiger Grab + Rabbit Scratch" aria-label="Etch a Scratch: Tiger Grab + Rabbit Scratch">6</td><td></td><td></td><td></td></tr></tbody></table></div><figcaption>Matrix of ability combinations: Rabbit abilities down the side (blue), Tiger abilities across the top (orange). The numbered green cells are the ten counter-attacks, numbered as in the table above. Hover or focus a number to see the counter-attack. Shaded rows and columns are shaded as in the original matrix.</figcaption></figure>
+
+        <h3>Boss battles</h3>
+        <p>Each environment’s boss reflects that environment’s theme, with abilities that define the counter-attack it allows. <strong>The Boulder</strong> (Environment 1):</p>
+        <div class="cols two">
+          <div class="box"><h3>Profile</h3><p><strong>Personality:</strong> calm, purposeful, strategic.<br><strong>Specialty:</strong> Unbreakable Defence, blocking 100% of damage for 3 seconds.<br><strong>Weak point:</strong> front / mid.<br><strong>Health:</strong> 3 hearts · <strong>Difficulty:</strong> 9¾</p></div>
+          <div class="box"><h3>Abilities</h3><p><strong>Rising Pillars:</strong> a punch that raises earth pillars between boss and players.<br><strong>Ground Smash:</strong> a close-range cross punch buried in the ground.<br><strong>Flying Punch:</strong> it retreats to the background, throws a stone up and launches its fists at three locations.</p></div>
+        </div>
+        <ul class="bl">
+          <li>Climb the raised pillars to reach it.</li>
+          <li>When a punch gets stuck in the ground, attack the crystal on its chest.</li>
+          <li>In the background it is invulnerable, but retrieving its fists takes time, creating an opening.</li>
+        </ul>
+        <p><strong>Journeys &amp; base.</strong> After a boss falls, a character is unlocked and returns to the village, where the heroes rebuild houses. Villagers give quests (“Journeys”) that send players back to earlier levels to find objects and materials. Completing them pays in-game currency, also purchasable with real money, used to buy new abilities.</p>
+
+        <h3>Exploration system</h3>
+        <p>The game encourages exploring to connect scenery, story and characters, with rewards delivered through <strong>portals</strong> (areas unlocked by key items, puzzles, abilities or story) and <strong>spectacle</strong> (scenery that carries the narrative, cutscenes on entering places, breakable objects, and visual rewards after bosses and puzzles).</p>
+        <div class="cols two">
+          <div class="box"><h3>Interactive objects</h3><p>All used with the action button: vases, weak walls and obstructions (break), crates and rocks (push), doors (unlock areas), levers (activate), vines (pull, cut, swing, grab), dirt mounds (dig), pressure plates (press).</p></div>
+          <div class="box"><h3>Collectibles &amp; tools</h3><p>Recipe ingredients, butterflies, bowling pins (juggling), circus items, animal-shaped stone sculptures. Exploration objects: shimmering stones (key items), fireflies (form a lantern), Bun’n Boots™ (walk on thorns), fast-travel portals.</p></div>
+          <div class="box"><h3>Unexpected interactions</h3><p>Fragile ground that breaks, dry trees dropping branches, rolling stones, falling stalactites, cave flooding, animal traps (beehives, anthills, snares, nets), and a blinding flash that confuses the controls.</p></div>
+          <div class="box"><h3>Scenery animation</h3><p>Birds that take flight, grass reacting to steps and wind, ambient particles (leaves, spores, dust, droplets), and purple mist for anything enemy-related that turns bright yellow when the threat subsides.</p></div>
+        </div>
+        <h4>Exploration abilities</h4>
+        <p>Acquired linearly through puzzles, exploration and story. Each is introduced in a scene where the characters learn from one another.</p>
+        <div class="cols two">
+          <div class="box rabbit"><span class="tag-r">Rabbit</span>
+            <p><strong>The Great Leap</strong> · higher jump (hold jump). Learned fleeing an angry Tiger toward a cliff.</p>
+            <p><strong>Into the Hole</strong> · dig to reach hidden areas. Learned trapping mini-golems in a hole.</p>
+            <p><strong>Open Sesame</strong> · pull levers. Learned freeing the Tiger from a net trap.</p>
+            <p><strong>Hidden Strength</strong> · push small objects. Learned freeing the Tiger from rubble.</p></div>
+          <div class="box tiger"><span class="tag-t">Tiger</span>
+            <p><strong>Dangerous Life</strong> · ledge grab. Learned almost falling off a cliff.</p>
+            <p><strong>Oh Mama, I’m Strong</strong> · push large objects. Learned rescuing the Rabbit from a flooding cave.</p>
+            <p><strong>Heeere’s Johnny</strong> · break weak walls with a dash.</p>
+            <p><strong>Really, I’m on a Diet!</strong> · press pressure plates. Learned when a scuffle sinks a hidden plate.</p></div>
+        </div>
+      </section>
+
+      <!-- UX -->
+      <section class="sec reveal" id="ux">
+        <h2>UX system</h2>
+        <h3>Look &amp; feel</h3>
+        <p>A simple interface that deliberately contrasts with the painterly game world: a lesser-explored <strong>mythic</strong> theme in stone-like colours with modern touches. Typography is Josefin Sans for titles and Mukta for smaller text, both timeless. Buttons are standardised across menus and options.</p>
+        <h3>Elements</h3>
+        <div class="cols two">
+          <div class="box"><h3>Icons</h3><p>Ability icons are silhouettes of the characters, coloured by who uses them (blue = Rabbit, orange = Tiger, green = both). There are icons for the 13 abilities, the 10 counter-attacks (with quick sketches of their effects), items, and the exploration abilities, which are linked by a visual path in the menu and appear as they unlock.</p></div>
+          <div class="box"><h3>Portraits &amp; dialogue</h3><p>Two kinds of portraits: HUD portraits for the selected character and the status of the other (follow / stay / fainted), and dialogue portraits with emotions (happy, sad, confused, angry, scared). Dialogue boxes match the game’s style and read as a conversation between the characters.</p></div>
+          <div class="box"><h3>Feedback</h3><p>A clear response to every significant action (new ability, finished puzzle or quest, new area) to reinforce both intrinsic and extrinsic rewards.</p></div>
+          <div class="box"><h3>Contextual HUD</h3><p>The HUD shows abilities, silhouette portraits and items, and adapts to the moment: items during exploration, abilities in battle. It fades after 30 seconds without interaction. A used ability’s icon glows. In local multiplayer it mirrors to the right so both players see their own abilities and items.</p></div>
+        </div>
+        <h4>Character swapping</h4>
+        <p>Two portrait displays: one for the state of the non-controlled character (follow or stay), one for who is selected. A waiting character is shown sleeping, a moving one on all fours, and the selected character steps in front of the other and takes their place.</p>
+        <h4>Menus</h4>
+        <ul class="bl">
+          <li><strong>Abilities menu:</strong> abilities with their attributes and icons, the combinations they can form (count and, once found, names), connections to selected abilities, and exploration abilities.</li>
+          <li><strong>Inventory:</strong> items as icons with tooltips. The action button selects and reveals usage options. Quest items carry a hint.</li>
+          <li><strong>Quests / map:</strong> quests integrated with the map. Quest givers and turn-in points appear in the quest’s colour, fast-travel points and secret places show once discovered, and the triggers filter between <em>All · Quests · Fast travel · Puzzles · Secret places</em>. Paths and items are not shown.</li>
+          <li><strong>Options and main menu:</strong> configuration, credits, save, load and exit.</li>
+        </ul>
+        <h4>Wireframes</h4><p>Wireframes of the main screens, at 16:9. Click a screen to enlarge it. The working file is in Figma (link at the top of the page).</p><div class="wfgroup"><h5>Heads-up display</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/hud.png" data-lightbox="HUD"><img src="images/wireframes/thumbs/hud.jpg" alt="HUD" width="1000" height="563" loading="lazy"></a><figcaption>HUD</figcaption></figure></div></div><div class="wfgroup"><h5>Abilities menu</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/ability-system.png" data-lightbox="Abilities menu"><img src="images/wireframes/thumbs/ability-system.jpg" alt="Abilities menu" width="1000" height="563" loading="lazy"></a><figcaption>Abilities menu</figcaption></figure><figure class="wf"><a href="images/wireframes/ability-system-counter-attack.png" data-lightbox="Abilities menu · counter-attack"><img src="images/wireframes/thumbs/ability-system-counter-attack.jpg" alt="Abilities menu · counter-attack" width="1000" height="563" loading="lazy"></a><figcaption>Abilities menu · counter-attack</figcaption></figure><figure class="wf"><a href="images/wireframes/ability-system-exploring-ability.png" data-lightbox="Abilities menu · exploration ability"><img src="images/wireframes/thumbs/ability-system-exploring-ability.jpg" alt="Abilities menu · exploration ability" width="1000" height="563" loading="lazy"></a><figcaption>Abilities menu · exploration ability</figcaption></figure></div></div><div class="wfgroup"><h5>Inventory</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/inventory.png" data-lightbox="Inventory"><img src="images/wireframes/thumbs/inventory.jpg" alt="Inventory" width="1000" height="563" loading="lazy"></a><figcaption>Inventory</figcaption></figure><figure class="wf"><a href="images/wireframes/inventory-quick-item.png" data-lightbox="Inventory · quick item"><img src="images/wireframes/thumbs/inventory-quick-item.jpg" alt="Inventory · quick item" width="1000" height="563" loading="lazy"></a><figcaption>Inventory · quick item</figcaption></figure><figure class="wf"><a href="images/wireframes/inventory-actions.png" data-lightbox="Inventory · item actions"><img src="images/wireframes/thumbs/inventory-actions.jpg" alt="Inventory · item actions" width="1000" height="563" loading="lazy"></a><figcaption>Inventory · item actions</figcaption></figure></div></div><div class="wfgroup"><h5>Quests and map</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/quests-menu-map.png" data-lightbox="Quests menu · map"><img src="images/wireframes/thumbs/quests-menu-map.jpg" alt="Quests menu · map" width="1000" height="563" loading="lazy"></a><figcaption>Quests menu · map</figcaption></figure><figure class="wf"><a href="images/wireframes/quests-menu-quest-selected.png" data-lightbox="Quests menu · quest selected"><img src="images/wireframes/thumbs/quests-menu-quest-selected.jpg" alt="Quests menu · quest selected" width="1000" height="563" loading="lazy"></a><figcaption>Quests menu · quest selected</figcaption></figure></div></div><div class="wfgroup"><h5>Dialogue and story</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/interaction-dialogue-player1.png" data-lightbox="Interaction dialogue (“You can’t do that here…”) next to Player 1’s HUD"><img src="images/wireframes/thumbs/interaction-dialogue-player1.jpg" alt="Interaction dialogue (“You can’t do that here…”) next to Player 1’s HUD" width="1000" height="563" loading="lazy"></a><figcaption>Interaction dialogue (“You can’t do that here…”) next to Player 1’s HUD</figcaption></figure><figure class="wf"><a href="images/wireframes/interaction-dialogue-player2.png" data-lightbox="Interaction dialogue next to Player 2’s HUD"><img src="images/wireframes/thumbs/interaction-dialogue-player2.jpg" alt="Interaction dialogue next to Player 2’s HUD" width="1000" height="563" loading="lazy"></a><figcaption>Interaction dialogue next to Player 2’s HUD</figcaption></figure><figure class="wf"><a href="images/wireframes/quest-dialogue.png" data-lightbox="Quest dialogue"><img src="images/wireframes/thumbs/quest-dialogue.jpg" alt="Quest dialogue" width="1000" height="563" loading="lazy"></a><figcaption>Quest dialogue</figcaption></figure><figure class="wf"><a href="images/wireframes/cutscene.png" data-lightbox="Cutscene"><img src="images/wireframes/thumbs/cutscene.jpg" alt="Cutscene" width="1000" height="563" loading="lazy"></a><figcaption>Cutscene</figcaption></figure></div></div><div class="wfgroup"><h5>Options</h5><div class="wfgrid"><figure class="wf"><a href="images/wireframes/options.png" data-lightbox="Options"><img src="images/wireframes/thumbs/options.jpg" alt="Options" width="1000" height="563" loading="lazy"></a><figcaption>Options</figcaption></figure></div></div>
+      </section>
+
+      <!-- PROGRAMMING -->
+      <section class="sec reveal" id="programming">
+        <h2>Programming</h2>
+        <p>The game is split into systems, each overseeing one area, with the lowest coupling possible. Some systems inherit from parent classes.</p>
+        <div class="map wsmap"><svg viewBox="0 0 1040 680" role="img" aria-label="Systems architecture: a global GameManager above six groups of systems: audio and saving, level, battle, events and dialogue, inventory and interface, and player and camera."><defs><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#22d3ee"/></marker></defs><path class="edge hot" d="M520 88C520 140 175 124 175 168" marker-end="url(#ahc)"/><path class="edge hot" d="M520 88C520 140 520 124 520 168" marker-end="url(#ahc)"/><path class="edge hot" d="M520 88C520 140 865 124 865 168" marker-end="url(#ahc)"/><rect class="box orange" x="370" y="20" width="300" height="66" rx="14"/><text x="520.0" y="48" text-anchor="middle" font-size="15" font-weight="600">GameManager (Global)</text><text class="sub" x="520.0" y="69" text-anchor="middle">sits above every system</text><rect class="box" x="20" y="170" width="310" height="106" rx="14" style="stroke:#a4a3b8"/><text class="gt" x="38" y="198" style="fill:#a4a3b8">AUDIO AND SAVING</text><circle cx="42" cy="222" r="4" fill="#a4a3b8"/><text x="54" y="226" font-size="13" font-weight="600">SoundManager</text><circle cx="42" cy="244" r="4" fill="#a4a3b8"/><text x="54" y="248" font-size="13" font-weight="600">SaveManager</text><rect class="box" x="20" y="290" width="310" height="172" rx="14" style="stroke:#4ade80"/><text class="gt" x="38" y="318" style="fill:#4ade80">LEVEL</text><circle cx="42" cy="342" r="4" fill="#4ade80"/><text x="54" y="346" font-size="13" font-weight="600">LevelManager</text><circle cx="42" cy="364" r="4" fill="#4ade80"/><text x="54" y="368" font-size="13" font-weight="600">MapTrigger</text><path d="M46 374v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="64" y="390" font-size="12">LaneChange Limiter · Puzzle Actions · BattleStart</text><circle cx="42" cy="408" r="4" fill="#4ade80"/><text x="54" y="412" font-size="13" font-weight="600">LevelEvents</text><path d="M46 418v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="64" y="434" font-size="12">Puzzles · Door · Item</text><rect class="box" x="20" y="476" width="310" height="150" rx="14" style="stroke:#f08a5d"/><text class="gt" x="38" y="504" style="fill:#f08a5d">BATTLE</text><circle cx="42" cy="528" r="4" fill="#f08a5d"/><text x="54" y="532" font-size="13" font-weight="600">BattleManager</text><circle cx="42" cy="550" r="4" fill="#f08a5d"/><text x="54" y="554" font-size="13" font-weight="600">Enemy</text><path d="M46 560v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="64" y="576" font-size="12">Minions · Boss</text><circle cx="42" cy="594" r="4" fill="#f08a5d"/><text x="54" y="598" font-size="13" font-weight="600">EnemyAnimationManager</text><rect class="box" x="365" y="170" width="310" height="194" rx="14" style="stroke:#7c8cff"/><text class="gt" x="383" y="198" style="fill:#7c8cff">EVENTS, DIALOGUE AND QUESTS</text><circle cx="387" cy="222" r="4" fill="#7c8cff"/><text x="399" y="226" font-size="13" font-weight="600">EventManager</text><circle cx="387" cy="244" r="4" fill="#7c8cff"/><text x="399" y="248" font-size="13" font-weight="600">DialogueManager</text><path d="M391 254v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="409" y="270" font-size="12">DialogueController</text><circle cx="387" cy="288" r="4" fill="#7c8cff"/><text x="399" y="292" font-size="13" font-weight="600">ActorManager</text><path d="M391 298v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="409" y="314" font-size="12">NPCs</text><circle cx="387" cy="332" r="4" fill="#7c8cff"/><text x="399" y="336" font-size="13" font-weight="600">QuestManager</text><rect class="box" x="365" y="378" width="310" height="150" rx="14" style="stroke:#c084fc"/><text class="gt" x="383" y="406" style="fill:#c084fc">INVENTORY AND INTERFACE</text><circle cx="387" cy="430" r="4" fill="#c084fc"/><text x="399" y="434" font-size="13" font-weight="600">InventoryManager</text><path d="M391 440v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="409" y="456" font-size="12">Load XML</text><circle cx="387" cy="474" r="4" fill="#c084fc"/><text x="399" y="478" font-size="13" font-weight="600">InterfaceManager</text><path d="M391 484v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="409" y="500" font-size="12">Abilities</text><rect class="box" x="710" y="170" width="310" height="238" rx="14" style="stroke:#f2c14e"/><text class="gt" x="728" y="198" style="fill:#f2c14e">PLAYER AND CAMERA</text><circle cx="732" cy="222" r="4" fill="#f2c14e"/><text x="744" y="226" font-size="13" font-weight="600">ControlManager</text><path d="M736 232v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="754" y="248" font-size="12">MapKeys</text><circle cx="732" cy="266" r="4" fill="#f2c14e"/><text x="744" y="270" font-size="13" font-weight="600">PlayerManager</text><path d="M736 276v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="754" y="292" font-size="12">Change Player · Follow / Stay</text><circle cx="732" cy="310" r="4" fill="#f2c14e"/><text x="744" y="314" font-size="13" font-weight="600">CameraManager</text><circle cx="732" cy="332" r="4" fill="#f2c14e"/><text x="744" y="336" font-size="13" font-weight="600">MasterMove</text><path d="M736 342v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="754" y="358" font-size="12">Tiger → TAnimationController</text><path d="M736 364v8h10" fill="none" stroke="#6f6e85" stroke-width="1.2"/><text class="sub" x="754" y="380" font-size="12">Bunny → BAnimationController</text><circle class="badge" cx="520" cy="128" r="12"/><text class="badge-t" x="520" y="132">1</text></svg><ul class="map-notes"><li><b>1</b>A global GameManager coordinates the systems. Each system oversees one area, with the lowest coupling possible, and some inherit from parent classes.</li><li><b>·</b>Colours follow the original diagram. The calls between systems are not redrawn here.</li></ul></div>
+        <h3>Movement on a spline</h3>
+        <p>Movement is a 2D physics system in Unity, but the world is 3D: the X axis corresponds to <strong>distance along a Bézier spline</strong>. Every frame the Vector3 position on the spline matching the 2D X position is calculated, so 3D objects have no colliders, and objects with colliders or rigid bodies have no visuals.</p>
+        <ul class="bl">
+          <li><strong>GenerateCollider</strong> runs at level start and builds a 2D polygon collider from raycasts along the curve, representing the walkable path.</li>
+          <li><strong>Position Collider</strong> approximates an object’s position relative to the curve and its distance from the start, which becomes the 2D X value.</li>
+          <li>Every object moving in 2D is updated in 3D by the <strong>Projector</strong> script, using the same logic.</li>
+        </ul>
+        <div class="map wsmap"><svg viewBox="0 0 1040 430" role="img" aria-label="Spline system map: the 3D world feeds the collider scripts, which give the 2D mechanics a walkable path; the Projector puts every 2D object back on the 3D curve."><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#a4a3b8"/></marker></defs><defs><marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#22d3ee"/></marker></defs><defs><marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6f6e85"/></marker></defs><path class="edge hot" d="M790 62C730 62 700 62 652 62" marker-end="url(#ahc)"/><path class="edge hot" d="M790 72C720 72 700 158 652 158" marker-end="url(#ahc)"/><path class="edge hot" d="M790 86C730 100 700 238 652 238" marker-end="url(#ahc)"/><path class="edge" d="M380 62C330 62 320 62 272 62" marker-end="url(#ah)"/><path class="edge" d="M380 158C320 158 320 80 272 84" marker-end="url(#ah)"/><path class="edge" d="M380 238C300 238 300 98 272 98" marker-end="url(#ah)"/><path class="edge" d="M145 108V188" marker-end="url(#ah)"/><path class="edge dash" d="M145 258V320" marker-end="url(#ahd)"/><path class="edge" d="M272 366H378" marker-end="url(#ah)"/><path class="edge" d="M650 350C700 350 710 262 743 262" marker-end="url(#ah)"/><path class="edge" d="M650 372C720 372 740 360 788 360" marker-end="url(#ah)"/><path class="edge hot" d="M975 328V110" marker-end="url(#ahc)"/><rect class="box orange" x="20" y="30" width="250" height="78" rx="14"/><text x="145.0" y="58" text-anchor="middle" font-size="15" font-weight="600">2D MECHANICS</text><text class="sub" x="145.0" y="79" text-anchor="middle">Unity 2D physics: the X axis is</text><text class="sub" x="145.0" y="95" text-anchor="middle">distance along the spline</text><rect class="box orange" x="20" y="190" width="250" height="66" rx="14"/><text x="145.0" y="218" text-anchor="middle" font-size="15" font-weight="600">MasterMove</text><text class="sub" x="145.0" y="239" text-anchor="middle">moves the actors in 2D</text><rect class="box gray" x="20" y="322" width="250" height="86" rx="14"/><text x="145.0" y="350" text-anchor="middle" font-size="15" font-weight="600">Actors</text><text class="sub" x="145.0" y="371" text-anchor="middle">Player · Tiger · Bunny</text><text class="sub" x="145.0" y="387" text-anchor="middle">Enemy · NPC</text><rect class="box purple" x="380" y="30" width="270" height="72" rx="14"/><text x="515.0" y="58" text-anchor="middle" font-size="15" font-weight="600">GenerateCollider</text><text class="sub" x="515.0" y="79" text-anchor="middle">builds the walkable 2D collider</text><text class="sub" x="515.0" y="95" text-anchor="middle">from raycasts along the curve</text><rect class="box purple" x="380" y="122" width="270" height="72" rx="14"/><text x="515.0" y="150" text-anchor="middle" font-size="15" font-weight="600">PositionCollider</text><text class="sub" x="515.0" y="171" text-anchor="middle">turns distance along the curve</text><text class="sub" x="515.0" y="187" text-anchor="middle">into the 2D X value</text><rect class="box purple" x="380" y="214" width="270" height="50" rx="14"/><text x="515.0" y="242" text-anchor="middle" font-size="15" font-weight="600">ReverseProjector</text><rect class="box blue" x="790" y="30" width="230" height="78" rx="14"/><text x="905.0" y="58" text-anchor="middle" font-size="15" font-weight="600">3D WORLD</text><text class="sub" x="905.0" y="79" text-anchor="middle">the world is 3D: 3D objects</text><text class="sub" x="905.0" y="95" text-anchor="middle">have no colliders</text><rect class="box purple" x="380" y="322" width="270" height="78" rx="14"/><text x="515.0" y="350" text-anchor="middle" font-size="15" font-weight="600">Projector</text><text class="sub" x="515.0" y="371" text-anchor="middle">updates every object that</text><text class="sub" x="515.0" y="387" text-anchor="middle">moves in 2D, in 3D</text><rect class="box dark" x="745" y="190" width="200" height="88" rx="14"/><text x="845.0" y="218" text-anchor="middle" font-size="15" font-weight="600">Spline scripts</text><text class="sub" x="845.0" y="239" text-anchor="middle">SplineChanger · SplineMath</text><text class="sub" x="845.0" y="255" text-anchor="middle">PathData</text><rect class="box blue" x="790" y="330" width="230" height="56" rx="14"/><text x="905.0" y="358" text-anchor="middle" font-size="15" font-weight="600">AnimationControler</text><circle class="badge" cx="715" cy="110" r="12"/><text class="badge-t" x="715" y="114">1</text><circle class="badge" cx="320" cy="130" r="12"/><text class="badge-t" x="320" y="134">2</text><circle class="badge" cx="162" cy="148" r="12"/><text class="badge-t" x="162" y="152">3</text><circle class="badge" cx="325" cy="350" r="12"/><text class="badge-t" x="325" y="354">4</text><circle class="badge" cx="975" cy="218" r="12"/><text class="badge-t" x="975" y="222">5</text></svg><ul class="map-notes"><li><b>1</b>At level start GenerateCollider casts rays along the curve of the 3D world and builds a 2D polygon collider: the walkable path.</li><li><b>2</b>Position Collider approximates an object’s position relative to the curve; its distance from the start becomes the 2D X value the mechanics work with.</li><li><b>3</b>Movement runs in 2D. MasterMove moves the actors, which have colliders and rigid bodies but no visuals.</li><li><b>4</b>Every object that moves in 2D is updated in 3D by the Projector script, using the same logic.</li><li><b>5</b>The 3D side has the visuals and animation: 3D objects have no colliders.</li></ul></div>
+      </section>
+
+      <!-- POST MORTEM -->
+      <section class="sec reveal" id="postmortem">
+        <h2>Post mortem</h2>
+        <div class="cols two">
+          <div class="box"><span class="tag-r">Semester 1 · learned</span>
+            <p>We focused on a movement system built on Unity’s foundations but with a unique twist. With no clear reference, it became trial and error that cost a lot of time. In hindsight, working within Unity’s capabilities and putting more energy into concept, narrative and visuals would have been simpler.</p>
+            <p>The low-poly 3D modelling, aiming for a 2D-animation look, helped from earlier semesters but needed deeper development.</p></div>
+          <div class="box"><span class="tag-t">Semester 2 · learned</span>
+            <p>Time estimates were too low. The game grew too complex for four people in a year, and the mistake was trying to build a complete game instead of a simpler one. Adjustment phases (merging scripts, refining a walk cycle) take far longer than first execution.</p>
+            <p>Learning new skills on the go, for example rigging and 3D animation, meant redoing assets. Trello made organisation easier than HacknPlan, but cards fit interdependent game elements awkwardly.</p></div>
+        </div>
+        <h3>What we’d do differently</h3>
+        <ul class="bl">
+          <li><strong>Semester 1:</strong> prioritise pre-production on the core essence, story and above all the visual concepts, so art direction anticipates every feature. Organise better with the available platforms and distribute tasks more evenly.</li>
+          <li><strong>Semester 2:</strong> test the execution of key tasks earlier to get a realistic sense of time, and cut scope accordingly for a more concise, manageable plan.</li>
+        </ul>
+      </section>
+
+      <div class="docnav">
+        <a class="btn" href="../../../#work-gd">← All game design work</a>
+        <a class="btn primary" href="../dark-maze-of-mythos/">Next: The Dark Maze of Mythos →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Designed by hand. Only Atrium was prototyped with AI</span>
+      <a href="../../../#work-gd">← Back to all work</a>
+    </div>
+  </footer>
+
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

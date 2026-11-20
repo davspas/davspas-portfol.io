@@ -1,0 +1,143 @@
+<!-- PROJ-REQUIREMENTS-PANEL -->
+<!-- Displays a prototype's `requirements.md` — the formal requirements document — rendered -->
+<!-- as HTML in a docked, resizable panel. Read-only. Zero markup required in prototypes. -->
+
+<!-- METADATA
+Component: Requirements Panel
+Category: Feedback
+Complexity: Low
+
+WHAT IT DOES:
+- Probes for `./requirements.md` next to the prototype's index.html. If it is missing, the
+  plugin injects NOTHING — no ribbon button, no panel. Prototypes without a requirements.md
+  are untouched.
+- When the file exists: injects a "Requirements" button into the prototype ribbon's
+  right-hand cell (after "Q&A", before "Change History") and a docked, resizable panel
+  (`.requirements-drawer`) into <body>
+- Renders requirements.md with the vendored `marked` parser and re-reads it on every open,
+  so edits to the file show up without a page reload
+- "Copy" copies the raw Markdown source to the clipboard
+
+Companion to the Q&A panel, one file over: `requirements.md` states what the design should
+do, `qa.md` states what is still undecided about it.
+
+HISTORY — WHY THIS IS A PLUGIN:
+This started life as `assets/canvas/requirements-system.js` (`DaVinciRequirements`), added in
+commit 421fde72 with its markup in `parts/header.html` + `parts/main-container.html` and its
+styles in `canvas-styles.css`. All of it lived in the canvas asset tree, which the DaVinci
+plugin replaces wholesale on every top-up — so the migration to the .davinci/ layout
+(14440bf6) deleted the entire mechanism. Rebuilt here as a workspace plugin, self-injecting
+so it needs no canvas part templates and survives future top-ups. Do not "restore" any of it
+back into `.davinci/assets/`.
+
+OWNS TWO SHARED THINGS (see the GOTCHA below):
+- `marked.min.js` (v12.0.2, vendored alongside this plugin, loaded first by plugins.js)
+- the `.requirements-drawer__markdown` typography in proj-requirements-panel.css
+proj-qa-panel depends on BOTH. Removing this plugin degrades the Q&A panel to raw
+unformatted text.
+
+READ-ONLY BY DESIGN:
+There is no in-browser editor. Requirements are authored in the markdown file and committed,
+so every reviewer in every browser sees the same document. A prototype cannot write files,
+so anything typed in a browser could never have been shared anyway.
+
+AUTHORING requirements.md:
+Plain GitHub-flavored Markdown at `prototypes/<name>/requirements.md`. Nothing in the file is
+parsed or required — it is rendered as-is. The convention across this workspace:
+- `# Requirements — <Prototype Name>` title plus a version line
+- `##` numbered sections, with FR-/UX- identifiers per requirement
+- constraint, validation and toast tables (GFM tables render with borders)
+- a final "§10 Open items" style section cross-referencing the prototype's `qa.md`
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- Prototypes add NOTHING. Do not copy the markup below into a prototype — the plugin builds
+  the button and the panel itself. The template is documentation only.
+- No overlay: the whole app shifts left via
+  `body.has-requirements-open { padding-right: var(--requirements-width) }`
+- Only one docked right-edge panel may be open at a time — opening Requirements closes the
+  Q&A panel and vice versa (both shift the body the same way and would otherwise overlap)
+
+GOTCHA — SHARED NAMES ARE LOAD-BEARING:
+proj-qa-panel.js reaches for these by name. Renaming any of them silently breaks it:
+- `.requirements-drawer__markdown` — it applies this class to its OWN rendered content
+  (`<div class="proj-qa-drawer__markdown requirements-drawer__markdown">`) rather than
+  duplicating ~110 lines of heading/list/table/code rules
+- `#requirementsDrawer` / `#requirementsBtn` / `has-requirements-open` — its mutual-exclusion
+  code closes this panel by clearing that body class and the drawer's aria-hidden directly
+- the global `marked` — its renderMarkdown() falls back to `<pre>` without it
+Also shared: `body { transition: padding-right }` lives in this plugin's CSS, and
+proj-qa-panel.css's `is-resizing-proj-qa { transition: none }` exists to cancel it.
+
+GOTCHA — file:// :
+`fetch` is blocked on the file:// protocol, so the existence probe fails and the button never
+appears when a prototype is opened straight off disk. Same limitation as the Q&A panel. Serve
+over http (local server, GitHub Pages) to see it.
+
+COMMON MISTAKES TO AVOID:
+[X] Copying the panel markup into a prototype's index.html (duplicate IDs, dead HTML)
+[X] Restoring this into .davinci/assets/canvas/ — that is exactly how it was lost
+[X] Calling ProjRequirementsPanel.init() from a prototype — plugins.js already wires it to
+    `davinci:canvas:ready`
+[X] Expecting the button on a prototype with no requirements.md — that is the gating, not a bug
+[X] Loading `marked` a second time from a prototype or a CDN
+[X] Using `--color-separator` for the borders here — that token does not exist in the monalisa
+    pack; the drawer uses `--color-fill-gray-tertiary`
+[X] Ordering the ribbon buttons by insertion point — both panels inject after an async probe,
+    so order is set with flexbox `order` in the CSS instead
+
+JAVASCRIPT INTEGRATION:
+- Auto-initialized by `plugins.js` on `davinci:canvas:ready` (the ribbon is rendered
+  asynchronously by the canvas, so DOMContentLoaded is too early). `init()` is idempotent and
+  no-ops when the ribbon is absent or requirements.md does not exist.
+- Public API:
+    ProjRequirementsPanel.open();     // open the panel (closes the Q&A panel)
+    ProjRequirementsPanel.close();
+    ProjRequirementsPanel.toggle();
+- Keyboard: Escape closes the panel
+- Panel width is dragged from the left edge and persisted in localStorage under
+  `davinci:requirements-width` (min 320px, max 60% of the viewport)
+
+COMPANION FILES:
+- CSS: proj-requirements-panel.css
+- JS:  proj-requirements-panel.js
+- Vendored: marked.min.js (shared with proj-qa-panel)
+
+REFERENCE STRUCTURE (generated by the plugin — do not hand-author):
+
+Ribbon button:
+<button class="btn btn--small btn--secondary" id="requirementsBtn" title="View requirements">
+  <sf-symbol name="doc.text"></sf-symbol>
+  <span class="proj-requirements-ribbon__label">Requirements</span>
+</button>
+
+Panel:
+<aside class="requirements-drawer" id="requirementsDrawer" aria-hidden="true" aria-label="Requirements">
+  <div class="requirements-drawer__resizer" id="requirementsResizer"></div>
+  <div class="requirements-drawer__header">
+    <h3 class="requirements-drawer__title">Requirements</h3>
+    <div class="requirements-drawer__actions">
+      <button class="btn btn--small btn--secondary" id="copyRequirementsBtn" title="Copy requirements as Markdown">
+        <sf-symbol name="doc.on.doc"></sf-symbol> Copy
+      </button>
+      <button class="requirements-drawer__close" id="closeRequirementsDrawer" aria-label="Close requirements">
+        <sf-symbol name="xmark"></sf-symbol>
+      </button>
+    </div>
+  </div>
+  <div class="requirements-drawer__body" id="requirementsContent">
+    <div class="requirements-drawer__markdown"><!-- rendered requirements.md --></div>
+  </div>
+</aside>
+
+Missing-file state (only reachable if requirements.md disappears between probe and open):
+<div class="notification notification--info">...</div>
+<div class="requirements-drawer__hint">
+  <h5 class="requirements-drawer__hint-title">Expected File Location</h5>
+  <p class="requirements-drawer__hint-path">./requirements.md</p>
+</div>
+
+When to prompt: Never — the component is global, self-installing, and self-gating.
+Variants: none (single global panel)
+States: absent (no requirements.md), closed (default), open (`body.has-requirements-open`),
+        resizing (`body.is-resizing-requirements`)
+-->

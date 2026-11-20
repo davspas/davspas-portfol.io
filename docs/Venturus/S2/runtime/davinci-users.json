@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": "atrium-admin",
+      "name": "Maya Okafor",
+      "role": "Campus IT Admin",
+      "avatarInitials": "MO",
+      "avatarImage": "assets/avatars/avatar-4.jpg",
+      "isDefault": true,
+      "permissions": {
+        "hide": [],
+        "disable": [],
+        "readonly": []
+      }
+    },
+    {
+      "id": "atrium-viewer",
+      "name": "Daniel Reyes",
+      "role": "Viewer",
+      "avatarInitials": "DR",
+      "avatarImage": "assets/avatars/avatar-1.png",
+      "permissions": {
+        "hide": [
+          ".nav-menu__item:has(> a[href$=\"manage-infrastructure\"])"
+        ],
+        "disable": [],
+        "readonly": []
+      }
+    }
+  ]
+}

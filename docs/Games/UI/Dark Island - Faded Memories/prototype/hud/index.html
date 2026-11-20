@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HUD · Dark Island: Faded Memories (UI prototype)</title>
+  <link rel="stylesheet" href="../css/di.css">
+</head>
+<body class="di" data-device="kb">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="di-ch-r" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter>
+    <filter id="di-ch-g" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter>
+    <filter id="di-ch-b" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"/></filter>
+  </svg>
+  <div class="di-viewport">
+    <main class="di-stage" id="stage">
+      <div class="hud-scene" id="scene">
+        <div class="layer r"></div><div class="layer g"></div><div class="layer b"></div>
+        <div class="vig"></div><div class="scan"></div>
+      </div>
+
+      <div class="hud" id="hud">
+        <div class="hud-fade" id="bossWrap">
+          <div class="bar bar--boss"><div class="bar__fill" id="bossFill" style="width:70%"></div></div>
+          <div class="boss-name">Enemy Boss Name</div>
+        </div>
+        <div class="npc" id="npcB" style="left:896px;top:536px"><div class="npc__name">NPC Name</div><div class="bar"><div class="bar__fill" id="npcFill" style="width:100%"></div></div></div>
+        <div class="notes" id="notes"></div>
+        <div class="cluster hud-fade" id="cluster"></div>
+        <div class="bar bar--sta hud-fade"><div class="bar__fill" id="staFill" style="width:96%"></div></div>
+        <div class="bar bar--mag hud-fade"><div class="bar__fill" id="magFill" style="width:92%"></div></div>
+        <div class="bar bar--hp hud-fade"><div class="bar__fill" id="hpFill" style="width:56%"></div></div>
+        <div class="coin-box hud-fade" id="coinBox"><span class="orb"></span><span id="coins">99999999</span></div>
+        <div class="subtitle" id="subtitle"></div>
+        <div class="hud-hint"><span class="di-hint" style="font-size:12px"><i class="di-key" data-pad="Menu" data-kb="Esc"></i> Menu</span></div>
+      </div>
+
+    </main>
+  </div>
+  <button class="demo__toggle" id="demoToggle" type="button" aria-expanded="false">Demo controls ( ? )</button>
+  <section class="demo" id="demo" aria-label="Demo controls">
+        <h4>Simulate game events <button class="demo__close" id="demoClose" type="button" aria-label="Close demo controls">×</button></h4><p class="demo__hint">Keys 1–9 trigger the first nine buttons. ? or F2 toggles this panel.</p>
+        <div class="demo__row" id="demoRow"></div>
+  </section>
+  <script src="../js/di-data.js"></script>
+  <script src="../js/di-core.js"></script>
+  <script src="hud.js"></script>
+</body>
+</html>

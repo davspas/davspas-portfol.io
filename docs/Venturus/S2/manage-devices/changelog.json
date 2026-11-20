@@ -1,0 +1,165 @@
+{
+  "entries": [
+    {
+      "date": "2026-07-22",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Building Controller column help tooltip (Faculty, Floor, Room, Device IP, Last Seen) now reads 'Information provided by the Building Controller. Empty until the device is registered with a controller.'"
+        },
+        {
+          "type": "changed",
+          "description": "Add Devices modal footer note now reads 'Devices added to this Campus will have the <Device Type> type.' (was 'Devices added will be of type <Device Type>')"
+        },
+        {
+          "type": "changed",
+          "description": "The unreachable-Building-Controller row error now uses a red warning icon (was muted/orange) and no longer renders in italic, so the error reads more clearly"
+        },
+        {
+          "type": "added",
+          "description": "More Faculty-registered sample scenarios: unreachable Building Controllers spanning multiple controllers across NORT/HLSD/MEDS, plus partial-complement devices (missing room + device IP, missing last seen, missing device IP, or only faculty reported)"
+        },
+        {
+          "type": "changed",
+          "description": "Edge-case Faculty-registered rows (unassigned, unreachable, partial complement) are now spread throughout the table instead of grouped together, for a more realistic mix"
+        }
+      ]
+    },
+    {
+      "date": "2026-07-17",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Faculty-registered sample devices now use only three statuses — Active, Ready, and Retired — with the existing devices redistributed across them"
+        },
+        {
+          "type": "changed",
+          "description": "The Approve/Reject workflow is deprecated and hidden from the Faculty-registered view (the action remains available in code for future use)"
+        },
+        {
+          "type": "changed",
+          "description": "Faculty-registered info banner now reads 'Devices shown are faculty-registered room devices'"
+        },
+        {
+          "type": "changed",
+          "description": "Add Devices modal title now shows only the campus ('Add Devices to <Campus>') for both modes, instead of including the device type"
+        },
+        {
+          "type": "added",
+          "description": "Add Devices modal footer now shows a left-aligned note stating the type of devices being added ('Devices added will be of type <Device Type>')"
+        }
+      ]
+    },
+    {
+      "date": "2026-07-07",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Faculty-registered scope is now Campus-only — the Building Controller selector was removed from both the sub-header scope picker and the Add Devices 'Add Manually' form, matching IT-managed. New Faculty-registered devices no longer carry a Building Controller reference on commit (the Building Controller complement is supplied later by the per-controller sync job)"
+        },
+        {
+          "type": "added",
+          "description": "The table column header and the Faculty-registered info banner now stay fixed (sticky) beneath the sub-header while the device list scrolls, so column labels and the banner remain visible"
+        },
+        {
+          "type": "fixed",
+          "description": "Hovering a column header now highlights only the hovered sortable cell instead of shading the entire header row"
+        },
+        {
+          "type": "removed",
+          "description": "Type picker on the Add Manually tab — Type is now locked to the active page toggle (the wizard only adds devices of the mode you're already viewing), so the picker added no value. The modal title still reflects the locked type: 'Add Devices to <Campus> on <Device Type>'"
+        }
+      ]
+    },
+    {
+      "date": "2026-06-25",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Info icon + down-facing tooltip on the active navbar toggle option — Faculty-registered explains 'Devices being shown are Faculty-registered devices registered with Asset Registry.', IT-managed explains 'Devices being shown are IT-managed, created in Room Booking Manager.' Tooltip triggers on hover of the whole active option and sits ~4px below the navbar"
+        },
+        {
+          "type": "changed",
+          "description": "Type dropdown on the Add Manually tab is now a proj-cascader (matching the Campus picker style) instead of a native select. Campus and Type pickers sit side by side with a 16px gap, in Campus → Type order"
+        },
+        {
+          "type": "added",
+          "description": "Success toast on commit: '<N> Device<s> added to <Campus> on <Device Type>' via showNotification (auto-dismiss)"
+        },
+        {
+          "type": "added",
+          "description": "Cross-type / same-type duplicate detection runs at Add Devices click instead of inline in the Step 2 review table. Conflicts surface only as a red toast ('Atrium couldn't register the devices' / 'Selected device(s) already in use on <Type> Asset Registry.') — one toast per side with conflicts. The Step 2 list now only flags format errors inline"
+        },
+        {
+          "type": "changed",
+          "description": "When the error toast fires, the Add Devices wizard stays on screen. Successfully-added rows are removed from the review list so only the conflicting / unaddressed asset tags remain"
+        },
+        {
+          "type": "added",
+          "description": "Discard-changes pop-confirm popover when closing the Add Devices wizard via Cancel, X, or Escape with pending input (file uploaded, manual asset tags typed, or review rows present). Keep editing dismisses the popover; Discard closes the wizard"
+        },
+        {
+          "type": "changed",
+          "description": "Faculty-registered scope picker collapsed to a single Campus dropdown, mirroring IT-managed — Building Controller multi-select removed from the subheader and the Add Devices wizard"
+        },
+        {
+          "type": "changed",
+          "description": "Faculty-registered devices are now sourced from Asset Registry with a Building Controller complement supplying Faculty / Floor / Room / Device IP (requirements updated)"
+        },
+        {
+          "type": "changed",
+          "description": "Faculty-registered table now renders as a flat list of devices for the selected campus — Building Controller grouping removed"
+        },
+        {
+          "type": "removed",
+          "description": "'Register in Asset Registry' bulk action button and the 'Also register in Asset Registry' switch in the Add Devices dialog"
+        },
+        {
+          "type": "removed",
+          "description": "'NOT REGISTERED' status no longer appears in the Faculty-registered dataset or lifecycle — every Faculty-registered device is Asset Registry-registered"
+        },
+        {
+          "type": "added",
+          "description": "Type single-select (Faculty-registered | IT-managed) on the Add Manually tab, pre-selected to match the current page toggle"
+        },
+        {
+          "type": "added",
+          "description": "Redirect-on-commit: when the Add Devices wizard's Type or Campus differs from the page state, the page toggle and Campus update on commit so the new devices land in the visible scope"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Device Type filter dropdown in the subheader (Faculty-registered Devices / IT-managed Devices) with a disabled 'Device Type' placeholder on initial load; enables and snaps to IT-managed Devices after a campus is selected"
+        },
+        {
+          "type": "added",
+          "description": "Progressive subheader disclosure: initial load shows only Campus, Device Type (disabled), Export, and Add — Search, Retire, and Approve/Reject reveal as the workflow progresses"
+        },
+        {
+          "type": "changed",
+          "description": "Approve and Reject buttons are now visible only when the Device Type filter is set to Faculty-registered Devices; Retire remains available for any campus selection"
+        },
+        {
+          "type": "removed",
+          "description": "Type column removed from the devices table — device type is now controlled exclusively from the subheader filter"
+        },
+        {
+          "type": "changed",
+          "description": "All devices with status 'PENDING APPROVAL' are now Faculty-registered, aligning the data with the new Approve/Reject visibility rule"
+        },
+        {
+          "type": "changed",
+          "description": "Table markup brought up to the current design-system spec: header row uses the table__row class, sortable headers use the sort-indicator SVG block (replacing the deprecated sort-icon span), and carry data-sort='manual' so the design system skips its auto-sort while keeping the visual treatment"
+        },
+        {
+          "type": "fixed",
+          "description": "Sort indicator state now follows the design-system pattern — header gets sorted-asc / sorted-desc and the matching .sort-indicator__up or .sort-indicator__down receives the .active class"
+        }
+      ]
+    }
+  ]
+}

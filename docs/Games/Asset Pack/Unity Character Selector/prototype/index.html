@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Character Viewer · Unity editor panel (UI prototype)</title>
+  <link rel="stylesheet" href="uv.css">
+</head>
+<body>
+  <a class="back" href="../">← Case study</a>
+  <div class="viewport" id="vp">
+    <div class="editor" id="ed">
+      <!-- toolbar -->
+      <div class="toolbar">
+        <div class="tb-l"><i class="tool on">✋</i><i class="tool sel">✥</i><i class="tool">⟳</i><i class="tool">⤢</i><i class="tool">▭</i><i class="tool">⊕</i><span class="tb-gap"></span><span class="tbtn">▢ Pivot</span><span class="tbtn">⬡ Local</span></div>
+        <div class="tb-c"><button class="play" id="play" aria-label="Play">▶</button><i class="play">❚❚</i><i class="play dim">▶|</i></div>
+        <div class="tb-r"><i class="tool wide">⌕</i><i class="tool wide">☼</i><i class="tool wide">☁</i><span class="tdrop">Account ▾</span><span class="tdrop">Layers ▾</span><span class="tdrop">Layout ▾</span></div>
+      </div>
+      <!-- hierarchy -->
+      <section class="pane hier"><div class="tab"><span>☰ Hierarchy</span><em>🔒 ⋮</em></div>
+        <div class="search"><span>+ ▾</span><input disabled placeholder="⌕ All"></div>
+        <ul class="tree"><li class="sel">▾ ◁ <b>SampleScene*</b></li><li class="ind">▢ Directional Light</li><li class="ind2">⬡ Cube</li><li class="ind2">⬡ Terrain</li></ul></section>
+      <!-- scene -->
+      <section class="pane scene"><div class="tab"><span># Scene</span><em>🔒 ⋮</em></div>
+        <div class="sbar"><span>Shaded ▾</span><span>2D</span><span>☼</span><span>◉</span><span>⛰ ▾</span><span>⊘ 0</span><span>▦ ▾</span><span class="grow"></span><span>✎</span><span>🎥 ▾</span><span>Gizmos ▾</span><span class="sfind">⌕ All</span></div>
+        <div class="view"><div class="sky"></div><div class="plane"></div>
+          <svg class="gizmo" viewBox="0 0 80 80" aria-hidden="true"><text x="36" y="10" fill="#9be15d" font-size="11">y</text><path d="M40 36V18" stroke="#9be15d" stroke-width="3"/><path d="M40 40 62 40" stroke="#4aa3ff" stroke-width="3"/><text x="66" y="44" fill="#4aa3ff" font-size="11">z</text><path d="M40 40 22 40" stroke="#ddd" stroke-width="3"/><path d="M40 40V58" stroke="#e24" stroke-width="3"/><text x="36" y="72" fill="#ddd" font-size="11">x</text></svg>
+          <span class="persp">◁ Persp</span></div></section>
+      <!-- project -->
+      <section class="pane proj"><div class="tab tabs"><span class="on">▤ Project</span><span>Console</span><em>🔒 ⋮</em></div>
+        <div class="search wide"><span>+ ▾</span><input disabled><span class="rt">⚑ ★ ⊘10</span></div>
+        <div class="pbody"><ul class="ptree">
+          <li>★ <b>Favorites</b></li><li class="sel">▾ ▣ <b>Assets</b></li><li class="i1">▣ Scenes</li><li class="i1">▾ ▣ TextMesh Pro</li><li class="i2">▣ Documentation</li><li class="i2">▾ ▣ Examples &amp; Extras</li><li class="i3">▣ Fonts</li><li class="i3">▣ Materials</li><li class="i3">▣ Prefabs</li><li class="i3">▾ ▣ Prefabs</li><li class="i4">▣ Color Gradient Presets</li><li class="i4">▣ Fonts &amp; Materials</li><li class="i4">▣ Sprite Assets</li><li class="i5">▣ Custom Sprites</li><li class="i3">▣ Scripts</li><li class="i3">▣ Stripes</li><li class="i3">▣ Textures</li><li class="i2">▣ Fonts</li><li class="i2">▾ ▣ Resources</li></ul>
+          <div class="pfiles"><div class="ph">Assets</div></div></div></section>
+
+      <!-- Character Viewer panel -->
+      <section class="pane cv"><div class="tab"><span class="cvtab">Character Viewer</span><em>🔒 ⋮</em></div>
+        <div class="cv-scroll" id="cvs">
+          <!-- Files -->
+          <div class="sec" data-open="1" id="secFiles">
+            <header class="sh"><button class="fold" aria-expanded="true"><i></i>Files</button><span class="help" data-info="Files: load and save characters and sprites.">?</span></header>
+            <div class="sb">
+              <div class="sub"><i></i>Prefab</div>
+              <button class="ub" data-info="Upload a prefab to view character" id="bUpload">Upload</button>
+              <button class="ub" data-info="Create Prefab based on changes made in this Character view" id="bCreate">Create</button>
+              <div class="sub"><i></i>Sprites</div>
+              <button class="ub" data-info="Import Sprites file" id="bImport">Import</button>
+              <button class="ub" data-info="Open Sprites on a file viewer or sprite editor" id="bOpen">Open</button>
+              <button class="ub" data-info="Export Sprites file with changes from the viewer" id="bExport">Export</button>
+              <button class="ub" data-info="Exclude all Sprites from Character Viewer" id="bClear">Clear</button>
+              <div class="info"><span class="ic"></span><span class="tx">Hover on a field to view information about it</span></div>
+            </div>
+          </div>
+          <!-- Avatar -->
+          <div class="sec" data-open="1" id="secAvatar">
+            <header class="sh"><button class="fold" aria-expanded="true"><i></i>Avatar View</button><span class="help" data-info="Avatar View: the character's portrait and name.">?</span></header>
+            <div class="sb avatar"><svg id="avatar" viewBox="0 0 110 110" width="132" height="132"></svg>
+              <div class="chat"><input id="cname" value="Character Name" aria-label="Character name" data-info="Rename your character"><div class="bubble" id="bubble">Hi! I'm this character's avatar, and this is my avatar view, to change anything, change the panel below!</div></div></div>
+          </div>
+          <!-- Character view -->
+          <div class="sec" data-open="1" id="secChar">
+            <header class="sh"><button class="fold" aria-expanded="true"><i></i>Character View</button><span class="help" data-info="Character View: your character in the chosen poses.">?</span></header>
+            <div class="sb cview"><svg id="stageSvg" viewBox="0 0 494 296" preserveAspectRatio="xMidYMid meet"></svg><div class="empty" id="empty" hidden>No sprites loaded<br><small>Use Import or Upload</small></div></div>
+          </div>
+          <!-- View settings -->
+          <div class="sec" data-open="1" id="secView">
+            <header class="sh"><button class="fold" aria-expanded="true"><i></i>View Settings</button><span class="help" data-info="View Settings: poses, animation and colors.">?</span></header>
+            <div class="sb vs">
+              <div class="sub big"><i></i>Change Poses and View</div>
+              <div class="seg" id="poses">
+                <button data-n="1" data-info="View a single pose of your character">1 Pose View</button><button data-n="2" data-info="View two poses of your character">2 Poses View</button><button data-n="4" class="on" data-info="View four poses of your character">4 Poses View</button><button data-n="8" data-info="View eight poses of your character">8 Poses View</button>
+              </div>
+              <div class="row"><label data-info="When in one and two pose view modes, select which poses to view">Select View</label>
+                <div class="seg small" id="views"><button data-v="left">Left</button><button data-v="front">Front</button><button data-v="back">Back</button><button data-v="right">Right</button></div></div>
+              <div class="row"><label data-info="Animate your character in all pose views">Animated</label>
+                <div class="animrow"><input type="checkbox" id="anim" checked data-info="Animate your character in all pose views"><select id="animSel" data-info="Animate your character in all pose views"><option>Idle</option><option>Walk</option><option>Attack</option></select></div></div>
+              <div class="sub big"><i></i>Change Color</div>
+              <div id="colors"></div>
+              <div class="btns"><button class="ub sm" id="bReset" data-info="Reset all colors to default">Reset</button><button class="ub sm" id="bSave" data-info="Save colors for this project">Save</button></div>
+              <div class="info"><span class="ic"></span><span class="tx">Hover on a field to view information about it</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="status"><i>!</i> <span id="status">Error status message</span></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="uv.js"></script>
+</body>
+</html>

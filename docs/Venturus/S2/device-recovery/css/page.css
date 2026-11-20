@@ -1,0 +1,137 @@
+.fdr-page {
+    /* Sticky-offset tokens: canvas header (ribbon 3.2rem + navbar 4.8rem + sub-header 6rem) is sticky,
+       so the info ribbon and the table head pin below it. */
+    --fdr-header-offset: 14rem;
+    --fdr-ribbon-height: 3.2rem;
+}
+
+/* As in Manage Devices: the canvas content padding goes, the table runs edge to edge. */
+.content { padding: 0 !important; }
+
+.sub-header__controls { flex: 1; }
+#fdrSites, #fdrProjects { width: 24rem; min-width: 24rem; flex: 0 0 24rem; }
+#searchGroup { flex: 0 0 auto; }
+.sub-header__controls .switch { flex: 0 0 auto; white-space: nowrap; }
+.sub-header__controls .mu-filter-status { flex: 0 0 auto; white-space: nowrap; gap: var(--space-s) !important; }
+.sub-header__controls .tag { margin: 0; }
+.sub-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    margin-left: auto;
+}
+.sub-header__actions[hidden] { display: none !important; }
+.sub-header__actions .btn sf-symbol { vertical-align: -0.15em; }
+
+/* Info ribbon: mirrors the Manage Units Faculty-registered ribbon (notification--info palette), edge to edge, sticky. */
+.fdr-ribbons {
+    margin: 0;
+    position: sticky;
+    top: var(--fdr-header-offset);
+    z-index: 11;
+}
+.fdr-ribbons[hidden] { display: none; }
+.fdr-ribbon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    min-height: 3.2rem;
+    background-color: var(--color-base-accent-lighter-1);
+    color: var(--color-fill-blue);
+    font-size: var(--font-size-tiny);
+    line-height: 1.4;
+    padding: 0 2.4rem;
+}
+.fdr-ribbon__icon { font-size: 16px; flex-shrink: 0; }
+
+.fdr-lead { padding: 0 2.4rem; }
+/* Top space only when the lead actually shows something (result banners or the counter cards). */
+.fdr-lead:has(#fdrResult:not([hidden])) { padding-top: var(--space-m); }
+/* Registration (counter cards visible): more room above the cards and before the info ribbon. */
+.fdr-lead:has(#fdrCounters:not([style*="display: none"])) { padding-top: var(--space-mp); }
+.fdr-lead:has(#fdrCounters:not([style*="display: none"])) .fdr-counters { margin-bottom: var(--space-mp); }
+.fdr-lead:empty { display: none; }
+
+.fdr-stack { display: flex; flex-direction: column; gap: var(--space-s); margin-bottom: var(--space-m); }
+.fdr-stack[hidden] { display: none; }
+.fdr-stack .notification { margin: 0; }
+.fdr-stack .notification__icon sf-symbol { font-size: 14px; }
+
+.fdr-counters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--space-s);
+    margin-bottom: var(--space-m);
+}
+.fdr-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: var(--space-xs) var(--space-s);
+    border: 0.1rem solid var(--color-fill-gray-quaternary);
+    border-radius: var(--space-s);
+    background: var(--color-fill);
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+}
+.fdr-counter:hover { background: var(--color-fill-gray-quaternary-hover); }
+.fdr-counter--active { border-color: var(--color-base-accent); background: var(--color-fill-blue-secondary); }
+.fdr-counter__head { display: inline-flex; align-items: center; gap: var(--space-xs); }
+.fdr-counter__icon { font-size: 14px; color: var(--color-glyph-gray-secondary); }
+.fdr-counter--red .fdr-counter__icon { color: var(--color-glyph-red); }
+.fdr-counter--green .fdr-counter__icon { color: var(--color-glyph-green); }
+.fdr-counter--blue .fdr-counter__icon { color: var(--color-base-accent); }
+.fdr-counter--orange .fdr-counter__icon { color: var(--color-glyph-orange); }
+.fdr-counter__value { font-size: var(--font-size-h4); font-weight: var(--font-weight-semibold); }
+.fdr-counter__label { font-size: var(--font-size-xxs); color: var(--color-glyph-gray-secondary); }
+.fdr-counter--red .fdr-counter__value { color: var(--color-glyph-red); }
+.fdr-counter--green .fdr-counter__value { color: var(--color-glyph-green); }
+.fdr-counter--blue .fdr-counter__value { color: var(--color-base-accent); }
+.fdr-counter--orange .fdr-counter__value { color: var(--color-glyph-orange); }
+
+
+/* Pop-confirm for Send Recovery Request (position is set from JS; fixed and forced because the design system writes inline popover styles). */
+.fdr-confirm {
+    position: fixed !important;
+    z-index: 1100;
+    width: 32rem;
+}
+.fdr-confirm .popover__title { font-size: var(--font-size-xxs); font-weight: var(--font-weight-semibold); margin: 0; }
+.fdr-confirm .popover__body { font-size: var(--font-size-tiny); color: var(--color-glyph-gray); line-height: 1.4; max-height: 24rem; overflow: auto; }
+.fdr-confirm .btn { display: inline-flex; align-items: center; gap: var(--space-xs); }
+/* White spinner on the primary button while sending */
+.fdr-confirm .btn--primary .loader__spinner { border-color: rgba(255, 255, 255, 0.4); border-top-color: var(--color-fill); }
+.fdr-confirm__actions { display: flex; justify-content: flex-end; gap: var(--space-xs); }
+
+.fdr-modal__lead { margin: 0 0 var(--space-s); }
+.fdr-modal__list {
+    margin: 0 0 var(--space-s);
+    padding-left: var(--space-m);
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray-secondary);
+}
+.fdr-modal__counts { margin: 0; font-weight: var(--font-weight-medium); }
+
+/* Tabs (Registration / Roll out) live in the sub-header, before the filters: a segmented control. */
+.fdr-subtabs { display: flex; align-items: center; flex: 0 0 auto; padding-right: var(--space-m); border-right: 0.1rem solid var(--color-fill-gray-quaternary); }
+.sub-header .tabs {
+    display: inline-flex; align-items: center; gap: 0.2rem; width: auto; margin: 0;
+    height: 3.2rem; padding: 0.2rem; background: var(--color-fill-gray-quaternary); border-radius: 99.9rem;
+}
+.sub-header .tabs__tab {
+    height: 2.8rem; padding: 0 var(--space-m); margin: 0; border: 0; border-radius: 99.9rem;
+    background: transparent; color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-xxs); font-weight: var(--font-weight-medium); white-space: nowrap;
+}
+.sub-header .tabs__tab:hover { color: var(--color-glyph-gray); }
+.sub-header .tabs__tab--active,
+.sub-header .tabs__tab--active:hover { background: var(--color-fill); color: var(--color-glyph-gray); box-shadow: var(--shadow-s); cursor: default; }
+
+/* Small helpers the original design system provided */
+.btn--icon { padding: var(--space-xs); min-width: 2.4rem; }
+.btn--ghost { background: transparent; border-color: transparent; color: var(--color-glyph-gray-secondary); }
+.link { color: var(--color-base-accent); cursor: pointer; text-decoration: none; }
+.link:hover { text-decoration: underline; }

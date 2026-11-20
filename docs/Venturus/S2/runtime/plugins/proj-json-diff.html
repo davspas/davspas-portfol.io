@@ -1,0 +1,131 @@
+<!-- PROJ-JSON-DIFF -->
+<!-- Two JSON payloads side by side, aligned line by line, with the differences marked -->
+
+<!-- METADATA
+Component: JSON Diff
+Category: Data Display
+Complexity: High
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- MUST render into an empty container element — the component owns all its markup (JS-built, no Handlebars template)
+- MUST be placed inside a scrolling ancestor: the component has NO height and NO vertical overflow of its own,
+  and its pane headers are `position: sticky` against that ancestor
+- MUST NOT be given `overflow-y` by the host wrapper — that produces a second scrollbar inside the host's
+- Panes are a 1fr/1fr grid: give the container at least ~90rem of width, or the monospace columns clip badly
+  (a `.modal--large` at 80rem is too narrow for two comfortable columns — widen the whole modal rather than
+  widening it for this view, or the dialog resizes every time the user switches views)
+
+COMMON MISTAKES TO AVOID:
+[X] Passing pre-formatted HTML as `text` — pass a JSON string or a plain object; the component escapes everything
+[X] Wrapping long lines with CSS — a wrapped line is taller than its counterpart and every row below it
+    loses alignment. Long lines scroll horizontally per column, by design.
+[X] Expecting the "differences found" count to equal a semantic change count — it counts contiguous BLOCKS
+    of changed lines, so one renamed field is 1 and three consecutive lines are also 1
+[X] Expecting an inline mark on every red/green pair — rows inside a block are paired positionally, so lines
+    that barely resemble each other are left plainly tinted rather than marked with a meaningless difference
+[X] Diffing two payloads whose arrays are ordered differently — the diff is textual, so a reordered array
+    reads as a large rewrite. Generate both sides from the same ordering.
+
+JAVASCRIPT INTEGRATION:
+- CSS and JS both auto-load (registered in plugins.css / plugins.js) — no per-prototype <script> tag
+- ProjJsonDiff.create({ container | containerId, left, right, copy, navigate }).render()
+- `left` / `right`: { label, title, text } — `label` is the small uppercase context line, `title` the pane name,
+  `text` a JSON string or any value (stringified with 2-space indent). `label` is OPTIONAL and omitting it
+  renders no line at all — do that when both panes would carry the same one (a host with a single scope has
+  nothing to say there twice). The head band stays tall enough for the nav badge either way; the badge shares
+  the right pane's grid cell rather than floating over the band, which is what makes that true
+- `copy`: per-pane copy-to-clipboard button (default true) — uses navigator.clipboard, no fallback
+- `navigate`: the "N differences found" badge with prev/next chevrons (default true); shows
+  "No differences" when the two payloads are identical
+- Instance surface: `count` (number of difference blocks), `next()`, `prev()` — navigation wraps in both
+  directions and uses scrollIntoView, so it works whichever ancestor scrolls
+- Re-render (not mutate) to show a different pair: call `render()` again on a new instance
+
+COMPANION FILES:
+- CSS: proj-json-diff.css (auto-loaded via plugins.css)
+- JS: proj-json-diff.js (auto-loaded via plugins.js)
+
+CORRECT STRUCTURE TEMPLATE:
+<div id="my-diff-container"></div>
+
+Rendered structure (built by the component — do not hand-author):
+<div class="proj-json-diff">
+  <div class="proj-json-diff__head">
+    <div class="proj-json-diff__pane-head">...</div>
+    <div class="proj-json-diff__pane-head">...</div>
+    <div class="proj-json-diff__nav">...</div>
+  </div>
+  <div class="proj-json-diff__body">
+    <div class="proj-json-diff__col" data-side="left">
+      <div class="proj-json-diff__line proj-json-diff__line--del">
+        <span class="proj-json-diff__num">5</span>
+        <span class="proj-json-diff__text">  "length": <mark class="proj-json-diff__mark">17</mark>,</span>
+      </div>
+    </div>
+    <div class="proj-json-diff__col" data-side="right">...</div>
+  </div>
+</div>
+
+When to prompt: When the user asks to compare two payloads/configs/snapshots. Ask which side is the BEFORE,
+whether the copy buttons are wanted, and what each pane should be titled.
+Variants: Base only — line states (del / ins / filler / current) are derived from the diff.
+-->
+
+
+<!-- ==================== -->
+<!-- QUICK START -->
+<!-- ==================== -->
+<!-- An empty container in page-content (or injected markup) is all the HTML needed. -->
+
+<div id="my-diff-container"></div>
+
+
+<!-- ==================== -->
+<!-- JS INITIALIZATION -->
+<!-- ==================== -->
+<!--
+ProjJsonDiff.create({
+    containerId: 'my-diff-container',
+    left:  { label: 'ENG | NORT', title: 'Current',      text: currentJsonString },
+    right: { label: 'ENG | NORT', title: 'After update', text: nextJsonString }
+}).render();
+
+Without the badge, and without copy buttons:
+
+ProjJsonDiff.create({
+    containerId: 'my-diff-container',
+    left:  { title: 'Before', text: a },
+    right: { title: 'After',  text: b },
+    copy: false,
+    navigate: false
+}).render();
+
+Driving navigation from your own controls:
+
+var diff = ProjJsonDiff.create({ ..., navigate: false }).render();
+myNextButton.addEventListener('click', function() { diff.next(); });
+myLabel.textContent = diff.count + ' differences';
+-->
+
+
+<!-- USAGE:
+- Left pane is the BEFORE (red tint on lines only it has), right is the AFTER (green tint on lines only it has)
+- A line present on both sides but changed is shown red-beside-green, with the differing PART marked inline
+- A row one side has nothing for gets a striped filler line, which is what keeps the two panes aligned
+- Line numbers are per pane and stay pinned while a long line scrolls sideways
+- Design tokens: --color-fill-red-secondary / --color-fill-green-secondary (line tints, the lightest steps MDS
+  defines), --color-fill-red-tertiary + --color-glyph-red / --color-glyph-green (gutters), --color-base-accent
+  (the prev/next landing outline, and the copy glyph on hover). The inline marks are `color-mix`ed from
+  --color-fill-red / --color-fill-green because MDS defines no mid step in green.
+- Icons are deliberately NOT accent-coloured at rest (gray secondary, accent on hover): a diff shows two
+  copy buttons and a nav badge, and the host's own primary action owns the view's accent budget.
+- ⚠️ Every sf-symbol in this component carries `line-height: 0`. `sf-symbol.js` writes
+  `vertical-align: baseline` onto the SVG it injects as an INLINE style, so the host's box is taller than
+  the glyph and flex centring leaves it visibly high. Collapsing the line box is the fix, and it applies
+  to any sf-symbol sitting beside text.
+- Diff cost: unique lines on both sides become anchors (patience-style), and only the gaps between them go
+  through LCS. Above ~9M DP cells a gap is rendered as one wholesale replacement rather than aligned line
+  by line — degraded, never slow. Plain LCS was tried first and mis-paired records: with hundreds of
+  identically-shaped entries it is free to match any duplicate line to any other, which read as one record
+  turning into a different one.
+-->

@@ -1,0 +1,178 @@
+{
+  "entries": [
+    {
+      "date": "2026-11-06",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Accessibility pass: status chips pair an icon with text, counters and tabs expose pressed and selected state, row checkboxes carry the device asset tag as their label, and dialogs move focus inside and return it to the opener on close"
+        },
+        {
+          "type": "added",
+          "description": "Escape closes the Send Recovery Request pop-confirm and the roll-out dialogs, except while a request is running"
+        },
+        {
+          "type": "added",
+          "description": "Empty states for no campus selected, no faculty selected, no IT-managed devices in the selected faculties (for example LIB), and no devices matching the search or filters"
+        },
+        {
+          "type": "changed",
+          "description": "Ribbon on the Roll out tab now reads 'Only registered devices can receive a recovery roll-out. Devices in any other status are listed but cannot be selected.'"
+        },
+        {
+          "type": "fixed",
+          "description": "A counter that disappears (the Unavailable counter after a successful Retry) no longer stays active as a filter"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-03",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Import recovery version dialog (XLSX, two steps: Upload and validate, Review and import) with a sample file, validation warnings and a Remove action"
+        },
+        {
+          "type": "added",
+          "description": "The imported file becomes the next version (v13), is marked Latest and shows a success toast; the previous Latest tag is cleared"
+        },
+        {
+          "type": "added",
+          "description": "Demo state ?state=import-error shows 'The file could not be validated. Column \"recovery profile\" is missing.' and keeps Next disabled"
+        },
+        {
+          "type": "added",
+          "description": "Recovery versions dialog opened from the latest version link in the version strip: version, imported at, by (Priya Raman, Tomas Herrera) and rooms covered"
+        },
+        {
+          "type": "changed",
+          "description": "Import version is hidden for read-only users on the strip and in the versions dialog"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Roll-out history button on each row opens a dialog with the roll-outs on the left and the selected one's details (device, recovery version, status, time, by, message) on the right"
+        },
+        {
+          "type": "added",
+          "description": "Scheduled roll-outs list opened from the version strip, sorted by date, with Cancel per row and an empty state"
+        },
+        {
+          "type": "added",
+          "description": "Status icon in Last rolled out opens a status dialog with Retry for a failed roll-out and Cancel schedule for a scheduled one"
+        },
+        {
+          "type": "added",
+          "description": "Demo states ?state=deploy-fail (even-numbered devices fail with 'The device did not acknowledge the recovery package.') and ?state=deploy-down (the roll-out service cannot be reached, nothing started)"
+        },
+        {
+          "type": "changed",
+          "description": "The Recovery version column shows the installed version: the last roll-out that succeeded, or a dash when there is none"
+        },
+        {
+          "type": "fixed",
+          "description": "A device that is no longer registered is dropped from the roll-out selection on the next render"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-23",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Roll out tab next to Registration, sharing the campus and faculty filters, search and Group by campus switch"
+        },
+        {
+          "type": "added",
+          "description": "Version strip with the latest recovery version, a version picker (v12 Latest, v11, v10), the scheduled roll-out count and Import version"
+        },
+        {
+          "type": "added",
+          "description": "Three-step wizard: Select a version, Select devices, Proceed to roll-out; clearing the version clears the ticked devices"
+        },
+        {
+          "type": "added",
+          "description": "Only Registered devices can be selected; other devices are muted with a tooltip giving the reason, or 'Select a version first.'"
+        },
+        {
+          "type": "added",
+          "description": "Summary dialog with device, faculty, campus, recovery profile, installed version and version after roll-out, plus an optional schedule that must be in the future; the button reads Roll out or Schedule"
+        },
+        {
+          "type": "added",
+          "description": "Rolling out status with a spinner that finishes by itself after a few seconds, and a success toast"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Send Recovery Request pop-confirm anchored to the clicked row button or the sub-header button; it names the devices, faculties and campuses, lists the first six devices and says how many will be sent or skipped"
+        },
+        {
+          "type": "added",
+          "description": "Confirm button shows 'Sending…' with a spinner and the pop-confirm cannot be dismissed while the request runs"
+        },
+        {
+          "type": "added",
+          "description": "After a send, the sent devices move Re-register, then Queued, then Registered every 4 seconds; the page updates by itself and stops polling when none is left"
+        },
+        {
+          "type": "added",
+          "description": "Result banners: 'Room Booking Manager could not be reached' with Try again (?state=fsm-down) and a partial result naming the rejected device (?state=partial)"
+        },
+        {
+          "type": "added",
+          "description": "Demo states ?state=unavailable (one EN-103 AV Lab device cannot be read, with Retry) and ?state=readonly (no checkboxes or send buttons, ribbon note)"
+        },
+        {
+          "type": "added",
+          "description": "Deep link from Manage Devices (?station=nort-dev1&unit=<asset tag>) filters the Device column to that room and highlights the device; each row has a 'See in Manage Devices' button"
+        },
+        {
+          "type": "changed",
+          "description": "Cannot register status shows a warning icon, a tooltip with the reason, and disables the checkbox and the send button"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-14",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Registration tab with one row per IT-managed device: Device, Recovery profile, Status, Updated at and row actions"
+        },
+        {
+          "type": "added",
+          "description": "Status counters Need attention (Failed), Not registered yet, In progress, Cannot register and Registered; each acts as a filter and a sixth Unavailable counter appears only when needed"
+        },
+        {
+          "type": "added",
+          "description": "Grouping by faculty when several are selected and by campus with the Group by campus switch; group rows show per-status counts and can be collapsed"
+        },
+        {
+          "type": "added",
+          "description": "Column filters and sorting: Device (Faculty > Campus > Device), Recovery profile and Updated at (Today, Last 7 days, Last 30 days, Never updated), with Results are filtered and Clear Filters in the sub-header"
+        },
+        {
+          "type": "added",
+          "description": "Campus and faculty multi-selects, search by asset tag, campus or faculty, and a device type toggle pinned to IT-managed with Faculty-registered disabled"
+        },
+        {
+          "type": "added",
+          "description": "Plain-words ribbon explaining that the Room Booking Manager registers devices automatically and that Send Recovery Request is only for a status that looks stuck"
+        },
+        {
+          "type": "added",
+          "description": "Loading state and sample data: 32 devices in 9 rooms across NORT, HLSD and MEDS and the ENG, SCI and LIB faculties"
+        }
+      ]
+    }
+  ]
+}

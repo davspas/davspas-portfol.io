@@ -1,0 +1,255 @@
+/* ============================================
+   INFO DISPLAY SECTIONS
+   Read-only server information display
+   ============================================ */
+
+/* Info section container - groups related read-only data */
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    padding: var(--space-m) 0;
+}
+
+.info-section:last-child {
+    border-bottom: none;
+}
+
+/* Info section title */
+.info-section__title {
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray-secondary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 var(--space-s) 0;
+}
+
+/* Info grid - displays label-value pairs */
+.info-grid {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: var(--space-m) var(--space-m);
+    row-gap: var(--space-m);
+}
+
+/* Info item - single label-value pair */
+.info-item {
+    display: contents;
+}
+
+/* Info label */
+.info-item__label {
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-glyph-gray-secondary);
+    padding-top: 0.2rem;
+    text-align: left;
+}
+
+/* Info value */
+.info-item__value {
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+    text-align: left;
+    word-break: break-word;
+}
+
+/* Info value variants */
+.info-item__value--muted {
+    color: var(--color-glyph-gray-secondary);
+    font-style: italic;
+}
+
+.info-item__value--monospace {
+    font-family: inherit;
+    font-size: var(--font-size-tiny);
+}
+
+.info-item__value--link {
+    color: var(--color-fill-blue);
+    text-decoration: none;
+}
+
+.info-item__value--link:hover {
+    text-decoration: underline;
+}
+
+/* Info value with badge/tag */
+.info-item__value--badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+/* Project tags wrap layout */
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+/* Empty-state hint shown in the Associated Projects field when an active
+   line server has zero project associations. */
+.info-projects-empty {
+    color: var(--color-glyph-gray-secondary);
+    font-style: italic;
+    font-size: var(--font-size-xxs);
+}
+
+/* Link button (inline text-style button) */
+.link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: var(--space-xs);
+    font-size: var(--font-size-tiny);
+    color: var(--color-fill-blue);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.link-btn:hover {
+    text-decoration: underline;
+}
+
+.link-btn--inline {
+    margin-top: 0;
+}
+
+/* Navigable value: hostname text + icon button */
+.navigable-value {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.navigate-icon-btn {
+    background: none;
+    border: none;
+    padding: 0.2rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--color-fill-blue);
+}
+
+.navigate-icon-btn:hover {
+    opacity: 0.7;
+}
+
+.navigate-icon-btn--disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.navigate-icon-btn--disabled:hover {
+    opacity: 0.3;
+}
+
+.navigable-value .popover__trigger {
+    position: relative;
+    display: inline-flex;
+}
+
+.navigable-value .popover {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: var(--space-xs);
+    z-index: 1000;
+}
+
+/* Dark tooltip style (solid black, no shadow) */
+.navigable-value .popover--dark .popover__content {
+    background-color: #0f172a;
+    box-shadow: none;
+    border-radius: 0.6rem;
+    padding: var(--space-s) var(--space-m);
+    min-width: auto;
+}
+
+.navigable-value .popover--dark .popover__body p {
+    color: #fff;
+    margin: 0;
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+}
+
+.navigable-value .popover--dark .popover__arrow {
+    border-color: #0f172a transparent transparent transparent;
+    filter: none;
+}
+
+.navigate-icon-btn svg {
+    fill: currentColor;
+}
+
+/* Editable fields section - follows info sections */
+.editable-fields-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+    padding-top: var(--space-m);
+}
+
+.editable-fields-section__title {
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray-secondary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 var(--space-m) 0;
+}
+
+/* Separator between info and editable sections */
+.section-separator {
+    height: 0.1rem;
+    background-color: var(--color-fill-gray-quaternary);
+    margin: var(--space-s) 0;
+}
+
+/* Associated servers list (GHDS/CDN → Line Servers) */
+.associated-servers-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.associated-server-item {
+    padding: var(--space-s) 0;
+    border-bottom: 0.1rem solid var(--color-fill-gray-quaternary);
+}
+
+.associated-server-item:last-child {
+    border-bottom: none;
+}
+
+.associated-server-item .navigable-value {
+    display: flex;
+    width: 100%;
+}
+
+.associated-server-item .navigate-icon-btn {
+    margin-left: auto;
+}
+
+.associated-server-item .popover__trigger {
+    margin-left: auto;
+}
+
+/* Site group headers in associated servers list */
+.associated-servers-site-header {
+    font-size: var(--font-size-xxxs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-glyph-gray-secondary);
+    padding: var(--space-s) 0 var(--space-xxs);
+    border-bottom: 0.1rem solid var(--color-fill-gray-quaternary);
+}
+
+.associated-servers-site-header:first-child {
+    padding-top: 0;
+}

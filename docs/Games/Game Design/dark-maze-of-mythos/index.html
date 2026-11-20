@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Dark Maze of Mythos — Game Design Document</title>
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+</head>
+<body class="gd-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../">← Home</a>
+        
+        <a href="../wild-saga/">Wild Saga</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en" aria-current="true">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap about">
+    <aside class="rail">
+      <h2 style="margin-top:0">Quick facts</h2>
+      <dl class="facts">
+        <div><dt>Genre</dt><dd>Top-down horror maze, escape</dd></div>
+        <div><dt>Platform</dt><dd>Android mobile</dd></div>
+        <div><dt>Origin</dt><dd>Game jam, theme “Monster Escape”</dd></div>
+        <div><dt>Deadline</dt><dd>31 Dec 2023</dd></div>
+        <div><dt>Studio</dt><dd>Harpia Games Studio</dd></div>
+        <div><dt>My role</dt><dd>Game and UI/UX Designer</dd></div>
+      </dl>
+      <h2>On this page</h2>
+      <nav class="toc" aria-label="On this page">
+        <a href="#concept">Initial concept</a>
+        <a href="#style">Platform &amp; style</a>
+        <a href="#story">Story, with AI</a>
+        <a href="#characters">Characters</a>
+        <a href="#gameplay">Gameplay</a>
+        <a href="#ai">Enemy AI</a>
+        <a href="#rules">Win &amp; loss</a>
+        <a href="#level">Level design</a>
+        <a href="#ui">User interface</a>
+      </nav>
+    </aside>
+
+    <div class="doc">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a> / <a href="../../../#work">Work</a> / <a href="../../../#work-gd">Game design</a> / The Dark Maze of Mythos (GDD)</nav>
+      <div class="eyebrow">Game Design Document · 02</div>
+      <h1>The Dark Maze <span class="grad">of Mythos</span></h1>
+      <p class="headline">Light a torch to see, put it out to hide. A tense mobile escape from a Minotaur that remembers every corridor of the labyrinth.</p>
+      <p class="loc">Bruno Poor (Game Developer) · David Smith (Game and UI/UX Designer) · Harpia Games Studio</p>
+
+      <div class="res">
+        <a class="btn primary" href="https://miro.com/app/board/uXjVPg-YTuE=/?share_link_id=49132223269">Miro board <small>(Portuguese)</small> ↗</a>
+        <a class="btn" href="../../UI/The%20Dark%20Maze%20of%20Mythos/index.html">UI design &amp; playable prototype →</a>
+        <a class="btn" href="https://www.figma.com/file/NE81TMBvJub6XI6LtoRdEP/UI?type=design&amp;node-id=20%3A120&amp;mode=design&amp;t=q2uvef9vWie6SJqj-1">UI file (Figma) ↗</a>
+      </div>
+
+      <!-- CONCEPT -->
+      <section class="sec reveal" id="concept">
+        <h2>Initial concept</h2>
+        <p>The game started from a <strong>game jam prompt generated with ChatGPT</strong>, with a deadline of 31 December 2023:</p>
+        <div class="cols">
+          <div class="box"><span class="tag-r">Theme</span><p>Monster Escape</p></div>
+          <div class="box"><span class="tag-r">Description</span><p>The player is stuck in a dark maze and must escape before the monster reaches them. The monster is lethal, so they must move fast and hide when it is close. The labyrinth’s many paths and obstacles can be used to block the monster and help the escape.</p></div>
+          <div class="box"><span class="tag-r">Rule</span><p>The game has to be created for mobile.</p></div>
+        </div>
+        <div class="figrow"><figure class="fig"><img src="images/references-maze-render.png" alt="Reference: a glowing labyrinth in the dark, the mood of light against darkness." width="284" height="223" loading="lazy"><figcaption>Reference: a glowing labyrinth in the dark, the mood of light against darkness.</figcaption></figure><figure class="fig"><img src="images/references-low-poly-landscape.png" alt="Low-poly reference: a landscape with cliffs, trees and animals." width="400" height="253" loading="lazy"><figcaption>Low-poly reference: a landscape with cliffs, trees and animals.</figcaption></figure><figure class="fig"><img src="images/references-low-poly-village.png" alt="Low-poly reference: a village seen from above." width="400" height="225" loading="lazy"><figcaption>Low-poly reference: a village seen from above.</figcaption></figure></div>
+      </section>
+
+      <!-- STYLE -->
+      <section class="sec reveal" id="style">
+        <h2>Platform, users &amp; style</h2>
+        <p><strong>Platform:</strong> Android mobile.</p>
+        <p><strong>Players:</strong> casual players who enjoy high-tension monster-chase games such as Slender Man and Amnesia, and roguelike players who like trying again and again to win.</p>
+        <p><strong>Style:</strong> a top-down labyrinth game with a close camera that changes perspective in specific situations (when hiding and when the monster catches you). Players only see as far as their torch illuminates, so <strong>light and dark</strong> are the central concept. Assets follow a low-poly art style.</p>
+      </section>
+
+      <!-- STORY -->
+      <section class="sec reveal" id="story">
+        <h2>Story, built with AI</h2>
+        <p>We used ChatGPT to draft the story skeleton, then curated it. Each prompt produced a version, and our decisions between rounds shaped the game.</p>
+        <div class="acts">
+          <div class="act"><h4 style="margin-top:0">Prompt 1 · Theseus</h4>
+            <p>A young adventurer, Theseus, enters an ancient labyrinth with a torch, flees the Minotaur and escapes by hurling a rope-tied stone at it.</p>
+            <p><strong>Decision:</strong> we renamed the hero <strong>Alex</strong>.</p></div>
+          <div class="act"><h4 style="margin-top:0">Prompt 2 · Alex</h4>
+            <p>Alex is chased through darkening corridors, throws his torch at a fragile wall to open a secret passage, and ends up facing the monster.</p>
+            <p><strong>Decision:</strong> the monster is already loose in the labyrinth.</p></div>
+          <div class="act"><h4 style="margin-top:0">Prompt 3 · Pursued</h4>
+            <p>With the Minotaur already roaming free, Alex must keep his torch lit to see the way and avoid traps while it hunts him relentlessly.</p></div>
+        </div>
+        <div class="callout"><strong>Final story.</strong> Alex, a young adventurer, hears of an ancient labyrinth in the city centre from which no one has returned. He enters with a torch. The air grows damp, the walls rise, and a roar echoes: a giant bull-like monster with sharp claws and blazing eyes is hunting him. At a dead end he throws his torch at a fragile wall and escapes through a secret passage, running toward the sunlight. At the exit, a rope tied to a heavy stone puts the Minotaur out cold. He leaves with the torch still lit, knowing the experience will make him braver.
+        <br><br><strong>From this story we created the characters, mechanics and style of the game.</strong></div>
+      </section>
+
+      <!-- CHARACTERS -->
+      <section class="sec reveal" id="characters">
+        <h2>Characters</h2>
+        <div class="cols">
+          <div class="box rabbit">
+            <span class="tag-r">Player</span>
+            <h3>Alex, the adventurer</h3>
+            <p>About 25, lean but surprisingly strong, with brown hair and a stubble beard. A thrill-seeker who is quick and never gives up. He enters the labyrinth ill-equipped, armed only with a torch, so resourcefulness is his real tool.</p>
+          </div>
+          <div class="box tiger">
+            <span class="tag-t">Enemy</span>
+            <h3>The Minotaur</h3>
+            <p>A massive, muscular red bull-like beast with a permanent angry expression, human hands larger than normal, ox legs, a huge axe and piercing black eyes. Its sight is poor in the constant dark, so it has <strong>memorised the whole maze</strong> as a mental map.</p>
+          </div>
+          <div class="box">
+            <span class="tag-r" style="color:var(--violet)">Ally · WIP</span>
+            <h3>Exodia (working name)</h3>
+            <p>The fractured beast of light, inspired by Yu-Gi-Oh’s Exodia: the player summons it by collecting <strong>6 cards</strong>. The Minotaur’s arch-nemesis, and the only thing that can stop it for good and clear the way to the exit. A counter tracks the cards collected.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- GAMEPLAY -->
+      <section class="sec reveal" id="gameplay">
+        <h2>Gameplay</h2>
+        <h3>Movement</h3>
+        <p>The player moves with a D-pad. The character always looks forward and <strong>can’t walk backwards</strong>. The top-down camera follows and rotates with the character, so the chosen path is always “forward”. The torch lights everything the player can see.</p>
+        <h3>The torch is the whole game</h3>
+        <div class="cols two">
+          <div class="box"><h3>Put out the torch</h3><p>Hide from a nearby Minotaur, at the price of almost all visibility.</p></div>
+          <div class="box"><h3>Light the torch</h3><p>See where you’re going, but be visible to the Minotaur. <strong>Costs one match.</strong></p></div>
+          <div class="box"><h3>Throw the torch</h3><p>Lure the Minotaur: throw it down one branch of a fork and run the other way, and the monster follows the light and loses you. It also breaks fragile walls.</p></div>
+          <div class="box"><h3>Pick up the torch</h3><p>Fixes the light to the character again.</p></div>
+        </div>
+      </section>
+
+      <!-- AI -->
+      <section class="sec reveal" id="ai">
+        <h2>Enemy AI</h2>
+        <p>The Minotaur is a state machine, designed so the chase feels fair and tense.</p>
+        <div class="chain" style="margin:18px 0">
+          <div class="node page"><small>State</small>Idle</div><span class="arrow">→</span>
+          <div class="node panel"><small>State</small>Patrolling<em>smart or random target</em></div><span class="arrow">→</span>
+          <div class="node popover"><small>Player found</small>Roar<em>pause in place</em></div><span class="arrow">→</span>
+          <div class="node dialog"><small>State</small>Chasing</div><span class="arrow">→</span>
+          <div class="node toast" style="--c:#f87171"><small>State</small>Attacking<em>side camera + quick-time event</em></div><span class="arrow">→</span>
+          <div class="node drawer"><small>State</small>Stunned<em>10 seconds</em></div><span class="arrow">→</span>
+          <div class="node page"><small>State</small>Idle</div>
+        </div>
+        <p style="color:var(--faint);font-size:.9rem">If the Minotaur loses sight of the player while chasing, it returns to Patrolling. If it never finds the player, it keeps patrolling.</p>
+        <ul class="bl">
+          <li><strong>Idle.</strong> The Minotaur’s basic resting state.</li>
+          <li><strong>Patrolling.</strong> “Smart” patrolling keeps the game interesting. It walks either to a completely random point of the maze or to a point <strong>20 units from the player</strong>. On arrival it picks a new point, so the patrol varies between smart and random. A point must be reachable to be valid.</li>
+          <li><strong>Chasing.</strong> It heads for the player, who can hide in hiding places, throw the torch, or turn it off. Reaching the player triggers an attack.</li>
+          <li><strong>Attacking.</strong> When the player is within reach, the camera switches to a side view and movement controls are disabled. The player must <strong>tap the right points on screen</strong> to escape. Success stuns the Minotaur.</li>
+          <li><strong>Stunned.</strong> It stops for 10 seconds. Meanwhile Alex runs randomly through the maze out of the player’s hands, and a light shows the path to the exit.</li>
+        </ul>
+      </section>
+
+      <!-- RULES -->
+      <section class="sec reveal" id="rules">
+        <h2>Win &amp; loss, counters</h2>
+        <div class="cols">
+          <div class="box"><span class="tag-r">Win</span><p>Find the labyrinth exit, or find all 6 Exodia cards.</p></div>
+          <div class="box"><span class="tag-t">Lose</span><p><strong>The Minotaur gets Alex:</strong> a quick-time event gives one chance to dodge by tapping where indicated. Failing is Game Over. Succeeding reveals the exit path with a light and Alex runs randomly while the Minotaur is stunned.<br><strong>A trap:</strong> falling into one is Game Over.</p></div>
+          <div class="box"><span class="tag-r" style="color:var(--violet)">Counters</span><p><strong>Matches:</strong> counts down as they’re used.<br><strong>Cards:</strong> collected out of 6.<br><strong>Time:</strong> counts up while finding the exit.</p></div>
+        </div>
+      </section>
+
+      <!-- LEVEL -->
+      <section class="sec reveal" id="level">
+        <h2>Level design</h2>
+        <p>The labyrinth with all of its interactions is laid out on the project’s Miro board (see link at the top).</p>
+        <div class="cols two">
+          <div class="box"><h3>Collectibles</h3><p><strong>Cards (6):</strong> collecting them all summons Exodia.<br><strong>Matches (14):</strong> scattered through the labyrinth and used to relight the torch, so the player always has to decide when light is worth the cost.</p></div>
+          <div class="box"><h3>Traps</h3><p>Only Alex is affected; the Minotaur is immune.<br><strong>Wall traps:</strong> spikes come out of the walls.<br><strong>Floor traps:</strong> the floor opens onto a fire pit.<br><em>Disarming traps is still to be defined.</em></p></div>
+        </div>
+        <figure class="fig"><img src="images/trap-floor-diagram.png" alt="Floor trap: the floor opens to reveal a fire pit under Alex." width="768" height="400" loading="lazy"><figcaption>Floor trap: the floor opens to reveal a fire pit under Alex.</figcaption></figure>
+        <figure class="fig"><img src="images/level-map-annotated.png" alt="Annotated labyrinth map from the Miro board (legend in Portuguese): exit path, alternative paths, rooms, Exodia parts, matches, breakable walls, hiding places, traps and trap-disarming buttons." width="800" height="645" loading="lazy"><figcaption>Annotated labyrinth map from the Miro board (legend in Portuguese): exit path, alternative paths, rooms, Exodia parts, matches, breakable walls, hiding places, traps and trap-disarming buttons.</figcaption></figure>
+        <figure style="margin:18px 0 0"><img src="images/Labirinto.png" alt="Labyrinth map: white corridors, black walls, grey chambers" style="max-width:420px;width:100%;border-radius:6px;border:1px solid var(--line-2);display:block"><figcaption style="color:var(--faint);font-size:.88rem;margin-top:8px">Labyrinth map. The playable prototype uses this layout: <a class="inline" href="../../UI/The%20Dark%20Maze%20of%20Mythos/index.html#prototype">play it</a>.</figcaption></figure>
+      </section>
+
+      <!-- UI -->
+      <section class="sec reveal" id="ui">
+        <h2>User interface</h2>
+        <h3>Level interactions</h3>
+        <div class="cols"><div class="box"><h3>Disarm traps</h3><p>Find the button that matches the colour of the fire or spikes to disarm the trap.</p></div><div class="box"><h3>Breakable walls</h3><p>Walls the player can break by throwing the torch into them.</p></div><div class="box"><h3>Hiding spots</h3><p>Places with a mysterious purple fog where not even the Minotaur dares to step. The player can hide there with the torch on.</p></div></div>
+        <h3>Style and elements</h3>
+        <p>A semi-realistic, heavy UI of stone and energy, even though the experience itself is meant to be simple. Typography should resemble medieval to ancient Greece: light, serif, easy to read in small elements and very structured in others, to complement the low-poly style. <strong>Tilt Prism</strong> is used for titles and big texts and <strong>Texturina</strong> for small texts and buttons.</p>
+        <div class="cols two"><div class="box"><h3>Buttons</h3><p>Buttons have sharp angles and uneven corners to resemble physical rock buttons, with borders that simulate an inward, downward motion when active.</p><figure class="fig"><img src="images/ui-button.png" alt="Button example: sharp angles and uneven corners, like a rock button." width="400" height="171" loading="lazy"><figcaption>Button example: sharp angles and uneven corners, like a rock button.</figcaption></figure></div><div class="box"><h3>D-pad</h3><p>The D-pad resembles a diamond on a transparent energy pad. When it moves, a red halo appears in the direction it is moved.</p><figure class="fig"><img src="images/ui-dpad.png" alt="D-pad example: a diamond on a transparent energy pad, with a red halo in the direction of movement." width="400" height="226" loading="lazy"><figcaption>D-pad example: a diamond on a transparent energy pad, with a red halo in the direction of movement.</figcaption></figure></div><div class="box"><h3>Icons</h3><p>To read well and stand out from the dark UI elements, icons are simple and do not resemble the grounded style of the rest of the UI.</p><figure class="fig"><img src="images/ui-icon-torch.png" alt="Icon example: the torch, simple and readable against the dark UI." width="243" height="240" loading="lazy"><figcaption>Icon example: the torch, simple and readable against the dark UI.</figcaption></figure></div><div class="box"><h3>Panels</h3><p>Information panels resemble the button style but are clearly non-interactive and purely informational.</p><figure class="fig"><img src="images/ui-panels-counters.png" alt="Counter panels, which are informational only, next to the pause button." width="400" height="158" loading="lazy"><figcaption>Counter panels, which are informational only, next to the pause button.</figcaption></figure></div></div>
+        <h3>Menus and indicators</h3>
+        <p>Menus are simple, with obvious interactions and clear text on what the player is doing, over a dark red gradient that adds to the mood. When the Minotaur is close, a vibrant red vignette over the whole screen shows its direction, with sound cues: Minotaur breathing, footsteps and a despair sound.</p>
+        <figure class="fig narrow"><img src="images/ui-pause-menu.png" alt="Pause menu: simple, obvious interactions on a dark red gradient." width="374" height="837" loading="lazy"><figcaption>Pause menu: simple, obvious interactions on a dark red gradient.</figcaption></figure>
+      </section>
+
+      <div class="docnav">
+        <a class="btn" href="../wild-saga/">← Previous: Wild Saga</a>
+        <a class="btn" href="../../UI/The%20Dark%20Maze%20of%20Mythos/index.html">UI design &amp; playable prototype →</a>
+        <a class="btn primary" href="../../../#work-gd">All game design work</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Designed by hand. Only Atrium was prototyped with AI</span>
+      <a href="../../../#work-gd">← Back to all work</a>
+    </div>
+  </footer>
+
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

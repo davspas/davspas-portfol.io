@@ -1,0 +1,162 @@
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+/* Ensure full-height layout */
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Canvas #app is the root flex container */
+#app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Canvas <header> (navbar + sub-header) stays fixed at top */
+#app > header {
+    flex-shrink: 0;
+}
+
+/* Canvas <main.content> fills remaining space */
+.content {
+    padding: 0 !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* Canvas <footer> stays fixed at bottom */
+#app > footer {
+    flex-shrink: 0;
+}
+
+/* Page wrapper fills .content */
+.manage-infrastructure-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.proj-source-toggle__option[data-source="kodiak"],
+.proj-source-toggle__option[data-source="groundhog"] {
+    color: var(--color-glyph-gray-tertiary);
+    background-color: transparent;
+    cursor: not-allowed
+}
+
+/* Field hint with a trailing inline action on the SAME line — used under the
+   Proxy URL field so "Manually edited." and "Reset to generated URL" read as
+   one line. Works in both contexts (panel `.setting-note`, form `.form-help`),
+   and wraps rather than squeezing the link on a narrow panel. */
+.field-hint-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+}
+
+.field-hint-row .setting-note,
+.field-hint-row .form-help {
+    width: auto;
+    flex: 0 1 auto;
+    margin-top: 0;
+}
+
+.field-hint-row .link-btn {
+    margin-top: 0;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* Persistent helper text under a field. */
+.field-note {
+    display: block;
+    margin-top: var(--space-xs);
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray-secondary);
+    line-height: 1.4;
+}
+
+/* One message under a field at a time: error, then warning, then hint.
+   `!important` because the panels set the hint's display inline. */
+.form-input--invalid ~ .field-note,
+.form-input--invalid ~ .proxy-changed-note,
+.field-note:has(~ .proxy-changed-note) {
+    display: none !important;
+}
+
+/* Warning under a Proxy URL the automatic update replaced (FR-P2-25). Shared by
+   the panel `.setting-note` and the drawer `.form-help`. */
+.proxy-changed-note {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    color: var(--color-glyph-orange);
+}
+
+.proxy-changed-note__icon {
+    flex: 0 0 auto;
+}
+
+/* Reusable monalisa dark hover tooltip: a body-appended `.popover popover--dark`
+   positioned above its trigger. The base popover stacks padding on __content
+   (1.6rem 0) and __body (1.6rem) for rich content, which is far too much for a
+   one-line label — collapse it to a single compact padding. */
+.proj-tooltip {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.proj-tooltip .popover__content {
+    background-color: #0f172a;
+    box-shadow: none;
+    border-radius: 0.6rem;
+    padding: var(--space-xs) var(--space-s);
+    min-width: auto;
+    max-width: none;
+}
+
+.proj-tooltip .popover__body {
+    padding: 0;
+}
+
+.proj-tooltip .popover__body p {
+    color: #fff;
+    margin: 0;
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+}
+
+.proj-tooltip .popover__arrow {
+    bottom: -0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border-style: solid;
+    border-width: 0.6rem 0.6rem 0 0.6rem;
+    border-color: #0f172a transparent transparent transparent;
+    filter: none;
+}
+
+/* The docked right-edge panels (Error Cases, Q&A, Requirements) sit at z-index 1000,
+   level with the drawer overlay, and come later in the DOM — so they painted over the
+   Create / Manage / Unarchive drawers. Lift the drawers above them. The selector is
+   deliberately more specific than the design system's own `.drawer-overlay`, which
+   would otherwise win by load order and leave the overlay at 1000. */
+body .drawer-overlay {
+    z-index: 1100;
+}
+
+body .drawer-overlay .drawer {
+    z-index: 1101;
+}

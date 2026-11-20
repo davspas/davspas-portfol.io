@@ -1,0 +1,223 @@
+/* ============================================
+   TREE SEARCH INPUT & RESULTS
+   ============================================ */
+
+/* Search input with icon. The wrapper anchors both the icon and the results
+   dropdown, so it must carry `position: relative` itself rather than relying on
+   the subheader's .sub-header__tree-search rule. */
+.tree-search-wrapper {
+    position: relative;
+}
+
+.search-input-with-icon {
+    padding-right: 4rem !important;
+}
+
+/* Must stay a plain <span> wrapping the <sf-symbol>, never the symbol itself:
+   sf-symbol.js writes `position: relative` as an INLINE style on its host, which
+   outranks any class rule, so an absolutely-positioned <sf-symbol> silently
+   falls back into normal flow and lands below-left of the input. */
+.search-input-icon {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    line-height: 0;
+    pointer-events: none;
+    color: var(--color-glyph-gray-secondary);
+    opacity: 0.6;
+}
+
+/* Adjust icon opacity when input is disabled */
+.tree-search-wrapper input:disabled + .search-input-icon {
+    opacity: 0.4;
+}
+
+/* Search results dropdown. Left-aligned with the input but wider than it —
+   a result row carries the site prefix, the full hostname, the project tags
+   and the ID, which don't fit the 28rem field. */
+.tree-search__results {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 0;
+    right: auto;
+    width: 56rem;
+    min-width: 100%;
+    max-width: 90vw;
+    background-color: var(--color-fill);
+    border: 0.1rem solid var(--color-fill-gray-quaternary);
+    border-radius: var(--radius-s);
+    box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.1);
+    max-height: 40rem;
+    overflow-y: auto;
+    z-index: 2000;
+    display: none;
+}
+
+.tree-search__results--visible {
+    display: block;
+}
+
+/* Result count — states what the list below is before the group headers
+   explain what each column holds. */
+.search-results__count {
+    padding: var(--space-s) var(--space-mp);
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+}
+
+.search-results__empty {
+    padding: var(--space-s) var(--space-mp) var(--space-m);
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray-secondary);
+}
+
+/* Group header: server type on the left, column names on the right. The
+   column names are the point of the row — without them the ID reads as a
+   result count. */
+.search-results__group-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: 0.5rem var(--space-mp);
+    background-color: var(--color-fill-tertiary);
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+}
+
+.search-results__group-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.search-results__group-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-glyph-gray);
+}
+
+.search-results__group-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.search-results__group-header .search-results__cell {
+    color: var(--color-glyph-gray-secondary);
+}
+
+.search-results__items {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-results__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: 0.7rem var(--space-mp);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-results__item:hover {
+    background-color: var(--color-fill-blue-secondary);
+}
+
+/* `<SITE> › <hostname>` — the same breadcrumb the tree row implies. */
+.search-results__label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.search-results__site {
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray-secondary);
+    flex-shrink: 0;
+}
+
+.search-results__separator {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: var(--color-fill-gray-tertiary);
+    flex-shrink: 0;
+}
+
+.search-results__name {
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+    font-weight: var(--font-weight-regular);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* The matched substring is bolded in place rather than highlighted, so the
+   hostname stays readable as one string. */
+.search-results__match {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-glyph-gray);
+}
+
+.search-results__archived {
+    flex-shrink: 0;
+    font-size: var(--font-size-xxxs);
+    padding: 0.1rem 0.4rem;
+    line-height: 1.4;
+}
+
+/* Right-hand columns. Fixed widths keep the group header labels sitting over
+   the values they describe, across every group. */
+.search-results__cell {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.3rem;
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+}
+
+.search-results__cell--projects {
+    width: 12rem;
+    overflow: hidden;
+}
+
+.search-results__cell--id {
+    width: 4.4rem;
+}
+
+/* Tags shrink (with an ellipsis and a `title`) rather than spilling out of the
+   column — project names run as long as "GOLDEN TEMPLATE". The `+N` badge
+   never shrinks, so the row always says how much is folded away. */
+.search-results__project-tag {
+    font-size: var(--font-size-xxxs);
+    padding: 0.1rem 0.4rem;
+    line-height: 1.4;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-results__projects-more {
+    font-size: var(--font-size-xxxs);
+    color: var(--color-glyph-gray-secondary);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+

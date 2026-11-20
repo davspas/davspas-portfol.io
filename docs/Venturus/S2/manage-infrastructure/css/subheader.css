@@ -1,0 +1,204 @@
+/* ============================================
+   SUBHEADER CONTROLS
+   ============================================ */
+
+.sub-header__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.sub-header__subtitle {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.sub-header__controls > select {
+    flex-shrink: 0;
+    width: auto;
+}
+
+/* Campus multi-select host. Pin to a fixed width matching the natural
+   width of a native <select id="siteSelect">; the underlying
+   ProjMultiSelect plugin adds its own .proj-multi-select class with
+   width:100%, so we target the host by ID to outrank the plugin's rule
+   regardless of CSS load order. */
+#siteSelect.sub-header__site-select {
+    flex-shrink: 0;
+    width: 32rem;
+}
+
+/* Vertical divider between the Site multi-select and the Projects + Search
+   scope band. Same gray as the old in-tree-section divider. */
+.sub-header__divider {
+    width: 0.1rem;
+    align-self: stretch;
+    background-color: var(--color-fill-gray-quaternary);
+    flex-shrink: 0;
+}
+
+/* Projects multi-select host in the subheader: fills the space between the
+   divider and the Search bar. Higher specificity than the plugin's
+   .proj-multi-select { width: 100% }; same trick the old
+   .tree-section__project-select rule used. */
+#projectSelect.sub-header__project-select.proj-multi-select,
+#projectSelect.sub-header__project-select {
+    flex: 1 1 0;
+    min-width: 16rem;
+    max-width: 32rem;
+}
+
+/* Search bar in the subheader: keep the 28rem fixed width carried over from
+   the tree section header. `position: relative` anchors the absolute-positioned
+   `.tree-search__results` dropdown to the wrapper. */
+.sub-header__tree-search {
+    width: 28rem;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.sub-header__controls > .project-multi-select {
+    flex-shrink: 0;
+}
+
+.sub-header__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    flex-shrink: 0;
+}
+
+/* Project Multi-Select - Minimal custom styles, leveraging MDS */
+.project-multi-select {
+    position: relative;
+    min-width: 20rem;
+}
+
+.project-multi-select__trigger {
+    width: 100%;
+    min-height: 3.6rem;
+    padding: var(--space-xxs) var(--space-m);
+    background-color: var(--color-fill);
+    border: 0.1rem solid var(--color-fill-gray-quaternary);
+    border-radius: var(--radius-s);
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xxs);
+    transition: var(--transition-basic);
+}
+
+.project-multi-select__trigger:hover:not(:disabled) {
+    border-color: var(--color-fill-gray-tertiary);
+}
+
+.project-multi-select__trigger:focus {
+    outline: none;
+    border-color: var(--color-base-accent);
+    box-shadow: 0 0 0 0.3rem rgba(79,70,229, 0.1);
+}
+
+.project-multi-select__trigger:disabled {
+    background-color: var(--color-fill-tertiary);
+    color: var(--color-glyph-gray-tertiary);
+    cursor: not-allowed;
+}
+
+.project-multi-select__label {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--space-xxs);
+    align-items: center;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.project-multi-select__tag {
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xxs);
+}
+
+.project-multi-select__tag-remove {
+    cursor: pointer;
+    opacity: 0.5;
+    font-size: var(--font-size-tiny);
+    line-height: 1;
+    transition: opacity 0.15s;
+}
+
+.project-multi-select__tag-remove:hover {
+    opacity: 1;
+}
+
+.project-multi-select__overflow {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.project-multi-select__chevron {
+    margin-left: var(--space-s);
+    font-size: var(--font-size-tiny);
+    transition: transform 0.2s ease;
+}
+
+.project-multi-select__trigger--open .project-multi-select__chevron {
+    transform: rotate(180deg);
+}
+
+.project-multi-select__dropdown {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 0;
+    right: 0;
+    max-height: 28rem;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border: 0.1rem solid var(--color-fill-gray-quaternary);
+    border-radius: var(--radius-s);
+    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
+    padding: var(--space-s);
+    display: none;
+    flex-direction: column;
+    gap: var(--space-s);
+    z-index: 2000;
+}
+
+.project-multi-select__dropdown--open {
+    display: flex;
+}
+
+/* MDS checkboxes already styled, just add hover effect */
+.project-multi-select__dropdown .checkbox {
+    margin: 0;
+    padding: var(--space-s);
+    border-radius: var(--radius-s);
+    transition: background-color 0.2s ease;
+}
+
+.project-multi-select__dropdown .checkbox:hover {
+    background-color: var(--color-fill-blue-secondary);
+}
+
+/* Select All checkbox styling */
+.project-multi-select__dropdown .checkbox--select-all {
+    background-color: var(--color-fill-secondary);
+}
+
+/* Divider between Select All and project list */
+.project-multi-select__divider {
+    height: 0.1rem;
+    background-color: var(--color-fill-gray-quaternary);
+    margin: var(--space-xs) 0;
+}
+

@@ -1,0 +1,27 @@
+/* DaVinci Plugins — Project-level custom components */
+/* Auto-loaded by canvas framework alongside MDS */
+/* Add @import for each plugin component CSS file below */
+
+@import url('proj-navbar-layout.css');
+@import url('proj-multi-select.css');
+@import url('proj-popover-editor.css');
+@import url('proj-combobox.css');
+@import url('proj-source-toggle.css');
+@import url('proj-cascader.css');
+@import url('proj-timeline.css');
+@import url('proj-wizard.css');
+/* Inline field errors. Styles the message elements the prototypes already ship, so it
+   must come after the component CSS that used to define them locally. */
+@import url('proj-field-error.css');
+/* proj-qa-panel reuses the markdown typography from proj-requirements-panel — keep it after. */
+@import url('proj-requirements-panel.css');
+@import url('proj-qa-panel.css');
+@import url('proj-error-cases-panel.css');
+@import url('proj-json-diff.css');
+/* proj-kb-launcher only adds ribbon-button styling; its `order: 0` slot pairs with the
+   order rules in proj-requirements-panel.css — keep it after. */
+@import url('proj-kb-launcher.css');
+
+/* Milan's overlay opts every page into cross-document view transitions, which Safari aborts
+   with an InvalidStateError on each navigation. This loads after Milan's style, so it wins. */
+@view-transition { navigation: none; }

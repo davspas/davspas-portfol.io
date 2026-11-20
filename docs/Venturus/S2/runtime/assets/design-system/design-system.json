@@ -1,0 +1,6 @@
+{
+  "id": "generic",
+  "label": "Generic UI",
+  "description": "Neutral modern SaaS look: slate neutrals, indigo accent, soft radii.",
+  "runtime": { "css": "dist/css/generic.css", "js": "dist/js/generic.js" }
+}

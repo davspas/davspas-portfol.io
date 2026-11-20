@@ -1,0 +1,75 @@
+/* Deploy tab: version strip, wizard, last-deploy cells and dialogs. */
+.fdr-deploybar { padding: var(--space-mp) 2.4rem; display: flex; flex-direction: column; gap: var(--space-m); }
+
+/* Wizard step styles shared with the Import dialog (unchanged look). */
+.fdr-wizard__steps { display: flex; gap: var(--space-l); margin: 0; padding: 0; list-style: none; font-size: var(--font-size-xxs); }
+.fdr-wizard__step { display: inline-flex; align-items: center; gap: var(--space-xs); color: var(--color-glyph-gray-secondary); }
+.fdr-wizard__step--on { color: var(--color-glyph-gray); font-weight: var(--font-weight-semibold); }
+.fdr-wizard__step--done { color: var(--color-glyph-gray); }
+.fdr-wizard__num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2rem; height: 2rem; border-radius: 50%;
+    border: 0.1rem solid var(--color-glyph-gray-tertiary); font-size: var(--font-size-tiny);
+}
+.fdr-wizard__step--on .fdr-wizard__num { border-color: var(--color-base-accent); background: var(--color-base-accent); color: var(--color-fill); }
+.fdr-wizard__step--done .fdr-wizard__num { border-color: var(--color-glyph-green); color: var(--color-glyph-green); }
+.fdr-wizard__steps--modal { margin-bottom: var(--space-m); }
+
+/* Roll out tab only: the wizard sits above the version and schedule actions, with roomier spacing. */
+.fdr-deploybar .fdr-wizard {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-l); flex-wrap: wrap;
+    padding: var(--space-m) var(--space-mp);
+    border: 0.1rem solid var(--color-fill-gray-quaternary); border-radius: var(--radius-m);
+    background: var(--color-fill-secondary);
+}
+.fdr-deploybar .fdr-wizard__steps { align-items: center; gap: var(--space-s); }
+.fdr-deploybar .fdr-wizard__step { gap: var(--space-s); white-space: nowrap; }
+.fdr-deploybar .fdr-wizard__step:not(:last-child)::after { content: ''; width: 3.2rem; height: 0.1rem; margin-left: var(--space-s); background: var(--color-fill-gray-tertiary); }
+.fdr-deploybar .fdr-wizard__step--done:not(:last-child)::after { background: var(--color-glyph-green); }
+.fdr-deploybar .fdr-wizard__num { flex-shrink: 0; width: 2.4rem; height: 2.4rem; }
+.fdr-deploybar .fdr-wizard__end { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-m); }
+
+/* Version and schedule actions under the wizard */
+.fdr-vstrip { display: flex; align-items: center; gap: var(--space-m) var(--space-l); flex-wrap: wrap; font-size: var(--font-size-xxs); }
+.fdr-vstrip__item { display: inline-flex; align-items: center; gap: var(--space-s); }
+.fdr-vstrip__item .form-select { width: 20rem; }
+.fdr-vstrip__label { color: var(--color-glyph-gray-secondary); }
+.fdr-vstrip__spacer { flex: 1; }
+.fdr-vstrip__action { display: inline-flex; align-items: center; gap: var(--space-xs); }
+.fdr-vstrip__action sf-symbol { vertical-align: -0.15em; }
+
+#fdrDeploy .table-container { max-height: calc(100vh - 17.2rem - 11rem); }
+.fdr-unit--muted > .table__cell:nth-child(2), .fdr-unit--muted > .table__cell:nth-child(3) { color: var(--color-glyph-gray-secondary); }
+
+.fdr-dstatus { display: inline-flex; border: 0; background: none; padding: 0.2rem; cursor: pointer; vertical-align: middle; }
+.fdr-dstatus--green { color: var(--color-glyph-green); }
+.fdr-dstatus--red { color: var(--color-glyph-red); }
+.fdr-dstatus--blue { color: var(--color-base-accent); }
+.fdr-dstatus-inline { display: inline-flex; align-items: center; gap: 0.4rem; }
+.fdr-dwhen { font-size: var(--font-size-xxs); }
+
+/* Dialogs */
+.fdr-dlg-table { max-height: 36rem; overflow: auto; }
+.fdr-kv { display: grid; grid-template-columns: 14rem 1fr; gap: var(--space-s) var(--space-m); margin: 0; }
+.fdr-kv dt { color: var(--color-glyph-gray-secondary); font-size: var(--font-size-xxs); }
+.fdr-kv dd { margin: 0; }
+.fdr-hist { display: grid; grid-template-columns: 26rem 1fr; gap: var(--space-l); min-height: 24rem; }
+.fdr-hist__list { margin: 0; padding: 0; list-style: none; border-right: 0.1rem solid var(--color-fill-gray-quaternary); }
+.fdr-hist__item { display: flex; align-items: center; gap: var(--space-xs); width: 100%; border: 0; background: none; padding: var(--space-s) var(--space-m); text-align: left; cursor: pointer; font: inherit; flex-wrap: wrap; }
+.fdr-hist__item .fdr-sub { width: 100%; padding-left: 2.4rem; }
+.fdr-hist__item:hover { background: var(--color-fill-gray-quaternary-hover); }
+.fdr-hist__item--on { background: var(--color-fill-blue-secondary); }
+.modal__footer .fdr-sched { margin: 0; }
+.modal__footer .fdr-sched__when { width: 22rem; }
+.modal__footer .fdr-sched__spacer { flex: 1; }
+.modal__footer { align-items: center; }
+.fdr-drop {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-s);
+    padding: var(--space-xl) var(--space-l); margin-bottom: var(--space-m);
+    border: 0.1rem dashed var(--color-glyph-gray-tertiary); border-radius: var(--space-s);
+    color: var(--color-glyph-gray-secondary); font-size: var(--font-size-xxs); text-align: center;
+}
+.fdr-drop sf-symbol { font-size: 24px; }
+.fdr-drop__pick { cursor: pointer; }
+.fdr-sched__hint { color: var(--color-glyph-red); font-size: var(--font-size-xxs); }
+.fdr-sched__hint[hidden] { display: none; }

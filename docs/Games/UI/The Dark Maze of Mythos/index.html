@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Dark Maze of Mythos · UI design — David Smith</title>
+  <meta name="description" content="UI design for The Dark Maze of Mythos, a mobile horror maze game: screens, UI kit and a playable prototype of the menu, HUD, pause, win and loss screens.">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+  <link rel="stylesheet" href="assets/dm-page.css">
+</head>
+<body class="dm-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../#work-games">← Work</a>
+        <a href="#screens">Screens</a>
+        <a href="#kit">UI kit</a>
+        <a href="#level">Level</a>
+        <a href="#flow">Flow</a>
+        <a href="#prototype">Prototype</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en" aria-current="true">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Home</a> / <a href="../../../#work">Work</a> / <a href="../../../#work-gui">Game UI</a> / The Dark Maze of Mythos</nav>
+    <section class="dm-hero">
+      <div>
+        <div class="eyebrow">Games · UI/UX · Mobile horror</div>
+        <h1>The Dark Maze<br><span class="gold">of Mythos</span></h1>
+        <p class="steam">A top-down escape from a Minotaur that has memorised the maze. Your torch is both your eyes and your beacon. This page covers the interface: the screens, the UI kit and a playable prototype.</p>
+        <ul class="facts-row">
+          <li><b>Platform</b>Android</li><li><b>Genre</b>Horror maze, escape</li><li><b>Studio</b>Harpia Games</li><li><b>My role</b>Game design and all UI</li>
+        </ul>
+        <div class="btn-row" style="margin-top:26px">
+          <a class="btn gold" href="prototype/">Play the live prototype</a>
+          <a class="btn" href="#kit">See the UI kit</a>
+          <a class="btn" href="../../Game%20Design/dark-maze-of-mythos/">Read the game design document</a>
+        </div>
+      </div>
+      <div class="phones-hero reveal"><img src="assets/web/screens/Menu.jpg" alt="Menu screen: the title in red outlined letters, Start and Scoreboard buttons"><img src="assets/web/screens/HUD.jpg" alt="HUD over the dark maze: cards, time, matches, pause, torch buttons and a stick"></div>
+    </section>
+
+    <section class="dm-sec reveal" id="pillars"><h2>UI pillars</h2><div class="pillars">
+      <div class="pillar"><div class="n">01</div><h3>Light is the interface</h3><p>The scene is almost black, so the HUD borrows its look from the world: cold metal plates with a red glow, never bright panels that would give the player away.</p></div><div class="pillar"><div class="n">02</div><h3>Thumb first</h3><p>Every control sits in the lower third, where a thumb rests: a floating stick and two torch actions. Counters live on top, out of the way of the hands.</p></div><div class="pillar"><div class="n">03</div><h3>Three numbers, no more</h3><p>Cards out of 6, time and matches are the only HUD readouts. Each has its own plate, so a glance tells the whole run.</p></div><div class="pillar"><div class="n">04</div><h3>Dread, then relief</h3><p>Red outlined titles and a maroon fade set the tone for the menu and loss. A teal gradient on the win screen is the one cold, calm moment in the game.</p></div>
+    </div></section>
+
+    <section class="dm-sec" id="screens"><h2>Screens</h2><p class="intro">The mobile screens the prototype is built from, in the order a run goes. Click any image to enlarge it.</p>
+<div class="shots-group reveal"><h3>Menu &amp; start <span>3 states</span></h3><p>The title, Start and Scoreboard over the idle hero. Tapping Start shows the intro, then the camera swings from the 3D view to top-down and the run begins.</p><div class="shots phones three">
+<figure class="shot"><button type="button" data-full="assets/web/screens/Menu.jpg"><img loading="lazy" src="assets/web/screens/Menu.jpg" alt="Menu screen"></button><figcaption><b>Menu.</b> Title, Start and Scoreboard buttons, studio credit.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/Intro.jpg"><img loading="lazy" src="assets/web/screens/Intro.jpg" alt="Intro screen"></button><figcaption><b>Intro.</b> The goal in one line, while the 3D scene waits for a tap.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/HUD.jpg"><img loading="lazy" src="assets/web/screens/HUD.jpg" alt="HUD screen"></button><figcaption><b>HUD.</b> Cards, time, matches and pause on top; two torch actions and the stick below.</figcaption></figure>
+</div></div>
+<div class="shots-group reveal"><h3>Pause, loss &amp; wins <span>4 states</span></h3><p>Pause dims the HUD in red and offers Resume or Quit. The two endings have different moods: escape is cold teal, defeating the Minotaur stays dark red.</p><div class="shots phones">
+<figure class="shot"><button type="button" data-full="assets/web/screens/Pause.jpg"><img loading="lazy" src="assets/web/screens/Pause.jpg" alt="Pause screen"></button><figcaption><b>Pause.</b> The HUD stays visible but dimmed; the pause button becomes a close icon.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/Dead.jpg"><img loading="lazy" src="assets/web/screens/Dead.jpg" alt="Dead screen"></button><figcaption><b>Dead.</b> One line and one action: Retry.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/Win1.jpg"><img loading="lazy" src="assets/web/screens/Win1.jpg" alt="Win · escaped screen"></button><figcaption><b>Win · escaped.</b> Final time, teal gradient, “Awesome!”.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/Win2.jpg"><img loading="lazy" src="assets/web/screens/Win2.jpg" alt="Win · Minotaur screen"></button><figcaption><b>Win · Minotaur.</b> All six cards collected, so Exodia is summoned and the Minotaur is defeated.</figcaption></figure>
+</div></div>
+<div class="shots-group reveal"><h3>Scoreboard <span>1 state</span></h3><p>Position, date and time of the best twelve escapes, in a metal frame over the red menu.</p><div class="shots phones three">
+<figure class="shot"><button type="button" data-full="assets/web/components/scoreboard.png"><img loading="lazy" src="assets/web/components/scoreboard.png" alt="Scoreboard screen"></button><figcaption><b>Scoreboard.</b> Twelve rows, with the latest run highlighted in the prototype.</figcaption></figure>
+</div></div>
+</section>
+<section class="dm-sec" id="kit"><h2>UI kit</h2><p class="intro">The components the screens are assembled from. The prototype rebuilds them in code from these references.</p><div class="kit reveal">
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/button.png"><img loading="lazy" src="assets/web/components/button.png" alt="Metal button"></button></div><div class="body"><h3>Metal button</h3><p>Chamfered steel frame with a brushed face and white serif label. It is the only button style, used for every menu action.</p><div class="used">Used in: menu, pause, dead, win, scoreboard</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/hud-timer.png"><img loading="lazy" src="assets/web/components/hud-timer.png" alt="HUD plates"></button></div><div class="body"><h3>HUD plates</h3><p>Dark plates with a silver rim. Time uses the display face with ring-shaped digits and a red colon; cards and matches use the body face with a small icon.</p><div class="used">Used in: HUD</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/dpad.png"><img loading="lazy" src="assets/web/components/dpad.png" alt="Virtual stick"></button></div><div class="body"><h3>Virtual stick</h3><p>A floating stick with a faceted knob and a red glow. The red arc shows the direction being held: up, right, down or left.</p><div class="used">Used in: HUD</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/scoreboard.png"><img loading="lazy" src="assets/web/components/scoreboard.png" alt="Scoreboard panel"></button></div><div class="body"><h3>Scoreboard panel</h3><p>Charcoal panel with a grey frame and three centred columns. Light serif type keeps twelve rows readable.</p><div class="used">Used in: scoreboard</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/components/hud-cards.png"><img loading="lazy" src="assets/web/components/hud-cards.png" alt="Counters"></button></div><div class="body"><h3>Counters</h3><p>Cards collected (a red card with a target mark) and the match counter with a lit match. The match turns the red of the flame.</p><div class="used">Used in: HUD</div></div></article>
+
+</div><div class="tokens"><div class="token"><i style="--c:#7a0000"></i><span><b>Blood red</b><code>#7A0000 titles, cards</code></span></div><div class="token"><i style="--c:#2d0000"></i><span><b>Maroon</b><code>#2D0000 menu fade</code></span></div><div class="token"><i style="--c:#080303"></i><span><b>Black</b><code>#080303 scene</code></span></div><div class="token"><i style="--c:#8a8a8a"></i><span><b>Steel</b><code>#8A8A8A frames</code></span></div><div class="token"><i style="--c:#19a79a"></i><span><b>Teal</b><code>#19A79A escape</code></span></div></div><p class="intro" style="margin-top:22px"><b>Tilt Prism</b> for titles and the timer, a prismatic display face that looks carved. <b>Texturina</b> for buttons, counters and the scoreboard, a sturdy serif that stays legible at small sizes.</p></section>
+<section class="dm-sec reveal" id="flow"><h2>Flow</h2><p class="intro">How a run moves through the screens. Pause and Retry always return to a fresh or resumed run, never to a dead end.</p><div class="lane">
+<div class="path"><h4>Start a run</h4><div class="chain">
+<div class="node page"><small>Menu</small>Start</div>
+<span class="arrow">→</span>
+<div class="node panel"><small>Intro</small>Tap to start</div>
+<span class="arrow">→</span>
+<div class="node page"><small>HUD</small>Top-down run</div>
+</div></div>
+<div class="path"><h4>End of a run</h4><div class="chain">
+<div class="node toast"><small>HUD</small>Minotaur catches you</div>
+<span class="arrow">→</span>
+<div class="node dialog"><small>Dead</small>Retry →</div>
+<span class="arrow">→</span>
+<div class="node page"><small>HUD</small>New run</div>
+</div></div>
+<div class="path"><h4>Win</h4><div class="chain">
+<div class="node page"><small>HUD</small>Exit reached or 6 cards</div>
+<span class="arrow">→</span>
+<div class="node drawer"><small>Win</small>Awesome!</div>
+<span class="arrow">→</span>
+<div class="node panel"><small>Scoreboard</small>Return</div>
+<span class="arrow">→</span>
+<div class="node page"><small>Menu</small></div>
+</div></div>
+</div></section>
+<section class="dm-sec reveal" id="level"><h2>Level layout</h2><p class="intro">The prototype plays on the labyrinth from the game design document, rebuilt tile by tile from the map. White is corridor and grey is a larger chamber; the entrance is the stub at the bottom and the sunlit exit is the stub at the top. Cards and matches are scattered at random on every run.</p>
+      <div class="shots phones three"><figure class="shot"><button type="button" data-full="assets/web/level/labirinto.png"><img loading="lazy" src="assets/web/level/labirinto.png" alt="Labyrinth map: white corridors, black walls and grey chambers"></button><figcaption><b>Labyrinth map.</b> 34 × 39 tiles, one connected route from entrance to exit.</figcaption></figure></div></section>
+    <section class="dm-sec" id="prototype"><h2>Live prototype</h2><p class="intro">A playable build of the whole interface, not a click-through. A small maze, a torch that lights only what is near, a roaming Minotaur, and all the screens above wired in the order of the flow.</p>
+      <div class="launch one reveal"><a class="launch-card wide" href="prototype/"><div class="imgs"><img loading="lazy" src="assets/web/screens/Menu.jpg" alt=""><img loading="lazy" src="assets/web/screens/HUD.jpg" alt=""><img loading="lazy" src="assets/web/screens/Win1.jpg" alt=""></div><div class="body"><h3>The Dark Maze of Mythos</h3><p>Menu to win, in the browser. Best on a phone or in a narrow window; a screen-jump panel sits beside it on desktop.</p><p>Move through a generated maze with the stick or WASD, light and put out the torch (it costs a match to relight), throw it to lure the Minotaur, collect all six cards or find the green exit.</p><span class="go">Open the prototype →</span></div></a></div>
+      <div class="controls"><b>Controls.</b> Touch: drag the stick, tap the two buttons on the left. Keyboard: WASD or arrows, T torch, G throw / pick up, P or Esc pause. Scores are saved in your browser.</div></section>
+    <section class="dm-sec reveal" id="credits"><h2>Credits &amp; open items</h2><div class="credits"><div class="box"><h3>Credits</h3><p><strong>Game and UI/UX design:</strong> David Smith.<br><strong>Development:</strong> Bruno Poor.<br><strong>Studio:</strong> Harpia Games, made for a game jam with the theme “Monster Escape”.<br>Game rules and story are in the <a class="inline" style="color:var(--gold)" href="../../Game%20Design/dark-maze-of-mythos/">game design document</a>.</p></div><div class="box"><h3>Open items</h3><p>The quick-time event when the Minotaur attacks, the Exodia summon and the side-view camera are in the design but not in this prototype. Hiding places and traps are also left out, and the 1-tile corridors leave no room for the side camera yet.</p></div></div></section>
+  <nav class="nextproj" aria-label="Next project"><a class="btn" href="../../../#work-gui">← Back to all work</a><a class="btn primary" href="../../Asset%20Pack/Unity%20Character%20Selector/"><small>Next project</small> Unity Character Selector →</a></nav>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Designed by hand. Only Atrium was prototyped with AI</span><a href="../../../#work-games">← Back to all work</a></div>
+  </footer>
+
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer"><button type="button" aria-label="Close">×</button><img alt=""><p></p></div>
+  <script>
+    (function () {
+      var lb = document.getElementById('lb'), im = lb.querySelector('img'), cap = lb.querySelector('p');
+      document.querySelectorAll('[data-full]').forEach(function (b) {
+        b.addEventListener('click', function () { im.src = b.getAttribute('data-full'); im.alt = b.querySelector('img').alt; var f = b.closest('figure'); f = f && f.querySelector('figcaption'); var h = b.closest('article'); h = h && h.querySelector('h3'); cap.textContent = f ? f.textContent : (h ? h.textContent : ''); lb.classList.add('open'); });
+      });
+      function close() { lb.classList.remove('open'); }
+      lb.addEventListener('click', close);
+      window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

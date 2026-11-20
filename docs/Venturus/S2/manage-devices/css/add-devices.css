@@ -1,0 +1,155 @@
+/* Manage Units — Add Units wizard content (injected into the proj-wizard body). */
+
+.modal--large {max-width: 80% !important;}
+
+.add-devices {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Left-aligned footer note (type of units being added). `margin-right:auto` pushes it to
+   the left edge while the wizard's footer buttons stay flex-end. Body style, no emphasis. */
+.add-devices__footer-note {
+  margin-right: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-xxs);
+  color: var(--color-glyph-gray);
+}
+.add-devices__footer-note sf-symbol {
+  font-size: 16px;
+  color: var(--color-glyph-gray-secondary);
+}
+
+.add-devices__hint {
+  color: var(--color-glyph-gray-secondary);
+  font-size: var(--font-size-xxs);
+  margin: 0 0 var(--space-m);
+}
+
+/* ── Upload File panel ── */
+.add-devices__upload-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-m);
+  margin-bottom: var(--space-m);
+}
+.add-devices__upload-head .add-devices__hint { margin: 0; }
+
+.add-devices__dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 320px;
+  padding: var(--space-xl);
+  border: 1px dashed var(--color-fill-gray-tertiary);
+  border-radius: var(--space-s);
+  background: var(--color-fill-secondary);
+  cursor: pointer;
+  text-align: center;
+}
+.add-devices__dropzone--dragover {
+  border-color: var(--color-base-accent);
+  background: var(--color-fill-blue-secondary);
+}
+.add-devices__dropzone-icon {
+  font-size: 28px;
+  color: var(--color-glyph-gray-secondary);
+  margin-bottom: var(--space-xs);
+}
+.add-devices__dropzone-title {
+  font-size: var(--font-size-sm);
+  color: var(--color-glyph-gray);
+  margin: 0;
+}
+.add-devices__browse {
+  color: var(--color-base-accent);
+  cursor: pointer;
+}
+.add-devices__dropzone-sub {
+  font-size: var(--font-size-tiny);
+  color: var(--color-glyph-gray-secondary);
+  margin: 0;
+}
+.add-devices__file {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin: var(--space-s) 0 0;
+  font-size: var(--font-size-tiny);
+  color: var(--color-base-accent);
+}
+
+/* ── Add Manually panel ── */
+.add-devices__scope {
+  width: 280px;
+  margin-bottom: var(--space-m);
+}
+.add-devices__textarea {
+  min-height: 220px;
+  resize: vertical;
+}
+
+/* ── Step 2: review ── */
+.add-devices--review {
+  gap: var(--space-m);
+}
+.add-devices__review-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-m);
+}
+.add-devices__search {
+  width: 320px;
+  margin: 0;
+}
+.add-devices__review-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-l);
+}
+.add-devices__summary {
+  font-size: var(--font-size-xxs);
+  color: var(--color-glyph-gray);
+}
+.add-devices__error {
+  color: var(--color-fill-red);
+  font-size: var(--font-size-tiny);
+}
+.add-devices__no-error {
+  color: var(--color-glyph-gray-tertiary);
+}
+
+/* ── Close-confirmation popover (anchored to the wizard's X button) ──
+   Built dynamically by js/add-devices.js (`buildCloseConfirmPopover`). Positioned via JS
+   (`position: fixed`); JS sets `top`/`left` so the popover sits below-right of the X. */
+.add-devices__close-confirm {
+  position: fixed !important;
+  z-index: 1100;
+  width: 28rem;
+}
+.add-devices__close-confirm .popover__title {
+  font-size: var(--font-size-xxs);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+}
+.add-devices__close-confirm .popover__body {
+  font-size: var(--font-size-tiny);
+  color: var(--color-glyph-gray);
+  line-height: 1.4;
+}
+.add-devices__close-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+}
+/* Anchor the arrow under the popover's right edge (toward the X button it points at). */
+.add-devices__close-confirm.popover--bottom .popover__arrow {
+  left: auto;
+  right: var(--space-m);
+}

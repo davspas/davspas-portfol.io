@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Devices </title>
+    <!-- The framework will automatically load all CSS from assets -->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- App container where the canvas will be injected -->
+    <div id="app"></div>
+
+    <!-- Define your page-specific content here -->
+    <script id="page-content" type="text/html">
+        <div class="manage-devices-page">
+            <!-- Info banner: Registered only, shown between the sub-header and the table.
+                 Visibility toggled by js/subheader.js. -->
+            <div class="mu-info-banner" id="groundhogInfoBanner" style="display: none;">
+                <sf-symbol class="mu-info-banner__icon" name="info.circle"></sf-symbol>
+                <span class="mu-info-banner__text">Devices shown are faculty-registered room devices</span>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-container">
+                <table class="table" id="unitsTable">
+                    <thead class="table__head">
+                        <!-- Header row built dynamically per mode by js/grouped-table.js -->
+                    </thead>
+                    <tbody class="table__body" id="tableBody">
+                        <!-- Table rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State: No Campus Selected -->
+            <div id="noSiteState" class="empty-state" style="display: flex;">
+                <sf-symbol class="empty-state__icon" name="tray"></sf-symbol>
+                <h3 class="empty-state__title">No campus selected</h3>
+                <p class="empty-state__subtitle">Select a campus above to view and manage devices</p>
+            </div>
+
+            <!-- Empty State: No Results from Filter -->
+            <div id="emptyFilterState" class="empty-state" style="display: none;">
+                <sf-symbol class="empty-state__icon" name="tray"></sf-symbol>
+                <h3 class="empty-state__title">No devices found</h3>
+                <p class="empty-state__subtitle">Try adjusting your search criteria or filters</p>
+            </div>
+
+            <!-- Loading State: mock request delay (MDS spinner, centered) -->
+            <div id="loadingState" class="empty-state" style="display: none;">
+                <div class="loader">
+                    <div class="loader__spinner loader__spinner--large"></div>
+                    <span class="loader__text loader__text--large">Loading Devices</span>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Add Devices wizard — review-table rows (sibling of page-content, NEVER nested). -->
+    <script id="addReviewRowsTemplate" type="text/x-handlebars-template">
+        {{#each rows}}
+        <tr class="table__row">
+            <td class="table__cell">
+                <label class="checkbox">
+                    <input type="checkbox" class="checkbox__input add-review-checkbox" data-index="{{index}}"{{#if checked}} checked{{/if}}{{#unless valid}} disabled{{/unless}}>
+                    <span class="checkbox__box"></span>
+                </label>
+            </td>
+            <td class="table__cell">{{serial}}</td>
+            <td class="table__cell">{{#if valid}}<span class="add-devices__no-error">–</span>{{else}}<span class="add-devices__error">{{error}}</span>{{/if}}</td>
+        </tr>
+        {{/each}}
+    </script>
+
+    <!-- Load the DaVinci Canvas Framework -->
+    <script src="../runtime/assets/canvas/davinci-canvas.js"></script>
+
+    <!-- Plugins loaded per-prototype (proj-timeline first — proj-wizard depends on it) -->
+    <script src="../runtime/plugins/proj-timeline.js"></script>
+    <script src="../runtime/plugins/proj-wizard.js"></script>
+
+    <!-- Page modules (feature modules first, main.js last) -->
+    <script src="js/data.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/grouped-table.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/add-devices.js"></script>
+    <script src="js/subheader.js"></script>
+    <script src="js/main.js"></script>
+    <script src="../runtime/back-to-portfolio.js" data-href="../../../"></script>
+</body>
+</html>

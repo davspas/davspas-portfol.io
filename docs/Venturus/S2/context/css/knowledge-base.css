@@ -1,0 +1,1093 @@
+/* Knowledge Base — the node graph page.
+   ============================================================================
+   Two surfaces, on purpose:
+
+   1. The GRAPH (toolbar + stage) is a dark, self-contained tool. It does not follow the
+      monalisa design system, because the design system is a light product UI and edges,
+      halos and dimmed nodes need contrast the light palette cannot give. Its palette is
+      declared locally in `.kb` so nothing here leaks into the rest of the workspace.
+
+   2. The DRAWER is light and uses design-system tokens, matching the Requirements/Q&A
+      drawers a reviewer already knows. Its Markdown typography is the shared
+      `.requirements-drawer__markdown` from proj-requirements-panel.css — this file only
+      adds the dark-surface-adjacent pieces (chips, TOC, related cards).
+
+   Layout note: the drawer shifts the page with `body { padding-right }` exactly like the
+   Requirements drawer, so the graph shrinks rather than being covered, and KbGraph.fit()
+   re-frames it. */
+
+.kb-page {
+    /* Graph surface palette. Declared on the PAGE, not on `.kb`, because the page chrome
+       overrides below (the darkened `.content`) need the same values and sit outside the
+       graph wrapper. Still scoped to this page, so nothing leaks into other prototypes. */
+    --kb-page-bg: #0b0e14;
+    --kb-bg: #10141c;
+    --kb-bg-soft: #171c26;
+    --kb-line: #2a3140;
+    --kb-ink: #e7ecf5;
+    --kb-ink-soft: #9aa5b8;
+    --kb-ink-faint: #6c7789;
+    --kb-accent: #818cf8;
+    --kb-flag: #fbbf24;
+    --kb-radius: 1.2rem;
+
+    background: var(--kb-page-bg);
+
+    /* A DEFINITE height, not just the canvas's `min-height: 100vh`. Everything below
+       depends on it: a flex child can only resolve `flex: 1` against a container whose
+       height is known. See the `#app` note below for why this page has to establish that
+       itself. */
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+/* --- Page chrome ------------------------------------------------------------
+   The canvas renders ribbon + top-navbar + sub-header. This page keeps only the
+   ribbon — DaVinci's yellow "you are previewing a prototype" marker, which is
+   workspace-wide and stays as it is. The product navbar is dropped: the graph has its
+   own toolbar, its own back button in the ribbon, and needs the vertical space. */
+
+.kb-page .top-navbar,
+.kb-page .sub-header {
+    display: none;
+}
+
+/* THE canvas layout trap. The canvas injects header + main.content + footer into
+   `<div id="app">`, a plain block div — so `.content { flex: 1 }` (which canvas-styles
+   sets) has no flex container to act on and does nothing at all. Every canvas page gets
+   its content height purely from `.content { min-height: calc(100vh - 17.2rem) }`, where
+   17.2rem is ribbon + navbar + sub-header + footer.
+
+   That constant is wrong here, because this page hides the navbar and sub-header. Making
+   `#app` the flex column it was always assumed to be fixes it without a new magic number:
+   `.content` then takes whatever is left after the ribbon and footer, whatever their
+   heights turn out to be. */
+.kb-page #app {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* Dark page bed, so the stage reads as a panel raised off it rather than a light frame
+   around a dark box. `min-height: 0` drops the canvas's now-wrong calc; the height comes
+   from the flex chain above instead. */
+.kb-page .content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    background: var(--kb-page-bg);
+    padding: var(--space-m);
+}
+
+.kb {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    flex: 1 1 auto;
+    /* A flex item defaults to `min-height: auto`, which refuses to shrink below its
+       content. Without this the graph would push the page taller than the window. */
+    min-height: 0;
+}
+
+/* ============================================================================
+   TOOLBAR
+   ============================================================================ */
+
+.kb-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    flex-wrap: wrap;
+    padding: var(--space-s) var(--space-m);
+    background: var(--kb-bg-soft);
+    border: 1px solid var(--kb-line);
+    border-radius: var(--kb-radius);
+    flex: 0 0 auto;
+}
+
+.kb-toolbar__search {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    flex: 1 1 32rem;
+    min-width: 26rem;
+    position: relative;
+}
+
+.kb-search {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    flex: 1 1 auto;
+    padding: 0 var(--space-s);
+    background: var(--kb-bg);
+    border: 1px solid var(--kb-line);
+    border-radius: 0.8rem;
+}
+
+.kb-search:focus-within {
+    border-color: var(--kb-accent);
+    box-shadow: 0 0 0 3px rgba(129,140,248, 0.15);
+}
+
+.kb-search__icon {
+    display: inline-flex;
+    color: var(--kb-ink-faint);
+    font-size: 1.4rem;
+}
+
+.kb-search__input {
+    flex: 1 1 auto;
+    height: 3.4rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--kb-ink);
+    font-size: var(--font-size-xxs);
+    font-family: inherit;
+}
+
+.kb-search__input::placeholder { color: var(--kb-ink-faint); }
+/* The native clear affordance would sit next to ours. */
+.kb-search__input::-webkit-search-cancel-button { display: none; }
+
+.kb-search__clear {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    background: transparent;
+    color: var(--kb-ink-faint);
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.4rem;
+}
+
+.kb-search__clear:hover { color: var(--kb-ink); }
+
+.kb-search__status {
+    color: var(--kb-ink-soft);
+    font-size: var(--font-size-xxxs);
+    white-space: nowrap;
+}
+
+/* --- Layout switcher --- */
+
+.kb-toolbar__layouts {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.3rem;
+    background: var(--kb-bg);
+    border: 1px solid var(--kb-line);
+    border-radius: 0.9rem;
+}
+
+.kb-layout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 0.6rem;
+    background: transparent;
+    color: var(--kb-ink-soft);
+    font-family: inherit;
+    font-size: var(--font-size-xxxs);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.kb-layout-btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--kb-ink); }
+
+.kb-layout-btn--active,
+.kb-layout-btn--active:hover {
+    background: var(--kb-accent);
+    color: #0b1017;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* --- View controls --- */
+
+.kb-toolbar__view {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    margin-left: auto;
+}
+
+.kb-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--kb-ink-soft);
+    font-size: var(--font-size-xxxs);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.kb-switch input { accent-color: var(--kb-accent); cursor: pointer; }
+
+.kb-legend-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--kb-line);
+    border-radius: 0.9rem;
+    background: var(--kb-bg);
+    color: var(--kb-ink-soft);
+    font-family: inherit;
+    font-size: var(--font-size-xxxs);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.kb-legend-toggle:hover { color: var(--kb-ink); border-color: var(--kb-ink-faint); }
+
+.kb-legend-toggle[aria-pressed="true"] {
+    background: rgba(129,140,248, 0.16);
+    border-color: var(--kb-accent);
+    color: var(--kb-accent);
+}
+
+.kb-zoom {
+    display: flex;
+    gap: 0.2rem;
+    padding: 0.3rem;
+    background: var(--kb-bg);
+    border: 1px solid var(--kb-line);
+    border-radius: 0.9rem;
+}
+
+.kb-zoom__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: none;
+    border-radius: 0.6rem;
+    background: transparent;
+    color: var(--kb-ink-soft);
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+.kb-zoom__btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--kb-ink); }
+
+/* ============================================================================
+   STAGE
+   ============================================================================ */
+
+.kb-stage {
+    position: relative;
+    flex: 1 1 auto;
+    /* Takes the leftover height and no more — see the note on `.kb-page .content`. A
+       min-height here is what pushed the page past the viewport on a short window. */
+    min-height: 0;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(129,140,248, 0.10), transparent 45%),
+        radial-gradient(circle at 78% 82%, rgba(191, 90, 242, 0.09), transparent 45%),
+        var(--kb-bg);
+    border: 1px solid var(--kb-line);
+    border-radius: var(--kb-radius);
+}
+
+.kb-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+    touch-action: none;
+}
+
+.kb-svg--panning { cursor: grabbing; }
+
+/* --- Edges --- */
+
+.kb-edge {
+    stroke: #3b4557;
+    stroke-linecap: round;
+    opacity: 0.85;
+    transition: stroke 0.15s ease, opacity 0.15s ease;
+}
+
+.kb-edge--selected { stroke: var(--kb-accent); opacity: 0.9; }
+.kb-edge--lit { stroke: var(--kb-accent); opacity: 1; }
+.kb-edge--dim { opacity: 0.16; }
+.kb-edge--filtered { opacity: 0.07; }
+.kb-edge--hidden { display: none; }
+
+/* In the External systems layout the topic-to-topic edges are context, not the subject. */
+.kb-edges--muted { opacity: 0.22; }
+
+/* --- System connectors (External systems layout) --- */
+
+.kb-syslink {
+    stroke: var(--kb-accent);
+    stroke-width: 1;
+    stroke-dasharray: 3 6;
+    opacity: 0.3;
+}
+
+.kb-syslink--primary { stroke-width: 2; opacity: 0.5; stroke-dasharray: 5 5; }
+.kb-syslink--lit { opacity: 1; stroke-width: 2.5; }
+.kb-syslink--filtered { opacity: 0.06; }
+.kb-syslink--hidden { display: none; }
+
+/* --- Nodes --- */
+
+.kb-node {
+    cursor: pointer;
+    transition: opacity 0.18s ease;
+}
+
+.kb-node:focus { outline: none; }
+
+.kb-node__dot {
+    stroke: rgba(8, 11, 16, 0.85);
+    stroke-width: 2;
+    transition: stroke 0.15s ease;
+}
+
+.kb-node__halo {
+    fill: none;
+    stroke: var(--kb-accent);
+    stroke-width: 2;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.kb-node:hover .kb-node__halo,
+.kb-node:focus-visible .kb-node__halo { opacity: 0.55; }
+.kb-node--selected .kb-node__halo { opacity: 1; }
+.kb-node--adjacent .kb-node__halo { opacity: 0.3; }
+
+.kb-node__label {
+    fill: var(--kb-ink);
+    font-size: 1.25rem;
+    font-family: inherit;
+    text-anchor: middle;
+    pointer-events: none;
+    paint-order: stroke;
+    stroke: rgba(10, 13, 20, 0.85);
+    stroke-width: 4px;
+    stroke-linejoin: round;
+}
+
+.kb-node--selected .kb-node__label { fill: #fff; font-weight: var(--font-weight-semibold); }
+
+.kb-node__flag circle { fill: var(--kb-flag); }
+.kb-node__flag text {
+    fill: #2b2200;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-anchor: middle;
+    font-family: inherit;
+}
+
+.kb-node__badge circle { fill: var(--kb-accent); }
+.kb-node__badge text {
+    fill: #06202b;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-anchor: middle;
+    font-family: inherit;
+}
+
+.kb-node--dim { opacity: 0.28; }
+.kb-node--filtered { opacity: 0.12; }
+.kb-node--hidden { display: none; }
+.kb-node--dragging { cursor: grabbing; }
+
+/* --- Lanes (hierarchy / platform / maturity) --- */
+
+.kb-lane__bg {
+    fill: rgba(255, 255, 255, 0.028);
+    stroke: var(--kb-line);
+    stroke-dasharray: 4 6;
+}
+
+.kb-lane--empty .kb-lane__bg { opacity: 0.4; }
+
+.kb-lane__title {
+    fill: var(--kb-ink);
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-semibold);
+    font-family: inherit;
+}
+
+.kb-lane__sub {
+    fill: var(--kb-ink-faint);
+    font-size: 1.2rem;
+    font-family: inherit;
+}
+
+/* --- System hubs (external systems layout) --- */
+
+.kb-hub__ring {
+    fill: rgba(129,140,248, 0.10);
+    stroke: var(--kb-accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 5;
+}
+
+.kb-hub__label {
+    fill: var(--kb-accent);
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-semibold);
+    text-anchor: middle;
+    font-family: inherit;
+}
+
+/* ============================================================================
+   FLOATING SHARED-DOCUMENT BUTTONS
+   ============================================================================ */
+
+/* A horizontal strip across the top of the stage: these four documents are the entry
+   points to the knowledge base, so they read as a header for the graph rather than as
+   controls tucked into a corner. */
+.kb-floating {
+    position: absolute;
+    top: var(--space-m);
+    left: var(--space-m);
+    right: var(--space-m);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    z-index: 3;
+}
+
+.kb-floating__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem 1.4rem;
+    border: 1px solid var(--kb-line);
+    border-radius: 999px;
+    background: rgba(23, 28, 38, 0.92);
+    backdrop-filter: blur(8px);
+    color: var(--kb-ink);
+    font-family: inherit;
+    font-size: var(--font-size-xxs);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.kb-floating__btn sf-symbol { color: var(--kb-accent); }
+
+.kb-floating__btn:hover {
+    border-color: var(--kb-accent);
+    transform: translateY(-2px);
+}
+
+.kb-floating__btn--active {
+    background: var(--kb-accent);
+    border-color: var(--kb-accent);
+    color: #0b1017;
+    font-weight: var(--font-weight-semibold);
+}
+
+.kb-floating__btn--active sf-symbol { color: #0b1017; }
+
+/* ============================================================================
+   LEGEND
+   ============================================================================ */
+
+.kb-legend {
+    position: absolute;
+    right: var(--space-m);
+    bottom: var(--space-m);
+    max-width: 52rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: var(--space-m) var(--space-ml) var(--space-m) var(--space-m);
+    background: rgba(23, 28, 38, 0.94);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--kb-line);
+    border-radius: var(--kb-radius);
+    color: var(--kb-ink-soft);
+    font-size: var(--font-size-xxs);
+    line-height: 1.5;
+    z-index: 3;
+    /* The legend is a reading aid sitting over a draggable canvas: it must not swallow
+       pan gestures. Only its dismiss button opts back into pointer events. */
+    pointer-events: none;
+}
+
+.kb-legend[hidden] { display: none; }
+
+.kb-legend__close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--kb-ink-faint);
+    font-size: 1.3rem;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.kb-legend__close:hover { background: rgba(255, 255, 255, 0.08); color: var(--kb-ink); }
+
+.kb-legend__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.4rem;
+}
+
+.kb-legend__row--hint {
+    color: var(--kb-ink);
+    gap: 0.6rem;
+    align-items: baseline;
+    padding-right: 2rem;   /* clear the dismiss button */
+}
+
+.kb-legend__row--meta {
+    color: var(--kb-ink-faint);
+    font-size: var(--font-size-xxxs);
+}
+
+.kb-legend__item { display: inline-flex; align-items: center; gap: 0.6rem; }
+
+.kb-legend__dot {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.kb-legend__flag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: var(--kb-flag);
+    color: #2b2200;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* ============================================================================
+   TOOLTIP
+   ============================================================================ */
+
+.kb-tooltip {
+    position: absolute;
+    z-index: 4;
+    max-width: 32rem;
+    padding: var(--space-s) var(--space-m);
+    background: rgba(12, 16, 23, 0.97);
+    border: 1px solid var(--kb-line);
+    border-radius: 0.9rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    color: var(--kb-ink);
+    font-size: var(--font-size-xxxs);
+    pointer-events: none;
+}
+
+.kb-tooltip__title {
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: 0.2rem;
+}
+
+.kb-tooltip__meta {
+    color: var(--kb-ink-faint);
+    margin-bottom: 0.6rem;
+}
+
+.kb-tooltip__summary { color: var(--kb-ink-soft); line-height: 1.45; }
+
+.kb-tooltip__flag {
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--kb-line);
+    color: var(--kb-flag);
+    line-height: 1.4;
+}
+
+/* ============================================================================
+   SEARCH RESULTS
+   ============================================================================ */
+
+.kb-results {
+    position: absolute;
+    /* Clears the floating shared-document strip along the top of the stage. */
+    top: 6.4rem;
+    left: var(--space-m);
+    width: min(52rem, calc(100% - 2 * var(--space-m)));
+    max-height: 60%;
+    overflow-y: auto;
+    z-index: 5;
+    padding: var(--space-s);
+    background: rgba(14, 18, 26, 0.98);
+    border: 1px solid var(--kb-line);
+    border-radius: var(--kb-radius);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.kb-results__group + .kb-results__group { margin-top: var(--space-s); }
+
+.kb-results__group-title {
+    padding: 0.4rem 0.8rem;
+    color: var(--kb-ink-faint);
+    font-size: var(--font-size-xxxs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.kb-result {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 0.8rem;
+    background: transparent;
+    color: var(--kb-ink);
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.kb-result:hover { background: rgba(255, 255, 255, 0.06); }
+
+.kb-result__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+}
+
+.kb-result__title { font-size: var(--font-size-xxs); font-weight: var(--font-weight-semibold); }
+
+.kb-result__count {
+    flex: 0 0 auto;
+    padding: 0.1rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(129,140,248, 0.18);
+    color: var(--kb-accent);
+    font-size: var(--font-size-xxxs);
+}
+
+.kb-result__meta,
+.kb-result__snippet {
+    display: block;
+    font-size: var(--font-size-xxxs);
+    line-height: 1.5;
+}
+
+.kb-result__meta { color: var(--kb-ink-faint); margin: 0.2rem 0; }
+.kb-result__snippet { color: var(--kb-ink-soft); }
+.kb-result__snippet mark { background: rgba(255, 214, 10, 0.28); color: #fff; border-radius: 0.2rem; }
+
+.kb-results__empty,
+.kb-results__more {
+    padding: var(--space-s) 0.8rem;
+    color: var(--kb-ink-faint);
+    font-size: var(--font-size-xxxs);
+}
+
+/* ============================================================================
+   LOAD / ERROR STATES
+   ============================================================================ */
+
+.kb-state {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-s);
+    padding: var(--space-xl);
+    text-align: center;
+    background: var(--kb-bg);
+    color: var(--kb-ink-soft);
+    font-size: var(--font-size-xxs);
+}
+
+.kb-state[hidden] { display: none; }
+
+.kb-state__spinner {
+    width: 3.2rem;
+    height: 3.2rem;
+    border: 3px solid var(--kb-line);
+    border-top-color: var(--kb-accent);
+    border-radius: 50%;
+    animation: kb-spin 0.9s linear infinite;
+}
+
+@keyframes kb-spin { to { transform: rotate(360deg); } }
+
+.kb-state__icon { font-size: 3.2rem; color: var(--kb-flag); }
+.kb-state__text { margin: 0; color: var(--kb-ink); }
+.kb-state__hint { margin: 0; max-width: 52rem; color: var(--kb-ink-faint); font-size: var(--font-size-xxxs); line-height: 1.6; }
+.kb-state__hint code { color: var(--kb-accent); }
+
+/* ============================================================================
+   DRAWER — light, design-system surface (mirrors the Requirements drawer)
+   ============================================================================ */
+
+body.has-kb-drawer-open {
+    padding-right: var(--kb-drawer-width, 560px);
+}
+
+/* `body { transition: padding-right }` is declared by proj-requirements-panel.css and
+   applies to every canvas page, so this only has to cancel it while dragging. */
+body.is-resizing-kb-drawer {
+    transition: none;
+    cursor: col-resize;
+    user-select: none;
+}
+
+.kb-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    z-index: 1000;             /* above the canvas sticky header (999) */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-fill);
+    border-left: 2px solid var(--color-glyph-gray);
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+    transition: width 0.2s ease-in-out;
+}
+
+body.has-kb-drawer-open .kb-drawer { width: var(--kb-drawer-width, 560px); }
+body.is-resizing-kb-drawer .kb-drawer { transition: none; }
+
+.kb-drawer__resizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 2;
+    background: transparent;
+}
+
+.kb-drawer__resizer:hover,
+body.is-resizing-kb-drawer .kb-drawer__resizer {
+    background: var(--color-base-accent);
+    opacity: 0.4;
+}
+
+.kb-drawer__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding: var(--space-m) var(--space-mp);
+    border-bottom: 1px solid var(--color-fill-gray-tertiary);
+    flex: 0 0 auto;
+}
+
+.kb-drawer__heading { min-width: 0; }
+
+.kb-drawer__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--color-base-accent);
+    font-family: inherit;
+    font-size: var(--font-size-xxxs);
+    cursor: pointer;
+}
+
+.kb-drawer__back[hidden] { display: none; }
+
+.kb-drawer__title {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+.kb-drawer__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+}
+
+.kb-drawer__chips:empty { display: none; }
+
+.kb-drawer__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    flex: 0 0 auto;
+}
+
+.kb-drawer__icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: none;
+    background: transparent;
+    color: var(--color-glyph-gray-secondary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    border-radius: 0.6rem;
+}
+
+.kb-drawer__icon-btn:hover {
+    background: var(--color-fill-secondary);
+    color: var(--color-glyph-gray);
+}
+
+.kb-drawer__hits {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.2rem;
+    border: 1px solid var(--color-fill-gray-tertiary);
+    border-radius: 0.7rem;
+}
+
+.kb-drawer__hits[hidden] { display: none; }
+
+.kb-drawer__hit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: none;
+    background: transparent;
+    color: var(--color-glyph-gray-secondary);
+    cursor: pointer;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+}
+
+.kb-drawer__hit-btn:hover { background: var(--color-fill-secondary); }
+
+.kb-drawer__hit-count {
+    min-width: 5rem;
+    text-align: center;
+    color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-xxxs);
+}
+
+.kb-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-mp);
+}
+
+.kb-drawer__lede {
+    margin: 0 0 var(--space-m) 0;
+    padding: var(--space-s) var(--space-m);
+    background: var(--color-fill-secondary);
+    border-radius: 0.8rem;
+    color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-xxs);
+    line-height: var(--line-height-default);
+}
+
+/* Search hits inside the rendered document. */
+.kb-drawer__markdown mark.kb-hit {
+    background: rgba(255, 214, 10, 0.45);
+    border-radius: 0.2rem;
+}
+
+.kb-drawer__markdown mark.kb-hit--current {
+    background: var(--color-fill-orange);
+    color: var(--color-glyph-gray);
+    box-shadow: 0 0 0 2px var(--color-fill-orange);
+}
+
+/* Links to other KB documents select the node instead of navigating. */
+.kb-drawer__markdown a.kb-link--topic {
+    text-decoration-style: dotted;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+}
+
+/* --- Chips --- */
+
+.kb-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.8rem;
+    border-radius: 999px;
+    background: var(--color-fill-secondary);
+    color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-xxxs);
+    white-space: nowrap;
+}
+
+.kb-chip--status-shipped { background: var(--color-fill-green-secondary); color: var(--color-glyph-green); }
+.kb-chip--status-partial { background: var(--color-fill-orange-secondary); color: var(--color-glyph-orange); }
+.kb-chip--status-design-only { background: var(--color-fill-blue-secondary); color: var(--color-glyph-blue); }
+.kb-chip--flagged { background: var(--color-fill-yellow); color: var(--color-glyph-gray); cursor: help; }
+
+.kb-chip--link {
+    background: var(--color-fill-blue-secondary);
+    color: var(--color-glyph-blue);
+    text-decoration: none;
+}
+
+.kb-chip--link:hover { background: var(--color-fill-blue-tertiary); }
+
+/* --- Table of contents --- */
+
+.kb-toc {
+    margin-bottom: var(--space-m);
+    padding: var(--space-s) var(--space-m);
+    border: 1px solid var(--color-fill-gray-tertiary);
+    border-radius: 0.8rem;
+}
+
+.kb-toc__label {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-xxxs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.kb-toc__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.8rem;
+}
+
+.kb-toc__link {
+    padding: 0.2rem 0.6rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--color-fill-secondary);
+    color: var(--color-base-accent);
+    font-family: inherit;
+    font-size: var(--font-size-xxxs);
+    cursor: pointer;
+}
+
+.kb-toc__link:hover { background: var(--color-fill-blue-secondary); }
+
+/* --- Related content cards --- */
+
+.kb-related {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-m);
+    border-top: 2px solid var(--color-fill-gray-tertiary);
+}
+
+.kb-related__title {
+    margin: 0 0 var(--space-m) 0;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+.kb-related__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+    gap: var(--space-s);
+}
+
+.kb-card {
+    display: block;
+    position: relative;
+    text-align: left;
+    padding: var(--space-m);
+    padding-left: var(--space-ml);
+    border: 1px solid var(--color-fill-gray-tertiary);
+    border-radius: 0.9rem;
+    background: var(--color-fill);
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.kb-card:hover {
+    border-color: var(--color-base-accent);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
+
+.kb-card--external { cursor: default; background: var(--color-fill-secondary); }
+.kb-card--external:hover { border-color: var(--color-fill-gray-tertiary); box-shadow: none; }
+
+.kb-card__dot {
+    position: absolute;
+    top: var(--space-m);
+    left: var(--space-s);
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+}
+
+.kb-card__dot--external { background: var(--color-glyph-gray-quaternary); }
+
+.kb-card__title,
+.kb-card__meta,
+.kb-card__summary,
+.kb-card__relation {
+    display: block;
+}
+
+.kb-card__title {
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+}
+
+.kb-card__meta {
+    margin: 0.2rem 0 0.6rem 0;
+    font-size: var(--font-size-xxxs);
+    color: var(--color-glyph-gray-secondary);
+}
+
+.kb-card__summary {
+    font-size: var(--font-size-xxxs);
+    line-height: 1.55;
+    color: var(--color-glyph-gray-secondary);
+}
+
+.kb-card__relation {
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--color-fill-gray-tertiary);
+    font-size: var(--font-size-xxxs);
+    line-height: 1.55;
+    color: var(--color-glyph-gray);
+}
+
+/* ============================================================================
+   NARROW VIEWPORTS
+   ============================================================================ */
+
+@media (max-width: 1200px) {
+    .kb-toolbar__view { margin-left: 0; }
+    /* The legend is not force-hidden here: it is user-controlled from the toolbar, and a
+       media query that beat that toggle would make the button look broken. */
+}

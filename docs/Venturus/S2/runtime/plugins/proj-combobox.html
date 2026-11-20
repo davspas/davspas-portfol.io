@@ -1,0 +1,134 @@
+<!-- PROJ-COMBOBOX -->
+<!-- Searchable, optionally creatable dropdown that ENHANCES a native <select>. -->
+
+<!-- METADATA
+Component: Combobox
+Category: Forms
+Complexity: High
+
+WHAT IT IS:
+A drop-in upgrade for a native <select>: same markup, same value, same `change`
+event — plus a type-to-filter search field and an optional "add a value that
+isn't in the list" affordance. Use it when an option list is long enough that
+scanning it is work, or when the set of valid values is not closed.
+
+WHY NOT MDS SELECT:
+MDS Stylized Select (`form-select--stylized`) renders a custom panel but has
+NO search and NO create. `proj-multi-select` searches but is multi-select with
+tags and cannot create. This fills the single-select + search + create gap and
+does not replace either — reach for MDS Stylized Select first whenever a plain
+closed list is enough.
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- The element MUST be a real <select> carrying `proj-combobox` alongside its
+  normal MDS classes. The <select> stays the source of truth for the value.
+- Keep the placeholder <option value=""> first, as with any MDS select — it is
+  excluded from the searchable list and used as the empty display state.
+- Do NOT combine with `form-select--stylized`; the two both take over the
+  dropdown and would fight. Sizes (`form-select--table-cell`) compose fine.
+- No init call and no container div: the plugin binds ONE delegated listener at
+  the document level, so selects that are rendered, re-rendered, or destroyed
+  later work with no registration step.
+
+VARIANTS / FLAVORS:
+- Search only (default): filter and pick from the existing <option>s
+- Creatable: add `data-combobox-create="true"` to allow committing a value that
+  is not in the list
+- Sizes / states: inherits everything from MDS select (`form-select--table-cell`,
+  `form-select--invalid`, `disabled`) — a disabled select never opens
+
+JAVASCRIPT INTEGRATION:
+- Selecting an option sets `select.value` and dispatches a bubbling `change`,
+  exactly like MDS Stylized Select — existing `change` listeners keep working
+  with no modification.
+- Creating a value appends a new <option> to THAT select, selects it, then
+  dispatches `proj-combobox:create` (bubbling, `detail: { value, label, select }`)
+  BEFORE the `change`. Listen for it to persist the new value into whatever
+  option list feeds the other selects — the plugin only knows about this one.
+- Escape / outside click close without committing. Enter commits the highlighted
+  row. Arrow keys move the highlight.
+- Reading the value is just `select.value`. There is no plugin state to query.
+- The plugin FOCUSES the <select> before opening its panel. Suppressing the
+  native dropdown requires `preventDefault()` on mousedown, which also suppresses
+  focus, so it is restored deliberately — a host page listening for `focusin` on
+  the control (a table that promotes a row to editing on focus) still
+  gets its signal.
+
+MDS INTERACTIONS THIS WORKS AROUND (do not "simplify" these away):
+- `monalisa.min.js` hides EVERY `.popover` on any document click that did not
+  land inside a `.popover`, a `[id$="-trigger"]`, or a `.popover__trigger`. The
+  panel is a `.popover` and the trigger is a bare <select>, matching none of
+  those — so the panel opened and vanished in one gesture. The open therefore
+  happens on `click` in the CAPTURE phase with `stopPropagation()`: MDS's handler
+  is on `document` too, and `stopPropagation()` does not stop same-node listeners,
+  so bubble-phase timing would depend on script load order. Clicks inside the
+  panel need no help — MDS exempts them.
+- A plain `focus()` scrolls its target into view, and that scroll dismissed the
+  panel. All focusing goes through an internal `preventScroll` helper.
+- Dismiss-on-scroll tests whether the TRIGGER MOVED rather than where the scroll
+  came from: scroll events arrive from the panel's own list, from `scrollIntoView`,
+  and from focus, and a document scroll reports `document` as its target, so no
+  containment check can filter them.
+
+COMMON MISTAKES TO AVOID:
+[X] Adding `form-select--stylized` as well — both hijack the dropdown
+[X] Calling an init function per instance — there isn't one, and isn't needed
+[X] Building the option list in JS and leaving the <select> empty — the <option>s
+    ARE the data source
+[X] Listening only for `proj-combobox:create` and forgetting `change`, or the
+    reverse — a create fires both, a plain pick fires only `change`
+[X] Assuming a created value is persisted anywhere. It lives on that one <select>
+    until the page re-renders it from its own data.
+
+DEPENDENCY: proj-popover-editor (positioning, viewport clamping, arrow,
+outside-click and Escape dismissal). Both are loaded by plugins.js; popover
+editor is listed first.
+
+COMPANION FILES:
+- CSS: proj-combobox.css
+- JS: proj-combobox.js
+
+When to prompt: if a designer asks for a "searchable dropdown", ask whether the
+user may also add values that aren't in the list — that is the difference between
+the default and the creatable variant. If they only need a closed list with no
+search, use MDS Stylized Select instead.
+Variants: search-only, creatable
+-->
+
+<!-- DEFAULT: SEARCH ONLY (small size, label outside) -->
+<div class="form-group">
+  <label class="form-label" for="combo-owner">Owner</label>
+  <select id="combo-owner" class="form-select proj-combobox">
+    <option value="">Select an owner…</option>
+    <option value="mokafor">Maya Okafor</option>
+    <option value="dreyes">Daniel Reyes</option>
+    <option value="praman">Priya Raman</option>
+  </select>
+</div>
+
+<!-- CREATABLE — the user may commit a value that isn't listed -->
+<div class="form-group">
+  <label class="form-label" for="combo-type">Data type</label>
+  <select id="combo-type" class="form-select proj-combobox" data-combobox-create="true">
+    <option value="">Select a type…</option>
+    <option value="varchar">varchar</option>
+    <option value="int">int</option>
+    <option value="MAC">MAC</option>
+  </select>
+</div>
+
+<!-- TABLE CELL — compact, inside an inline row editor -->
+<select class="form-select form-select--table-cell proj-combobox" data-combobox-create="true"
+        data-field="type" aria-label="Data type">
+  <option value="varchar">varchar</option>
+  <option value="int">int</option>
+  <option value="MAC">MAC</option>
+</select>
+
+<!-- Persisting a created value (the plugin cannot do this for you) -->
+<!--
+document.getElementById('myTable').addEventListener('proj-combobox:create', function(e) {
+  // e.detail = { value, label, select }
+  MyData.addDataType(e.detail.value);   // so every OTHER select offers it too
+});
+-->

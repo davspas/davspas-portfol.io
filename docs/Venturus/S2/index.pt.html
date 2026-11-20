@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Venturus · S2 — Protótipos do Atrium</title>
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../assets/site.css">
+  <link rel="stylesheet" href="../S1/assets/s1-page.css">
+</head>
+<body class="s1-page s2-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../index.pt.html"><i></i>David Smith</a>
+      <nav aria-label="Seções">
+        <a href="../../index.pt.html#work-ux">← Trabalhos</a>
+        <a href="#prototypes">Protótipos</a>
+        <a href="#process">Processo</a>
+        <a href="#flow">Fluxo de UI</a>
+        <a href="#patterns">Padrões</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Idioma">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt" aria-current="true">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.pt.html">Início</a> / <a href="../../index.pt.html#work">Trabalhos</a> / <a href="../../index.pt.html#work-ux">UX de software</a> / Atrium</nav>
+    <div class="wrap">
+    <section class="s1-hero" style="grid-template-columns:1fr">
+      <div>
+        <div class="eyebrow">Venturus · S2 · Protótipos ao vivo</div>
+        <h1>Atrium: <span class="gold">gerenciando o parque audiovisual de um campus.</span></h1>
+        <p class="steam">Uma ferramenta web que a equipe central de TI de uma universidade usa para gerenciar a infraestrutura audiovisual e de controle de salas de cada auditório, laboratório e biblioteca: projetores, microfones, leitores de porta e painéis de sala. Três protótipos funcionais dos fluxos principais, totalmente clicáveis com dados de exemplo, cada um com requisitos, casos de erro, perguntas em aberto e histórico de mudanças.</p>
+        <ul class="facts-row"><li><b>Protótipos</b>3</li><li><b>Plataforma</b>Web</li><li><b>Papéis</b>Campus IT Admin · Viewer</li><li><b>Meu papel</b>Design UX/UI na Venturus</li></ul>
+        <div class="btn-row" style="margin-top:26px"><a class="btn gold" href="manage-infrastructure/">Ver protótipo →</a><a class="btn" href="context/">Ler a visão geral do sistema</a><a class="btn" href="../../index.pt.html#work-ux">Voltar a todos os trabalhos</a></div>
+      </div>
+    </section>
+    <aside class="tldr" aria-label="Em resumo"><h2>Em resumo</h2><p><strong>O insight:</strong> o Atrium grava em um sistema de registro externo que pode recusar uma mudança, então a recusa é desenhada como um estado de primeira classe. Ações bloqueadas continuam visíveis e se explicam em um toast ou tooltip.</p><p><strong>O que você pode abrir:</strong> três protótipos clicáveis (infraestrutura, dispositivos, recuperação de dispositivos), cada um com requisitos, casos de erro e uma base de conhecimento. Desenhei trabalhando com stakeholders e usuários de um cliente internacional.</p><p><strong>Como usei IA:</strong> só neste projeto, para prototipar, documentar e organizar. Todos os outros projetos deste site foram feitos à mão.</p></aside>
+
+    <section class="s1-sec reveal" id="prototypes"><h2>Protótipos</h2><p class="intro">Cada protótipo cobre um dos três trabalhos que as pessoas fazem no Atrium: ver e alterar a infraestrutura, registrar e aposentar dispositivos e recuperar dispositivos com defeito.</p><div class="launch"><a class="launch-card" href="manage-infrastructure/"><div class="body"><h3>Gerenciar infraestrutura</h3><div class="role">Para Admins de TI do campus</div><p>Um lugar para ver e alterar a infraestrutura: uma árvore Campus → Building Controllers ao lado de um painel de detalhes contextual, um menu Gerenciar e um drawer unificado de Criar nó. O problema de design: a configuração desce do campus, e os admins precisam sempre ver de onde vem um valor e por que uma mudança está bloqueada.</p><span class="go">Abrir protótipo →</span></div></a><a class="launch-card" href="manage-devices/"><div class="body"><h3>Gerenciar dispositivos</h3><div class="role">Para Técnicos de AV, Coordenadores de faculdade e Admins de TI</div><p>Uma tabela dos dispositivos, alternando entre as visões de gerenciados por TI e registrados por faculdades do mesmo conjunto de dados, com um assistente Adicionar dispositivos e um modelo de status (Ativo, Pronto, Aposentado). O problema de design: dois tipos de dispositivo compartilham quase todas as telas, mas diferem em quem os registra e de onde vêm os dados.</p><span class="go">Abrir protótipo →</span></div></a><a class="launch-card" href="device-recovery/"><div class="body"><h3>Recuperação de dispositivos</h3><div class="role">Para Admins de TI do campus</div><p>Torna visível o registro de recuperação por dispositivo, com uma válvula de segurança para forçar novo registro e uma aba Roll out para enviar uma versão de recuperação. O problema de design: o status precisa ser confiável de relance, e as ações manuais precisam ser claras sem convidar ao mau uso.</p><span class="go">Abrir protótipo →</span></div></a></div></section>
+
+    <section class="s1-sec reveal" id="brief"><h2>Como as peças se encaixam</h2><div class="states"><div class="box"><h3>Borda e hub</h3><p>Cada prédio tem um Building Controller (servidor de borda) que fala com seus dispositivos e busca horários e políticas de sala em um Campus Hub; um Timetable Relay espelha arquivos para os controladores.</p></div><div class="box"><h3>A recusa é uma questão de design</h3><p>Quase tudo que o Atrium grava vai para um sistema de registro externo (o Asset Registry), que pode recusar uma mudança; por isso quase toda ação bloqueada se explica em um toast ou tooltip.</p></div><div class="box"><h3>Papéis e visões</h3><p>Um seletor na barra alterna o app entre dispositivos gerenciados por TI e registrados por faculdades, e duas personas, Admin de TI do campus e Visualizador, mostram como as permissões mudam a interface.</p></div></div><p style="margin-top:18px"><a class="go" href="context/" style="color:var(--gold);font-weight:600;text-decoration:none">Contexto &amp; base de conhecimento: visão geral do sistema, glossário, papéis e notas por módulo →</a></p></section>
+    </div>
+
+    <div class="wrap study">
+
+      <!-- DESIGN PROCESS -->
+      <section class="sec reveal" id="process">
+        <h2>Processo de design</h2>
+        <p class="intro">O Atrium foi desenhado do jeito que trabalho em produtos de clientes: partir do que pessoas e sistemas realmente precisam, escrever para que possa ser questionado, prototipar até as bordas aparecerem e deixar um rastro a partir do qual a engenharia possa construir. Todos os artefatos abaixo estão nesta pasta.</p>
+        <ol class="steps">
+          <li>
+            <h3>Entender</h3>
+            <p>Sessões de discovery com stakeholders, gravadas e transcritas, mais os sistemas entre os quais o Atrium precisa se encaixar (Campus Hub, Asset Registry, Room Booking Manager…).</p>
+            <div class="artefacts"><code>Transcript-4.vtt</code><code>system-overview.md</code></div>
+          </li>
+          <li>
+            <h3>Definir</h3>
+            <p>Requisitos versionados com IDs rastreáveis (<code>FR-…</code>, <code>UX-…</code>), um glossário compartilhado, além dos papéis e controles de permissão.</p>
+            <div class="artefacts"><code>requirements.md</code><code>glossary.md</code><code>roles-permissions.md</code></div>
+          </li>
+          <li>
+            <h3>Prototipar</h3>
+            <p>Protótipos clicáveis, em memória, sobre um design system compartilhado e componentes de plugin, construídos por funcionalidade para que cada um possa ser alterado com segurança.</p>
+            <div class="artefacts"><code>manage-infrastructure/</code><code>manage-devices/</code><code>device-recovery/</code></div>
+          </li>
+          <li>
+            <h3>Testar os limites</h3>
+            <p>Estados de erro e de bloqueio ocultos, estados de demonstração alternáveis (<code>?state=fsm-down</code>), perguntas em aberto e achados de revisão heurística.</p>
+            <div class="artefacts"><code>error-cases.md</code><code>qa.md</code><code>findings.json</code></div>
+          </li>
+          <li>
+            <h3>Fazer o handoff</h3>
+            <p>Um documento-roteador por protótipo, um changelog datado e uma base de conhecimento que reúne todas as fontes em um documento por tópico.</p>
+            <div class="artefacts"><code>PROTOTYPE.md</code><code>changelog.json</code><code>module-knowledge-base/</code></div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- FLOW -->
+      <section class="sec reveal" id="flow">
+        <h2>Fluxo de UI</h2>
+        <p class="intro">Como todas as telas se conectam, extraído da base de conhecimento. Primeiro o mapa do sistema, depois os caminhos dentro de cada protótipo. Cada caixa é uma superfície real dos protótipos.</p>
+
+        <div class="map">
+          <svg viewBox="0 0 1040 350" role="img" aria-label="Mapa do sistema: o seletor de persona leva ao Canvas shell e à navegação, que abre Manage Infrastructure, Manage Devices e Device Recovery. Device Recovery se conecta a Manage Devices.">
+            <defs>
+              <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#a4a3b8"/></marker>
+              <marker id="ahc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#22d3ee"/></marker>
+              <marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6f6e85"/></marker>
+            </defs>
+            <rect class="box" x="20" y="135" width="200" height="80" rx="14"/>
+            <text x="120" y="168" text-anchor="middle" font-size="15" font-weight="600">Seletor de persona</text>
+            <text class="sub" x="120" y="190" text-anchor="middle">substitui o login,</text>
+            <text class="sub" x="120" y="206" text-anchor="middle">papéis e acessos de faculdade</text>
+
+            <rect class="box" x="270" y="135" width="210" height="80" rx="14"/>
+            <text x="375" y="168" text-anchor="middle" font-size="15" font-weight="600">Canvas shell</text>
+            <text class="sub" x="375" y="190" text-anchor="middle">menu Manage · sub-header</text>
+            <text class="sub" x="375" y="206" text-anchor="middle">alternador Registered / Managed</text>
+
+            <rect class="box mod" x="560" y="25" width="230" height="66" rx="14"/>
+            <text x="675" y="55" text-anchor="middle" font-size="15" font-weight="600">Manage Infrastructure</text>
+            <text class="sub" x="675" y="75" text-anchor="middle">árvore · painel · drawer</text>
+
+            <rect class="box mod" x="560" y="138" width="230" height="66" rx="14"/>
+            <text x="675" y="168" text-anchor="middle" font-size="15" font-weight="600">Manage Devices</text>
+            <text class="sub" x="675" y="188" text-anchor="middle">tabela · wizard Add · Retire</text>
+
+            <rect class="box mod" x="560" y="251" width="230" height="66" rx="14"/>
+            <text x="675" y="281" text-anchor="middle" font-size="15" font-weight="600">Device Recovery</text>
+            <text class="sub" x="675" y="301" text-anchor="middle">Registration · Roll out</text>
+
+            <path class="edge" d="M220 175H268" marker-end="url(#ah)"/>
+            <path class="edge" d="M480 160C520 160 520 58 558 58" marker-end="url(#ah)"/>
+            <path class="edge" d="M480 175H558" marker-end="url(#ah)"/>
+            <path class="edge" d="M480 190C520 190 520 284 558 284" marker-end="url(#ah)"/>
+
+            <path class="edge hot" d="M790 270C880 270 880 188 792 188" marker-end="url(#ahc)"/>
+            <path class="edge dash" d="M790 156C990 156 990 305 792 305" marker-end="url(#ahd)"/>
+            <circle class="badge" cx="845" cy="229" r="12"/><text class="badge-t" x="845" y="233">1</text>
+            <circle class="badge" cx="943" cy="231" r="12"/><text class="badge-t" x="943" y="235">2</text>
+          </svg>
+          <ul class="map-notes">
+            <li><b>1</b>Device Recovery → Manage Devices: a ação de linha <em>See in Manage Devices</em> o abre em uma nova aba, com campus, tipo e asset tag já preenchidos.</li>
+            <li><b>2</b>Manage Devices → Device Recovery: a página já aceita um deep link (<code>?station=&amp;unit=</code>), mas nenhum ponto de entrada na UI o chama ainda.</li>
+            <li>O alternador Registered / Managed reinicia a visão no Manage Devices e fica fixo em Managed no Device Recovery. O Manage Infrastructure o ignora.</li>
+            <li>Os papéis escondem itens de menu inteiros: a persona Viewer nunca vê o Manage Infrastructure.</li>
+          </ul>
+        </div>
+
+        <h3 class="subhead">Dentro de cada protótipo</h3>
+        <div class="legend" aria-label="Legenda">
+          <span class="page"><i></i>Página / visão</span><span class="panel"><i></i>Painel</span><span class="menu"><i></i>Menu</span>
+          <span class="drawer"><i></i>Drawer</span><span class="wizard"><i></i>Wizard</span><span class="dialog"><i></i>Diálogo</span>
+          <span class="popover"><i></i>Popover de confirmação</span><span class="toast"><i></i>Toast</span><span class="external"><i></i>Fora do Atrium</span>
+        </div>
+
+        <!-- Infrastructure -->
+        <div class="lane">
+          <header><h3>Manage Infrastructure</h3><a href="manage-infrastructure/">Abrir protótipo →</a></header>
+          <p>Uma árvore de Campus → Building Controllers, com Campus Hubs e Timetable Relays como seções. Selecionar um nó abre seu painel de detalhes. Tudo o que cria, move ou remove um nó passa por um único drawer.</p>
+
+          <div class="path"><h4>Navegar &amp; editar</h4>
+            <div class="chain">
+              <div class="node page"><small>Sub-header</small>Multisseleção de campus<em>revela filtro de faculdades + busca</em></div><span class="arrow">→</span>
+              <div class="node page"><small>Visão</small>Árvore<em>nada selecionado ao carregar</em></div><span class="arrow">→</span>
+              <div class="node panel"><small>Painel</small>Painel de detalhes<em>editar hostname, associações, Registry Sync</em></div><span class="arrow">→</span>
+              <div class="node popover"><small>Proteção</small>Save / Discard<em>até um campo ser alterado</em></div><span class="arrow">→</span>
+              <div class="node toast"><small>Toast</small>Resultado da cascata<em>consequências listadas juntas</em></div>
+            </div>
+          </div>
+
+          <div class="path"><h4>Criar · Desarquivar · Mover (um drawer, três modos)</h4>
+            <div class="chain">
+              <div class="branch">
+                <div class="node page"><small>Sub-header</small>Create Node</div>
+                <div class="node menu"><small>Menu Manage</small>Create · Unarchive · Move</div>
+              </div><span class="arrow">→</span>
+              <div class="node drawer"><small>Drawer</small>Building Controller · Campus Hub · Relay<em>título e campo Campus se adaptam à entrada</em></div><span class="arrow">→</span>
+              <div class="node popover"><small>Proteção</small>Fechar com alterações?</div><span class="arrow alt">ou</span>
+              <div class="node toast"><small>Toast</small>Criado / movido / restaurado</div>
+            </div>
+          </div>
+
+          <div class="path"><h4>Remover (reversível)</h4>
+            <div class="chain">
+              <div class="node menu"><small>Menu Manage</small>Archive<em>listado, mas desabilitado, motivo no tooltip</em></div><span class="arrow">→</span>
+              <div class="node page"><small>Visão</small>Nós arquivados<em>ocultos até “Show Archived Nodes”</em></div><span class="arrow">→</span>
+              <div class="node drawer"><small>Drawer</small>Unarchive, de volta ao campus de origem</div>
+            </div>
+          </div>
+
+          <div class="path"><h4>Lote &amp; exportação</h4>
+            <div class="chain">
+              <div class="node page"><small>Visão</small>Seleção em lote sempre ativa</div><span class="arrow">→</span>
+              <div class="node panel"><small>Painel</small>Mudança de Registry Sync</div><span class="arrow">→</span>
+              <div class="node external"><small>Asset Registry</small>aceita ou recusa</div><span class="arrow">→</span>
+              <div class="node toast"><small>Toast</small>Sucessos e recusas reportados em separado</div>
+              <span class="arrow alt">e</span>
+              <div class="node menu"><small>Sub-header</small>Export (CSV)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Devices -->
+        <div class="lane">
+          <header><h3>Manage Devices</h3><a href="manage-devices/">Abrir protótipo →</a></header>
+          <p>Uma tabela, restrita a um campus, mostrando dispositivos gerenciados pela TI ou cadastrados pelas faculdades. O cadastro é um wizard de dois passos em que conflitos de existência só são informados na hora de confirmar.</p>
+
+          <div class="path"><h4>Navegar</h4>
+            <div class="chain">
+              <div class="node page"><small>Sub-header</small>Cascader de campus</div><span class="arrow">→</span>
+              <div class="node page"><small>Visão</small>Tabela de dispositivos<em>busca, filtros de coluna, chips de status</em></div><span class="arrow">→</span>
+              <div class="node menu"><small>Menu</small>Export<em>Template ou Data</em></div>
+            </div>
+          </div>
+
+          <div class="path"><h4>Adicionar dispositivos</h4>
+            <div class="chain">
+              <div class="node page"><small>Sub-header</small>Add</div><span class="arrow">→</span>
+              <div class="node wizard"><small>Wizard · passo 1</small>Informar asset tags<em>Upload XLSX ou Add manually</em></div><span class="arrow">→</span>
+              <div class="node wizard"><small>Wizard · passo 2</small>Revisar<em>só erros de formato; “Show errors only”</em></div><span class="arrow">→</span>
+              <div class="node external"><small>Asset Registry</small>existência checada ao confirmar</div><span class="arrow">→</span>
+              <div class="branch">
+                <div class="node toast"><small>Toast</small>N Devices added</div>
+                <div class="node toast" style="--c:#f87171"><small>Toast de erro</small>Already in use: wizard segue aberto com o restante</div>
+              </div>
+              <span class="arrow alt">Esc / X</span>
+              <div class="node popover"><small>Proteção</small>Discard changes?<em>Keep editing / Discard</em></div>
+            </div>
+          </div>
+
+          <div class="path"><h4>Aposentar</h4>
+            <div class="chain">
+              <div class="node page"><small>Visão</small>Marcar linhas</div><span class="arrow">→</span>
+              <div class="node page"><small>Sub-header</small>Retire<em>habilitado quando elegível</em></div><span class="arrow">→</span>
+              <div class="node page"><small>Visão</small>Status vira RETIRED</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recovery -->
+        <div class="lane">
+          <header><h3>Device Recovery</h3><a href="device-recovery/">Abrir protótipo →</a></header>
+          <p>Duas abas sobre os mesmos dispositivos: Registration (cada dispositivo está registrado, e posso dar um empurrão?) e Roll out (enviar uma versão de recuperação, agora ou agendada).</p>
+
+          <div class="path"><h4>Aba Registration</h4>
+            <div class="chain">
+              <div class="node page"><small>Sub-header</small>Seletores de campus + faculdade</div><span class="arrow">→</span>
+              <div class="node page"><small>Visão</small>Cards contadores<em>funcionam como filtros</em></div><span class="arrow">→</span>
+              <div class="node page"><small>Visão</small>Tabela agrupada<em>Faculty › Campus, ordenar, filtrar</em></div><span class="arrow">→</span>
+              <div class="node popover"><small>Confirmação</small>Send Recovery Request?<em>lista dispositivos, ignora os na fila</em></div><span class="arrow">→</span>
+              <div class="node external"><small>Room Booking Manager</small>Re-register → Queued → Registered</div><span class="arrow">→</span>
+              <div class="node toast"><small>Toast</small>Enviado / ignorado / rejeitado</div>
+            </div>
+          </div>
+
+          <div class="path"><h4>Aba Roll out</h4>
+            <div class="chain">
+              <div class="node page"><small>Faixa de versão</small>Última versão · seletor</div><span class="arrow">→</span>
+              <div class="node wizard"><small>Wizard</small>Select version → Select devices → Proceed</div><span class="arrow">→</span>
+              <div class="node dialog"><small>Diálogo</small>Resumo do roll-out<em>agendamento opcional</em></div><span class="arrow">→</span>
+              <div class="node page"><small>Visão</small>Rolling out → Rolled out<em>ou Scheduled</em></div><span class="arrow">→</span>
+              <div class="node dialog"><small>Diálogos</small>Status · History · Scheduled roll-outs<em>Retry ou Cancel schedule</em></div>
+            </div>
+          </div>
+
+          <div class="path"><h4>Importar uma versão &amp; vínculo entre telas</h4>
+            <div class="chain">
+              <div class="node page"><small>Faixa de versão</small>Import version</div><span class="arrow">→</span>
+              <div class="node wizard"><small>Diálogo · 2 passos</small>Upload &amp; validate → Review &amp; import</div><span class="arrow">→</span>
+              <div class="node toast"><small>Toast</small>Nova última versão</div>
+              <span class="arrow alt">ação de linha</span>
+              <div class="node page"><small>Nova aba</small>See in Manage Devices</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PATTERNS -->
+      <section class="sec reveal" id="patterns">
+        <h2>Padrões de design</h2>
+        <p class="intro">Padrões que se repetem nos três protótipos. Identificá-los cedo é o que permitiu a um módulo reaproveitar as decisões de outro, e o que mantém o produto com cara de uma só ferramenta.</p>
+
+        <h3 class="subhead" style="margin-top:0">Padrões de interação</h3>
+        <div class="patterns">
+          <article class="pattern"><div class="kind">Fluxo</div><h3>Selecionar, revisar, confirmar</h3><p>Reunir uma seleção, mostrar o que vai mudar, então confirmar e reportar sucessos e conflitos separadamente. Um conflito mantém o fluxo aberto no que ainda precisa de atenção.</p><p class="where"><b>Usado em</b> Wizard Add Devices · Send Recovery Request · Roll out · Registry Sync em lote</p></article>
+          <article class="pattern"><div class="kind">Feedback</div><h3>Ações bloqueadas continuam visíveis</h3><p>Uma ação não permitida continua listada, mas inerte, com o motivo em um tooltip. As pessoas entendem o porquê em vez de se perguntar aonde a ação foi parar.</p><p class="where"><b>Usado em</b> Bloqueios de Archive e Move · Send Recovery Request · Retire</p></article>
+          <article class="pattern"><div class="kind">Feedback</div><h3>Sucesso parcial é um resultado</h3><p>Quando uma ação em lote dá certo em alguns itens e é recusada em outros, o toast diz quais, em vez de se reduzir a passou ou falhou.</p><p class="where"><b>Usado em</b> Cascata de Registry Sync · Add Devices · Send Recovery Request</p></article>
+          <article class="pattern"><div class="kind">Segurança</div><h3>Proteção contra alterações não salvas</h3><p>Os painéis mantêm Save e Discard até um campo diferir do seu estado original. Fechar um drawer ou wizard com dados pendentes pergunta se a pessoa quer continuar editando ou descartar.</p><p class="where"><b>Usado em</b> Painel de detalhes · Drawer Create Node · Wizard Add Devices</p></article>
+          <article class="pattern"><div class="kind">Segurança</div><h3>Remoção reversível</h3><p>Nada é apagado de forma permanente. Itens arquivados ficam ocultos por padrão, são revelados por um alternador e podem ser restaurados à origem.</p><p class="where"><b>Usado em</b> Archive / Unarchive · Retire</p></article>
+          <article class="pattern"><div class="kind">Estrutura</div><h3>Master–detail</h3><p>Escolher algo em uma lista ou árvore e editá-lo em um painel lateral. Criação e remoção ficam em um menu Manage separado, para que o painel trate de uma coisa só.</p><p class="where"><b>Usado em</b> Árvore + painel de detalhes · Diálogo de histórico de roll-out</p></article>
+          <article class="pattern"><div class="kind">Estrutura</div><h3>Uma superfície, vários modos</h3><p>Um único drawer atende Create, Unarchive e Move, adaptando título, campos e valores padrão ao lugar de onde foi aberto.</p><p class="where"><b>Usado em</b> Drawer Create Node</p></article>
+          <article class="pattern"><div class="kind">Estrutura</div><h3>Wizard em etapas</h3><p>Tarefas longas e sujeitas a erro são divididas em etapas nomeadas, cujo estado acompanha os dados, com rodapé compartilhado e saída clara.</p><p class="where"><b>Usado em</b> Add Devices · Roll out · Import version</p></article>
+          <article class="pattern"><div class="kind">Navegação</div><h3>Escopo no sub-header</h3><p>Os seletores de campus e faculdade ficam no sub-header e filtram tudo abaixo. Controles dependentes ficam ocultos até existir um escopo, e os estados vazios dizem o que escolher.</p><p class="where"><b>Usado em</b> Os três protótipos</p></article>
+          <article class="pattern"><div class="kind">Dados</div><h3>Cards contadores como filtros</h3><p>Os números-resumo funcionam também como botões de alternância: uma contagem é também o atalho para as linhas por trás dela.</p><p class="where"><b>Usado em</b> Registration do Device Recovery</p></article>
+          <article class="pattern"><div class="kind">Dados</div><h3>Tabela agrupada e ordenável</h3><p>Linhas de grupo recolhíveis, ordenação no cabeçalho que alterna crescente/decrescente/desligada, filtros de coluna com um Clear Filters visível e linhas esmaecidas para itens não elegíveis.</p><p class="where"><b>Usado em</b> Manage Devices · Device Recovery</p></article>
+          <article class="pattern"><div class="kind">Feedback</div><h3>Erros de campo inline</h3><p>Toda mensagem de validação vem de um só componente e de um só formato: “Enter &lt;Label&gt;”, “Enter a valid &lt;Label&gt;”, “&lt;Label&gt; already in use”.</p><p class="where"><b>Usado em</b> Create Node · Add Devices · Import</p></article>
+        </div>
+
+        <h3 class="subhead">Padrões de construção</h3>
+        <div class="patterns">
+          <article class="pattern"><div class="kind">Arquitetura</div><h3>Shell + conteúdo da página</h3><p>Cada protótipo é uma página estática dentro de um Canvas shell compartilhado. Navegação e sub-headers vêm de um único arquivo JSON, então os três módulos se comportam como um só app.</p><p class="where"><b>Onde</b> <code>runtime/canvas-navigation-data.json</code></p></article>
+          <article class="pattern"><div class="kind">Arquitetura</div><h3>Módulos por funcionalidade</h3><p>JavaScript e CSS puros divididos por funcionalidade (renderização da árvore, modo em lote, busca, wizard…), cada um com um mapa curto do que faz e de quem depende.</p><p class="where"><b>Onde</b> <code>js/</code> · <code>css/</code> · <code>maps/</code></p></article>
+          <article class="pattern"><div class="kind">Componentes</div><h3>Design system + plugins do projeto</h3><p>Um design system baseado em tokens fornece o básico. Os plugins do projeto acrescentam o que falta (cascader, multisseleção, wizard, timeline, alternador de fonte) e são reutilizados entre módulos.</p><p class="where"><b>Onde</b> <code>runtime/plugins/</code></p></article>
+          <article class="pattern"><div class="kind">Testabilidade</div><h3>Estados de demonstração</h3><p>Falhas e casos extremos podem ser alternados por query string (serviço fora do ar, falha parcial, somente leitura), para que cada um possa ser demonstrado e revisado sob demanda.</p><p class="where"><b>Onde</b> <code>?state=fsm-down</code> · <code>partial</code> · <code>readonly</code></p></article>
+          <article class="pattern"><div class="kind">Acesso</div><h3>Permissões guiadas por persona</h3><p>Um seletor de persona substitui o login. Os papéis escondem, desabilitam ou travam elementos por seletor, deixando o comportamento das permissões visível sem um backend.</p><p class="where"><b>Onde</b> <code>runtime/davinci-users.json</code></p></article>
+          <article class="pattern"><div class="kind">Documentação</div><h3>Documentação dentro do produto</h3><p>Requisitos, casos de erro, perguntas em aberto, changelog e a base de conhecimento abrem pela faixa do próprio protótipo, então quem revisa nunca sai do contexto.</p><p class="where"><b>Onde</b> <code>proj-requirements-panel</code> · <code>proj-kb-launcher</code></p></article>
+        </div>
+      </section>
+
+    </div>
+  <nav class="nextproj" aria-label="Próximo projeto"><a class="btn" href="../../index.pt.html#work-ux">← Voltar a todos os trabalhos</a><a class="btn primary" href="../../Daitan/AML/index.pt.html"><small>Próximo projeto</small> Design system do AML →</a></nav>
+  </main>
+
+  <aside class="wrap nda" aria-label="Aviso"><p><strong>Aviso.</strong> Para cumprir um NDA, o propósito deste sistema e todos os seus nomes, objetos e dados foram alterados. Este projeto foi feito para uma grande empresa de tecnologia americana.</p></aside>
+
+  <footer>
+    <div class="wrap">
+      <span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Feito à mão. Só o Atrium foi prototipado com IA</span>
+      <a href="../../index.pt.html#work-ux">← Voltar a todos os trabalhos</a>
+    </div>
+  </footer>
+
+  <script src="../../assets/site.js"></script>
+</body>
+</html>

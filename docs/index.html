@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>David Smith — UX &amp; Game Design Portfolio</title>
+  <meta name="description" content="Portfolio of David Smith: UI/UX design for software and games, and game design. Senior UX Designer at Venturus, Game Designer at Harpia Games.">
+  <meta property="og:title" content="David Smith — UX &amp; Game Design Portfolio">
+  <meta property="og:description" content="Portfolio of David Smith: UI/UX design for software and games, and game design. Senior UX Designer at Venturus, Game Designer at Harpia Games.">
+  <meta property="og:type" content="website">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="index.html"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="#work">Work</a>
+        <a href="About%20me/">About</a>
+        <a class="cta" href="#contact">Contact me</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en" aria-current="true">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero hero-home wrap" id="top">
+      <div class="eyebrow">UX &amp; Game Designer · Open to roles</div>
+      <h1>Designing experiences,<br><span class="grad">from products to play.</span></h1>
+      <p class="lead">10+ years turning complex systems into interfaces people can use, and games people want to play. I'm David, a Senior UX Designer at Venturus and a Game Designer at Harpia Games.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="#work" data-filter="ux">See software UX work →</a>
+        <a class="btn primary" href="#work" data-filter="games">See game work →</a>
+      </div>
+      <ul class="proof"><li><b>10+ years</b> in UX/UI</li><li><b>40k wishlists</b> · Dark Island on Steam</li><li><b>Design systems</b> adopted by clients</li></ul>
+    </section>
+
+    <section class="wrap home-sec" id="featured" aria-labelledby="featured-h">
+      <h2 id="featured-h">Featured work</h2>
+      <p class="sub">Three projects, one for each kind of role I am looking for.</p>
+      <ul class="featured"><li><a class="tile" style="--a:#8b5cf6" href="Venturus/S2/"><span class="thumb"><img loading="lazy" src="Venturus/S2/assets/web/atrium-infrastructure.jpg" alt=""></span><span class="tbody"><span class="kind">Software UX · live prototypes</span><strong>Atrium: campus AV control</strong><span class="desc">Blocked actions explain themselves. A control plane for campus infrastructure, with three clickable prototypes and the requirements behind them.</span><span class="meta">Venturus · S2 · prototyped with AI</span></span><span class="arr" aria-hidden="true">→</span></a></li><li><a class="tile" style="--a:#e3c61a" href="Games/UI/Dark%20Island%20-%20Faded%20Memories/"><span class="thumb"><img loading="lazy" src="Games/UI/Dark%20Island%20-%20Faded%20Memories/assets/web/brand/banner.jpg" alt=""></span><span class="tbody"><span class="kind">Game UI · on Steam · 40k wishlists</span><strong>Dark Island: Faded Memories</strong><span class="desc">All the UI and the logo for a dark fantasy game: controller-first, silver frames, gold selection.</span><span class="meta">Harpia Games · PC</span></span><span class="arr" aria-hidden="true">→</span></a></li><li><a class="tile" style="--a:#ff9a62" href="Games/Game%20Design/wild-saga/"><span class="thumb"><img loading="lazy" src="Games/Game%20Design/wild-saga/images/demo-scenario-island.png" alt=""></span><span class="tbody"><span class="kind">Game design · co-op</span><strong>Wild Saga</strong><span class="desc">A cooperative 2.5D adventure for ages 10+, where cooperation is the core mechanic, from puzzles to counter-attack combat.</span><span class="meta">PUC Campinas · team of 4</span></span><span class="arr" aria-hidden="true">→</span></a></li></ul>
+    </section>
+
+    <section class="wrap home-sec" id="work" aria-labelledby="work-h">
+      <h2 id="work-h">All work</h2>
+      <p class="sub">Filter by the kind of work. Employer and period are on each card.</p>
+      <div class="filters" role="group" aria-label="All work"><button type="button" data-f="all" aria-pressed="true">All</button><button type="button" data-f="ux" aria-pressed="false">Software UX</button><button type="button" data-f="gui" aria-pressed="false">Game UI</button><button type="button" data-f="gd" aria-pressed="false">Game design</button></div>
+      <div class="threads" id="threads"><p class="thread" data-for="ux" hidden>Design the states, not only the screens. Errors, confirmations and statuses are designed as screens of their own, with the rules written next to them, and everything is organised so an engineer can build from it.</p><p class="thread" data-for="gui" hidden>A look of its own for each game, controls that shape the layout, and every state (pause, loss, win, locked, not enough currency) designed as a screen.</p><p class="thread" data-for="gd" hidden>Two very different scales, a two-semester team game and a game jam, with the same habit: a clear core idea, then the systems that serve it.</p></div>
+      <ul class="workgrid" id="workgrid"><li data-cat="ux"><a class="tile" style="--a:#8b5cf6" href="Venturus/S2/"><span class="thumb"><img loading="lazy" src="Venturus/S2/assets/web/atrium-infrastructure.jpg" alt=""></span><span class="tbody"><span class="kind">Software UX</span><strong>Atrium: campus AV control</strong><span class="desc">Blocked actions explain themselves. A control tool for campus infrastructure, with three clickable prototypes.</span><span class="meta">Venturus · S2 · prototyped with AI</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="ux"><a class="tile" style="--a:#b197fc" href="Venturus/S2/manage-infrastructure/"><span class="thumb"><img loading="lazy" src="Venturus/S2/assets/web/atrium-infrastructure.jpg" alt=""></span><span class="tbody"><span class="kind">Live prototype</span><strong>Atrium: try it</strong><span class="desc">Open the prototypes: infrastructure, devices and device recovery.</span><span class="meta">Venturus · S2</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="ux"><a class="tile" style="--a:#fa9000" href="Daitan/AML/"><span class="thumb"><img loading="lazy" src="Daitan/AML/assets/web/colors-primary.jpg" alt=""></span><span class="tbody"><span class="kind">Design system</span><strong>AML design system</strong><span class="desc">Built in one week by 3 designers, fully adopted by the client, praised by developers for its handoff.</span><span class="meta">Daitan · 2018–2019</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="ux"><a class="tile" style="--a:#7cc233" href="Venturus/S1/Compal/"><span class="thumb"><img loading="lazy" src="Venturus/S1/Compal/assets/web/access.jpg" alt=""></span><span class="tbody"><span class="kind">Software UX</span><strong>Compal · New Shopfloor</strong><span class="desc">Sign-in flows, menus, and users and permissions for a factory system.</span><span class="meta">Venturus · S1 · 2020–2021</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="ux"><a class="tile" style="--a:#ee4452" href="Venturus/S1/HSF/"><span class="thumb"><img loading="lazy" src="Venturus/S1/HSF/assets/web/card-late.jpg" alt=""></span><span class="tbody"><span class="kind">Mobile UX</span><strong>HSF · Financial Services</strong><span class="desc">A before and after redesign of the consortium card, with a slider.</span><span class="meta">Venturus · S1 · 2021</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="ux"><a class="tile" style="--a:#fa9000" href="Daitan/"><span class="thumb glyph"><b>D</b></span><span class="tbody"><span class="kind">Earlier work</span><strong>Daitan projects</strong><span class="desc">Call center, airport biometrics, bank SMS, learning tool and telecom interfaces.</span><span class="meta">Daitan · 2017–2020</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="gui"><a class="tile" style="--a:#e3c61a" href="Games/UI/Dark%20Island%20-%20Faded%20Memories/"><span class="thumb"><img loading="lazy" src="Games/UI/Dark%20Island%20-%20Faded%20Memories/assets/web/brand/banner.jpg" alt=""></span><span class="tbody"><span class="kind">Game UI</span><strong>Dark Island: Faded Memories</strong><span class="desc">Controller-first UI, kit and logo for a dark fantasy game on Steam. 40k wishlists.</span><span class="meta">Harpia Games · PC</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="gui"><a class="tile" style="--a:#5be3cf" href="Games/UI/Tiny%20Heroes/"><span class="thumb"><img loading="lazy" src="Games/UI/Tiny%20Heroes/assets/web/ref/start.jpg" alt=""></span><span class="tbody"><span class="kind">Game UI</span><strong>Tiny Heroes</strong><span class="desc">A hero hub, wireframes to final screens and a portrait animation.</span><span class="meta">Harpia Games · Mobile</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="gui"><a class="tile" style="--a:#e5484d" href="Games/UI/The%20Dark%20Maze%20of%20Mythos/"><span class="thumb"><img loading="lazy" src="Games/UI/The%20Dark%20Maze%20of%20Mythos/assets/web/screens/Menu.jpg" alt=""></span><span class="tbody"><span class="kind">Game UI · playable</span><strong>The Dark Maze of Mythos</strong><span class="desc">Mobile screens, UI kit and a playable prototype of the maze game.</span><span class="meta">Harpia Games · Android</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="gui"><a class="tile" style="--a:#f0566f" href="Games/Asset%20Pack/Unity%20Character%20Selector/"><span class="thumb"><img loading="lazy" src="Games/Asset%20Pack/Unity%20Character%20Selector/assets/web/screens/desktop-2.jpg" alt=""></span><span class="tbody"><span class="kind">Editor tool</span><strong>Unity Character Selector</strong><span class="desc">A Unity editor panel to view, animate and recolour characters.</span><span class="meta">Unity tool</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="gd"><a class="tile" style="--a:#ff9a62" href="Games/Game%20Design/wild-saga/"><span class="thumb"><img loading="lazy" src="Games/Game%20Design/wild-saga/images/demo-scenario-island.png" alt=""></span><span class="tbody"><span class="kind">Game design doc</span><strong>Wild Saga</strong><span class="desc">A co-op 2.5D adventure where cooperation is the mechanic, with a candid post mortem.</span><span class="meta">PUC Campinas · team of 4</span></span><span class="arr" aria-hidden="true">→</span></a></li><li data-cat="gd"><a class="tile" style="--a:#e5484d" href="Games/Game%20Design/dark-maze-of-mythos/"><span class="thumb"><img loading="lazy" src="Games/Game%20Design/dark-maze-of-mythos/images/Labirinto.png" alt=""></span><span class="tbody"><span class="kind">Game design doc</span><strong>The Dark Maze of Mythos</strong><span class="desc">A mobile horror maze: your torch is both your eyes and your beacon.</span><span class="meta">Harpia Games · game jam</span></span><span class="arr" aria-hidden="true">→</span></a></li></ul>
+    </section>
+
+    <section class="wrap home-sec" id="about" aria-labelledby="about-h">
+      <div class="about-mini">
+        <div>
+          <h2 id="about-h">About me</h2>
+          <p>UX designer and game designer. I design interfaces and systems for both: ten-plus years from web and editorial design at Chuva Inc., through design systems at Daitan, to product design at Venturus, plus game design at Harpia Games since 2019.</p>
+          <p>Based in Campinas, Brazil. Portuguese (native), English (full professional).</p>
+          <ul class="tags"><li>Career timeline</li><li>Education</li><li>Skills</li><li>Certifications</li></ul>
+          <p style="margin-top:20px"><a class="go card-go" href="About%20me/">Read the full profile <span>→</span></a></p>
+        </div>
+        <div class="contact-card" id="contact">
+          <h2>Let's talk</h2>
+          <p>Looking for a UI/UX designer for software or games, or a game designer? Send me a message.</p>
+          <div class="btn-row">
+            <a class="btn primary" href="mailto:davidsmith577@gmail.com">Email me</a>
+            <a class="btn" href="https://www.linkedin.com/in/davspas" target="_blank" rel="noopener">LinkedIn ↗</a>
+            <a class="btn" href="About%20me/Profile.pdf">Download CV (PDF)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© David Simonsen Paes de Almeida Smith</span>
+      <span>Designed by hand. Only Atrium was prototyped with AI · <button class="linkbtn" type="button" data-copy-ai title="Copies a markdown summary of this portfolio for use in an AI chat">✦ Copy for AI</button></span>
+      <span>Campinas, São Paulo, Brazil</span>
+    </div>
+  </footer>
+
+  <script src="assets/site.js"></script>
+  <script src="assets/home.js"></script>
+</body>
+</html>

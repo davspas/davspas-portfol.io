@@ -1,0 +1,45 @@
+{
+  "siteTitle": "Atrium",
+  "siteLogo": "",
+  "homeUrl": "manage-infrastructure",
+  "navbarRight": {
+    "htmlContent": "<div class=\"proj-source-toggle\" data-active=\"groundhog\"><button type=\"button\" class=\"proj-source-toggle__option proj-source-toggle__option--active\" data-source=\"groundhog\">Registered</button><button type=\"button\" class=\"proj-source-toggle__option\" data-source=\"kodiak\">Managed</button></div>",
+    "position": "before-user"
+  },
+  "mainNavigation": [
+    {
+      "label": "Infrastructure",
+      "url": "manage-infrastructure",
+      "subHeader": {
+        "htmlContent": "<h2 class=\"sub-header__subtitle\">Manage Infrastructure</h2><div class=\"sub-header__controls\"><div id=\"siteSelect\" class=\"sub-header__site-select\"></div><div class=\"sub-header__divider\" id=\"subheaderScopeDivider\" style=\"display: none;\"></div><div id=\"projectSelect\" class=\"sub-header__project-select\" style=\"display: none;\"></div><div class=\"tree-search-wrapper sub-header__tree-search\" id=\"subheaderSearchWrapper\" style=\"display: none;\"><input type=\"text\" id=\"treeSearch\" class=\"form-input search-input-with-icon\" placeholder=\"Search by hostname, ID, faculty ...\" autocomplete=\"off\" disabled><span class=\"search-input-icon\"><sf-symbol name=\"magnifyingglass\" style=\"font-size:16px\"></sf-symbol></span><div class=\"tree-search__results\" id=\"searchResults\"></div></div><div class=\"sub-header__actions\" id=\"subheaderActions\" style=\"display: none;\"><button class=\"btn btn--secondary btn--small\" id=\"exportBtn\"><sf-symbol name=\"square.and.arrow.up\" style=\"font-size:14px; vertical-align: -0.15em; margin-right: 0.4rem\"></sf-symbol>Export</button><button class=\"btn btn--primary btn--small\" id=\"newServerBtn\"><sf-symbol name=\"plus.circle\" style=\"font-size:14px; color:var(--color-fill); vertical-align: -0.15em; margin-right: 0.4rem\"></sf-symbol>Create Node</button></div></div>"
+      },
+      "hifiPrototypes": {}
+    },
+    {
+      "label": "Devices",
+      "url": "manage-devices",
+      "subHeader": {
+        "htmlContent": "<h2 class=\"sub-header__subtitle\">Manage Devices</h2><div class=\"sub-header__controls\"><div id=\"unitsCascader\" class=\"proj-cascader\"></div><div class=\"form-group\" id=\"searchGroup\" style=\"margin-bottom:0;display:none\"><input type=\"text\" id=\"searchInput\" class=\"form-input\" placeholder=\"Search Devices by Asset Tag\" style=\"width:280px\"></div><div class=\"mu-filter-status\" id=\"filterStatus\" style=\"display:none;align-items:center;gap:var(--space-xs)\"><span class=\"mu-filter-status__label\" style=\"color:var(--color-glyph-gray-secondary);font-size:var(--font-size-xxs)\">Results are filtered</span><button id=\"clearFiltersBtn\" class=\"btn btn--link btn--small\"><sf-symbol name=\"xmark\"></sf-symbol> Clear Filters</button></div><div class=\"sub-header__actions\"><div class=\"dropdown-wrapper\"><button id=\"exportBtn\" class=\"btn btn--secondary btn--small\"><sf-symbol name=\"square.and.arrow.up\"></sf-symbol> Export <sf-symbol name=\"chevron.down\"></sf-symbol></button><div id=\"exportDropdown\" class=\"dropdown-menu\" style=\"display:none\"><button class=\"dropdown-menu__item\" data-export=\"template\">Template</button><button class=\"dropdown-menu__item\" id=\"exportDataBtn\" data-export=\"data\" disabled>Data</button></div></div><div class=\"button-group\" id=\"approveRejectGroup\" style=\"display:none\"><button id=\"approveBtn\" class=\"btn btn--secondary btn--small\" disabled><sf-symbol name=\"hand.thumbsup\"></sf-symbol> Approve</button><button id=\"rejectBtn\" class=\"btn btn--secondary btn--small\" disabled><sf-symbol name=\"hand.thumbsdown\"></sf-symbol> Reject</button></div><button id=\"revokeBtn\" class=\"btn btn--danger btn--small\" style=\"display:none\" disabled><sf-symbol name=\"minus.circle\"></sf-symbol> Retire</button><button id=\"addBtn\" class=\"btn btn--primary btn--small\"><sf-symbol name=\"plus.circle\"></sf-symbol> Add</button></div></div>"
+      },
+      "hifiPrototypes": {}
+    },
+    {
+      "label": "Device Recovery",
+      "url": "device-recovery",
+      "subHeader": {
+        "htmlContent": "<h2 class=\"sub-header__subtitle\">Device Recovery</h2><div class=\"sub-header__controls\"><div class=\"fdr-subtabs\"><div class=\"tabs\" role=\"tablist\"><button type=\"button\" class=\"tabs__tab tabs__tab--active\" role=\"tab\" data-fdr-tab=\"registration\">Registration</button><button type=\"button\" class=\"tabs__tab\" role=\"tab\" data-fdr-tab=\"deploy\">Roll out</button></div></div><div class=\"proj-multi-select\" id=\"fdrSites\"></div><div class=\"proj-multi-select\" id=\"fdrProjects\"></div><div class=\"form-group\" id=\"searchGroup\" style=\"margin-bottom:0\"><input type=\"text\" id=\"fdrSearch\" class=\"form-input\" placeholder=\"Search devices, campuses or faculties\" autocomplete=\"off\" aria-label=\"Search devices\" style=\"width:280px\"></div><label class=\"switch\"><input type=\"checkbox\" class=\"switch__input\" id=\"fdrGroup\" checked><span class=\"switch__slider\"></span><span class=\"switch__label\">Group by campus</span></label><div class=\"mu-filter-status\" id=\"fdrFilterStatus\" style=\"display:none;align-items:center;gap:var(--space-xs)\"><span class=\"mu-filter-status__label\" style=\"color:var(--color-glyph-gray-secondary);font-size:var(--font-size-xxs)\">Results are filtered</span><button id=\"fdrClearFilters\" class=\"btn btn--link btn--small\"><sf-symbol name=\"xmark\"></sf-symbol> Clear Filters</button></div><div class=\"sub-header__actions\" id=\"fdrSelectionBar\"><button type=\"button\" class=\"btn btn--primary btn--small\" id=\"fdrSendBtn\" disabled><sf-symbol name=\"arrow.triangle.2.circlepath\"></sf-symbol> <span id=\"fdrSendLabel\">Send Recovery Request</span></button></div></div>"
+      }
+    }
+  ],
+  "user": {
+    "username": "Maya Okafor",
+    "avatarInitials": "MO"
+  },
+  "subHeader": {
+    "title": ""
+  },
+  "footer": {
+    "text": "Portfolio prototypes. Interactive mock-ups for review, not production software.",
+    "links": []
+  }
+}

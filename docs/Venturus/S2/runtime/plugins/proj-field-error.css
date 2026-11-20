@@ -1,0 +1,40 @@
+/* proj-field-error.css */
+/* Plugin component: Inline Field Error */
+
+/*
+ * The single visual treatment for inline field errors. Covers the three message
+ * elements the prototypes already ship — the injected `.form-help--error` span
+ * (manage-infrastructure), the static `.form-error` div and the static `.form-error` div and
+ * `.setting-error` span — so all of them render
+ * identically regardless of which markup the host page happens to use.
+ *
+ * The invalid-input treatment itself is MDS's `form-input--invalid`; nothing here
+ * overrides it.
+ */
+
+.form-help--error,
+.form-error,
+.setting-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xxs);
+  margin-top: var(--space-xxs);
+  color: var(--color-fill-red);
+  font-size: var(--font-size-tiny);
+  line-height: 1.4;
+}
+
+.form-help--error svg,
+.form-error svg,
+.setting-error svg {
+  flex-shrink: 0;
+}
+
+/* A message element with nothing in it must not claim layout. Prototypes that ship
+   their message element in the markup start empty and are hidden inline by
+   ProjFieldError.clear(); this covers the initial render before any validation runs. */
+.form-help--error:empty,
+.form-error:empty,
+.setting-error:empty {
+  display: none;
+}

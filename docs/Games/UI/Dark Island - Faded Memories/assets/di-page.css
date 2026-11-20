@@ -1,0 +1,72 @@
+/* Dark Island: Faded Memories, presentation page (extends assets/site.css) */
+:root { --gold: #e3c61a; --navy: #0d1a5e; --navy-2: #12257a; }
+.di-page .eyebrow { color: var(--gold); }
+.di-hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; padding: 72px 0 48px; }
+.di-hero h1 { font-size: clamp(2.4rem, 5.6vw, 4.4rem); margin: 14px 0 18px; }
+.di-hero h1 .gold { background: linear-gradient(110deg, #f6e27a, var(--gold) 50%, #b79f16); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.steam { margin: 0 0 14px; padding: 18px 20px; border-left: 3px solid var(--gold); background: rgba(227, 198, 26, .06); border-radius: 0 8px 8px 0; color: var(--text); font-size: 1.05rem; }
+.steam small { display: block; margin-top: 10px; color: var(--faint); font-size: .86rem; font-style: italic; }
+.di-hero .banner { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--line-2); box-shadow: 0 30px 80px rgba(60, 30, 140, .35); }
+.di-hero .banner img { display: block; width: 100%; height: auto; }
+.facts-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 0; padding: 0; list-style: none; }
+.facts-row li { padding: 6px 14px; border-radius: 6px; border: 1px solid var(--line-2); color: var(--muted); font-size: 13px; }
+.facts-row li b { color: var(--gold); font-weight: 600; margin-right: 6px; }
+.btn.gold { background: linear-gradient(110deg, #f6e27a, var(--gold)); background-origin: border-box; border-color: transparent; color: #0a0a0f; }
+.btn.gold:hover { background: linear-gradient(110deg, #f6e27a, var(--gold)); background-origin: border-box; box-shadow: 0 8px 30px rgba(227, 198, 26, .4); }
+.di-sec { margin-top: 96px; scroll-margin-top: 90px; }
+.di-sec > h2 { font-size: 13px; font-family: var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--faint); margin: 0 0 22px; display: flex; align-items: center; gap: 14px; }
+.di-sec > h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.di-sec > p.intro { color: var(--muted); max-width: 72ch; margin: -6px 0 26px; }
+.pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.pillar { padding: 24px; border-radius: 8px; border: 1px solid var(--line); background: linear-gradient(180deg, #131a47, var(--bg-2)); }
+.pillar .n { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--gold); }
+.pillar h3 { margin: 8px 0 8px; font-size: 1.15rem; } .pillar p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+.shots-group { margin-top: 34px; } .shots-group h3 { margin: 0 0 12px; font-size: 1.3rem; display: flex; align-items: baseline; gap: 12px; }
+.shots-group h3 span { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--faint); text-transform: uppercase; }
+.shots-group > p { color: var(--muted); max-width: 70ch; margin: 0 0 16px; }
+.shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.shot { margin: 0; }
+.shot button { display: block; position: relative; width: 100%; padding: 0; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; cursor: zoom-in; background: #05060f; transition: transform .25s, border-color .25s, box-shadow .25s; }
+.shot button:hover { transform: translateY(-3px); border-color: var(--gold); box-shadow: 0 16px 50px rgba(227, 198, 26, .15); }
+.shot img { display: block; width: 100%; height: auto; }
+.shot figcaption { padding: 10px 4px 0; color: var(--muted); font-size: .88rem; } .shot figcaption b { color: var(--text); }
+.kit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.kit-card { display: flex; flex-direction: column; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); overflow: hidden; }
+.kit-card .art { display: grid; place-items: center; height: 260px; padding: 18px; background: radial-gradient(ellipse at 50% 30%, var(--navy-2), #070d36 75%); border-bottom: 1px solid var(--line); }
+.kit-card .art img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.kit-card .body { padding: 16px 18px 18px; } .kit-card h3 { margin: 0 0 4px; font-size: 1.05rem; } .kit-card p { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.5; }
+.kit-card .used { margin-top: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--faint); }
+.tokens { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0 0; }
+.token { display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; color: var(--muted); }
+.token i { width: 28px; height: 28px; border-radius: 6px; background: var(--c); border: 1px solid rgba(255,255,255,.25); } .token b { color: var(--text); display: block; font-size: 12.5px; } .token code { font-family: var(--mono); font-size: 11px; }
+.launch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.launch-card { display: flex; flex-direction: column; border-radius: 8px; border: 1px solid var(--line); background: linear-gradient(180deg, #131a47, var(--bg-2)); overflow: hidden; text-decoration: none; transition: transform .25s, border-color .25s; }
+.launch-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+.launch-card img { display: block; width: 100%; aspect-ratio: 45 / 32; object-fit: cover; }
+.launch-card .body { padding: 18px 20px 22px; } .launch-card h3 { margin: 0 0 6px; font-size: 1.2rem; } .launch-card p { margin: 0 0 12px; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+.launch-card .go { color: var(--gold); font-weight: 600; font-size: 14px; }
+.controls { margin-top: 18px; padding: 16px 20px; border-radius: 8px; border: 1px dashed var(--line-2); color: var(--muted); font-size: .92rem; }
+.controls b { color: var(--text); }
+.brand-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.logo-card { display: grid; place-items: center; height: 160px; padding: 20px; border-radius: 8px; border: 1px solid var(--line); }
+.logo-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.logo-card.light { background: #f3f2f7; } .logo-card.dark { background: #05050c; } .logo-card.mid { background: linear-gradient(135deg, #1a1050, #3a1d78); }
+.logo-cap { margin: 8px 2px 0; color: var(--faint); font-size: 12.5px; font-family: var(--mono); }
+.merch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+.merch .shot button { background: #fff; }
+.credits { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.lb { position: fixed; inset: 0; z-index: 80; display: none; place-items: center; background: rgba(2, 3, 12, .92); padding: 28px; }
+.lb.open { display: grid; } .lb img { max-width: 100%; max-height: 88vh; border-radius: 6px; box-shadow: 0 30px 100px #000; }
+.lb p { position: absolute; left: 0; right: 0; bottom: 14px; margin: 0; text-align: center; color: var(--muted); font-size: 14px; }
+.lb button { position: absolute; top: 18px; right: 22px; font-size: 30px; color: #fff; background: none; border: 0; cursor: pointer; }
+@media (max-width: 1000px) { .pillars, .brand-grid { grid-template-columns: repeat(2, 1fr); } .kit, .launch, .merch { grid-template-columns: repeat(2, 1fr); } .di-hero { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .pillars, .brand-grid, .kit, .launch, .merch, .shots, .credits { grid-template-columns: 1fr; } .di-sec { margin-top: 56px; } .kit-card .art { height: 220px; } }
+
+/* kit cards: keep the whole sheet inside the card; click to enlarge */
+.kit-card .art { height: 320px; padding: 14px; overflow: hidden; position: relative; }
+.kit-card .art button { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.kit-card .art img { display: block; width: 100%; height: 100%; max-width: none; max-height: none; object-fit: contain; transition: transform .25s; }
+.kit-card .art button:hover img { transform: scale(1.03); }
+.kit-card .art::after { content: "⤢"; position: absolute; right: 10px; top: 8px; color: rgba(255,255,255,.55); font-size: 16px; pointer-events: none; }
+.lb img { background: #0d1a5e; }
+@media (max-width: 640px) { .kit-card .art { height: 280px; } }

@@ -1,0 +1,299 @@
+/* ============================================
+   MANAGE ACTIONS
+   Manage button, popover menu, action drawer
+   ============================================ */
+
+/* Settings panel header layout */
+.settings-panel__header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Popover menu group labels */
+.popover__menu-label {
+    font-size: var(--font-size-xxxs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: var(--space-xs) var(--space-m);
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Manage popover — right edge flush with button's right edge */
+#managePopoverTrigger {
+    position: relative;
+}
+
+#managePopover {
+    right: 0 !important;
+    left: auto !important;
+    min-width: 22rem;
+    transform: none !important;
+}
+
+#archiveConfirmPopover {
+    right: 0 !important;
+    left: auto !important;
+    top: 100% !important;
+    transform: none !important;
+}
+
+/* Shared eyebrow title above a confirmation popover's message. */
+.popover__confirm-title {
+    display: block;
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Action drawer body layout */
+.manage-action-drawer__body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.manage-action-drawer__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-l);
+    padding-bottom: var(--space-m);
+}
+
+.manage-action-drawer__actions {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-m);
+    padding: var(--space-m) var(--space-l);
+    border-top: 0.1rem solid var(--color-fill-gray-quaternary);
+    background-color: var(--color-fill);
+    position: relative;
+}
+
+/* Manage Faculties "remove all → archive" confirm popover.
+   Anchored above the Save button, right-aligned to stay inside the drawer
+   (drawer body has overflow: hidden, so a centered popover would clip). */
+.manage-action__confirm-popover {
+    bottom: calc(100% + 0.4rem);
+    right: var(--space-l);
+    left: auto;
+    top: auto;
+    transform: none;
+}
+.manage-action__confirm-popover .popover__arrow {
+    left: auto;
+    right: 3.2rem;
+    transform: none;
+}
+
+/* Read-only info box inside drawer */
+.manage-action__info {
+    background-color: var(--color-fill-secondary);
+    border-radius: var(--radius-s);
+    padding: var(--space-m);
+    margin-bottom: var(--space-l);
+}
+
+.manage-action__info-title {
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 var(--space-s) 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.manage-action__info-title .collapse-arrow {
+    transition: transform 0.2s;
+    display: inline-flex;
+}
+
+.manage-action__info--collapsed .manage-action__info-title .collapse-arrow {
+    transform: rotate(-90deg);
+}
+
+.manage-action__info-body {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: var(--space-xs) var(--space-m);
+}
+
+.manage-action__info--collapsed .manage-action__info-body {
+    display: none;
+}
+
+.manage-action__info-label {
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray-secondary);
+}
+
+.manage-action__info-value {
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray);
+    word-break: break-word;
+}
+
+/* Checklist toolbar (search + select all) */
+.manage-action__checklist-search {
+    position: relative;
+    margin-bottom: var(--space-xs);
+}
+
+.manage-action__checklist-search .form-input {
+    height: 3.6rem;
+    font-size: var(--font-size-xxs);
+    padding: var(--space-xs) var(--space-s) var(--space-xs) 3.2rem;
+}
+
+.manage-action__checklist-search-icon {
+    position: absolute;
+    left: var(--space-s);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-glyph-gray-tertiary);
+    display: flex;
+    pointer-events: none;
+}
+
+.manage-action__checklist-meta {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--space-xs);
+}
+
+.manage-action__checklist-count {
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray-secondary);
+}
+
+.manage-action__checklist-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: var(--space-xs) 0;
+    border-bottom: 0.1rem solid var(--color-fill-gray-quaternary);
+}
+
+.manage-action__checklist-header .checkbox__label {
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Checklist inside drawer */
+.manage-action__checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Empty state shown when the checklist filter zeroes the list. */
+.manage-action__checklist-empty {
+    padding: var(--space-l) 0;
+}
+
+.manage-action__checklist-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: var(--space-s) 0;
+    border-bottom: 0.1rem solid var(--color-fill-gray-quaternary);
+}
+
+.manage-action__checklist-item > .checkbox {
+    flex: 1;
+    min-width: 0;
+}
+
+.manage-action__checklist-item:last-child {
+    border-bottom: none;
+}
+
+.manage-action__checklist-item--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.manage-action__checklist-indicator {
+    color: var(--color-glyph-gray-secondary);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Confirmation message */
+.manage-action__confirm-message {
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--space-l);
+}
+
+/* Section title inside drawer content */
+.manage-action__section-title {
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: var(--space-l) 0 var(--space-m) 0;
+}
+
+.manage-action__section-title:first-child {
+    margin-top: 0;
+}
+
+/* Form fields inside drawer (create actions) */
+.manage-action__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+}
+
+/* Status tag positioning in checklist items */
+.manage-action__status-tag {
+    flex-shrink: 0;
+}
+
+.manage-action__status-tag:empty {
+    display: none;
+}
+
+.manage-action__checklist-item .tag {
+    flex-shrink: 0;
+}
+
+/* Sort toggle in checklist header */
+.manage-action__checklist-sort {
+    margin-left: auto;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: var(--space-xs);
+    border-radius: var(--radius-s);
+    transition: background-color 0.15s;
+}
+
+.manage-action__checklist-sort:hover {
+    background-color: var(--color-fill-tertiary);
+}
+
+/* Indicator right-aligned (after tag) */
+.manage-action__checklist-item .manage-action__checklist-indicator {
+    flex-shrink: 0;
+}

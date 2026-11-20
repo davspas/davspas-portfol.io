@@ -1,0 +1,145 @@
+/* Q&A Panel — ribbon button + docked, resizable panel showing the prototype's
+   qa.md. Interaction model mirrors the canvas Requirements drawer: no overlay,
+   the whole app shifts left via body padding-right.
+
+   Markdown typography is NOT redefined here — rendered content also carries the
+   canvas class `requirements-drawer__markdown`, so the two panels stay visually
+   identical without duplicating those rules. See renderMarkdown() in the JS. */
+
+/* --- Ribbon button --- */
+
+.proj-qa-ribbon__label {
+    white-space: nowrap;
+}
+
+/* --- App shift while the panel is open --- */
+
+body.has-proj-qa-open {
+    padding-right: var(--proj-qa-width, 480px);
+}
+
+/* Disable transitions while dragging so resize feels immediate */
+body.is-resizing-proj-qa {
+    transition: none;
+    cursor: col-resize;
+    user-select: none;
+}
+
+/* --- Panel shell --- */
+
+.proj-qa-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    z-index: 1000; /* above the sticky header (z-index: 999) */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-fill);
+    border-left: 2px solid var(--color-glyph-gray);
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+    transition: width 0.2s ease-in-out;
+}
+
+body.has-proj-qa-open .proj-qa-drawer {
+    width: var(--proj-qa-width, 480px);
+}
+
+body.is-resizing-proj-qa .proj-qa-drawer {
+    transition: none;
+}
+
+.proj-qa-drawer__resizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 2;
+    background: transparent;
+}
+
+.proj-qa-drawer__resizer:hover,
+body.is-resizing-proj-qa .proj-qa-drawer__resizer {
+    background: var(--color-base-accent);
+    opacity: 0.4;
+}
+
+/* --- Header --- */
+
+.proj-qa-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding: var(--space-m) var(--space-mp);
+    border-bottom: 1px solid var(--color-fill-gray-tertiary);
+    flex: 0 0 auto;
+}
+
+.proj-qa-drawer__title {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-glyph-gray);
+    white-space: nowrap;
+}
+
+.proj-qa-drawer__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    flex: 0 0 auto;
+}
+
+.proj-qa-drawer__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: none;
+    background: transparent;
+    color: var(--color-glyph-gray-secondary);
+    font-size: 1.6rem;
+    cursor: pointer;
+    border-radius: 0.6rem;
+}
+
+.proj-qa-drawer__close:hover {
+    background: var(--color-fill-secondary);
+    color: var(--color-glyph-gray);
+}
+
+/* --- Body --- */
+
+.proj-qa-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-mp);
+}
+
+/* --- Missing-file hint (shown inside the error notification block) --- */
+
+.proj-qa-drawer__hint {
+    margin-top: var(--space-m);
+    padding: var(--space-m);
+    background: var(--color-fill-secondary);
+    border-radius: 0.8rem;
+}
+
+.proj-qa-drawer__hint-title {
+    margin: 0 0 var(--space-xs) 0;
+    font-size: var(--font-size-xxs);
+    color: var(--color-glyph-gray);
+}
+
+.proj-qa-drawer__hint-path {
+    margin: 0;
+    font-size: var(--font-size-xxs);
+    font-family: inherit;
+    color: var(--color-glyph-gray-secondary);
+}

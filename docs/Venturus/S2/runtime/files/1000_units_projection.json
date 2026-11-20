@@ -1,0 +1,36 @@
+{
+  "targetUnits": 1000,
+  "currentMetrics": {
+    "totalUnits": 119,
+    "totalTime": 34099.15800041097,
+    "avgTimePerUnit": 286.54754622194093
+  },
+  "scenarios": {
+    "linearExtrapolation": {
+      "milliseconds": 286547.54622194095,
+      "seconds": 286.54754622194093
+    },
+    "excludingEmptyResponses": {
+      "milliseconds": 235256.13445393764,
+      "seconds": 235.25613445393765
+    },
+    "withRequestOverhead": {
+      "milliseconds": 367785.506868693,
+      "seconds": 367.785506868693,
+      "estimatedRequests": 93
+    },
+    "bestCase": {
+      "milliseconds": 9356.442855538002,
+      "seconds": 9.356442855538003
+    },
+    "worstCase": {
+      "milliseconds": 5943497.000029311,
+      "seconds": 5943.497000029311
+    }
+  },
+  "recommendation": {
+    "milliseconds": 367785.506868693,
+    "seconds": 367.785506868693,
+    "description": "Most realistic projection accounting for request overhead and batch efficiency"
+  }
+}

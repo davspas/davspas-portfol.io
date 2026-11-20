@@ -1,0 +1,201 @@
+WEBVTT
+
+1 "Ines Moreau" (1042)
+00:00:00.000 --> 00:00:20.000
+Okay, let's get started. This session is about the Manage Devices prototype. I want to agree the two device types, the Add Devices wizard, asset tag validation, retiring devices, and what we do with the approval workflow.
+
+2 "Ines Moreau" (1042)
+00:00:20.000 --> 00:00:35.000
+Let's start with the two device types. We have IT-managed and Faculty-registered. Kofi, can you recap where each one comes from?
+
+3 "Kofi Mensah" (1057)
+00:00:35.000 --> 00:01:00.000
+Sure. Both types live in Asset Registry, which is the system of record for devices. IT-managed devices also have a counterpart in the Room Booking Manager, and that is where the faculty, floor and room assignment is kept. They are born READY.
+
+4 "Hannah Lindqvist" (1071)
+00:01:00.000 --> 00:01:15.000
+And the Faculty-registered ones? Who creates those?
+
+5 "Kofi Mensah" (1057)
+00:01:15.000 --> 00:01:40.000
+An AV technician or a faculty team registers them, either through Atrium or on a Building Controller. Either way they end up in Asset Registry first. Then the Building Controller completes the record with Faculty, Floor, Room and Device IP. We call that the complement.
+
+6 "Ravi Iyer" (1063)
+00:01:40.000 --> 00:01:55.000
+Right, and every building has its own controller. A campus can have several, each with its own database, so Atrium has to ask all of them for the complement.
+
+7 "Ines Moreau" (1042)
+00:01:55.000 --> 00:02:10.000
+So what does the table show before the controller has reported anything?
+
+8 "Ravi Iyer" (1063)
+00:02:10.000 --> 00:02:30.000
+Dashes. If a device has not been assigned to a controller, the five columns just show a dash. If the controller is assigned but only partly reported, only the missing fields show a dash.
+
+9 "Ravi Iyer" (1063)
+00:02:30.000 --> 00:02:50.000
+And if the controller is unreachable, those five columns collapse into one cell with a warning icon that says information cannot be read from Building Controller and then its hostname.
+
+10 "Hannah Lindqvist" (1071)
+00:02:50.000 --> 00:03:05.000
+Do we still need a Type column, then?
+
+11 "Ines Moreau" (1042)
+00:03:05.000 --> 00:03:20.000
+No. The toggle in the navbar is the type indicator, so the Type column is gone. IT-managed is the default when the page loads.
+
+12 "Kofi Mensah" (1057)
+00:03:20.000 --> 00:03:35.000
+And the scope picker is Campus only for both modes. We removed the Building Controller selector.
+
+13 "Ravi Iyer" (1063)
+00:03:35.000 --> 00:03:50.000
+That is fine by me. Anything about individual controllers belongs in Manage Infrastructure, not on the device page.
+
+14 "Ines Moreau" (1042)
+00:03:50.000 --> 00:04:05.000
+One more thing for the Faculty-registered view. There is an info banner above the table that says devices shown are faculty-registered room devices.
+
+15 "Hannah Lindqvist" (1071)
+00:04:05.000 --> 00:04:20.000
+That works. Can we move on to the wizard?
+
+16 "Ines Moreau" (1042)
+00:04:20.000 --> 00:04:35.000
+Yes. Add Devices is a two-step wizard. Step one is Provide asset tags, step two is Review and register Devices. The type is locked to whatever the toggle is set to.
+
+17 "Hannah Lindqvist" (1071)
+00:04:35.000 --> 00:04:50.000
+Why lock it? I would have expected a type picker.
+
+18 "Ines Moreau" (1042)
+00:04:50.000 --> 00:05:10.000
+We had one for a while, but the page is already in a single mode, so the picker added nothing. Instead the footer shows a note: devices added to this Campus will have the Managed type, or the Registered type.
+
+19 "Ines Moreau" (1042)
+00:05:10.000 --> 00:05:25.000
+The title only shows the campus. Add Devices to, then the campus name.
+
+20 "Ravi Iyer" (1063)
+00:05:25.000 --> 00:05:40.000
+And how do people enter the tags?
+
+21 "Ines Moreau" (1042)
+00:05:40.000 --> 00:06:00.000
+Either upload a file or add them manually. The upload tab inherits the campus from the page. The manual tab has a Campus picker and a text area. The upload is mocked in the prototype, it just loads a sample file.
+
+22 "Kofi Mensah" (1057)
+00:06:00.000 --> 00:06:15.000
+For validation, an asset tag must be 8 to 14 letters or digits. Commas, semicolons, spaces and line breaks are accepted as separators.
+
+23 "Ravi Iyer" (1063)
+00:06:15.000 --> 00:06:30.000
+Our real tags look like PRJNORT1001. Three letters for the device kind, then the campus code, then a number. Projector, microphone, door reader, room panel.
+
+24 "Hannah Lindqvist" (1071)
+00:06:30.000 --> 00:06:45.000
+Should the wizard enforce that prefix?
+
+25 "Kofi Mensah" (1057)
+00:06:45.000 --> 00:07:00.000
+Not in this phase. We only check length and characters. A prefix check could come later once the naming convention is final.
+
+26 "Ines Moreau" (1042)
+00:07:00.000 --> 00:07:15.000
+Format problems show inline in step two, with the message: Invalid asset tag, use 8 to 14 alphanumeric characters. There is also a show errors only switch and a search box.
+
+27 "Kofi Mensah" (1057)
+00:07:15.000 --> 00:07:30.000
+Duplicates are different. We check them when you click Add Devices, against Asset Registry, under both types.
+
+28 "Hannah Lindqvist" (1071)
+00:07:30.000 --> 00:07:45.000
+Why not show those inline as well?
+
+29 "Kofi Mensah" (1057)
+00:07:45.000 --> 00:08:05.000
+Because it needs a registry lookup per tag. So a conflict comes as a red toast: Atrium couldn't register the devices, selected devices already in use on that type's Asset Registry. One toast per type that had conflicts.
+
+30 "Ines Moreau" (1042)
+00:08:05.000 --> 00:08:20.000
+When that toast fires, the wizard stays open and the rows that were added are removed from the list, so only the problem tags remain.
+
+31 "Ravi Iyer" (1063)
+00:08:20.000 --> 00:08:35.000
+And on success you get a green toast, something like 3 Devices added to NORT on Managed.
+
+32 "Hannah Lindqvist" (1071)
+00:08:35.000 --> 00:08:50.000
+What if someone closes the wizard halfway through typing?
+
+33 "Ines Moreau" (1042)
+00:08:50.000 --> 00:09:05.000
+If there is pending input, a small confirm popover opens with two buttons, Keep editing and Discard. A successful commit skips it.
+
+34 "Ravi Iyer" (1063)
+00:09:05.000 --> 00:09:20.000
+Next, retiring devices. Which statuses can be retired?
+
+35 "Kofi Mensah" (1057)
+00:09:20.000 --> 00:09:35.000
+Pending approval, Ready and Provisioned. Active devices cannot be retired, because their certificates have already been issued.
+
+36 "Ravi Iyer" (1063)
+00:09:35.000 --> 00:09:50.000
+Yes, Active devices need to be decommissioned outside Atrium first. Moving from Ready to Provisioned to Active also happens outside Atrium, it is not a button in this tool.
+
+37 "Ines Moreau" (1042)
+00:09:50.000 --> 00:10:05.000
+The Retire button is red, hidden until a campus is chosen, and disabled until you select rows that are eligible. It works for both device types.
+
+38 "Hannah Lindqvist" (1071)
+00:10:05.000 --> 00:10:20.000
+Now the approval workflow. Faculty Coordinators used to approve every Faculty-registered device, and honestly nobody wanted that step.
+
+39 "Ines Moreau" (1042)
+00:10:20.000 --> 00:10:35.000
+Agreed, so we are deprecating it. Approve and Reject stay in the code but the buttons are hidden in every mode.
+
+40 "Kofi Mensah" (1057)
+00:10:35.000 --> 00:10:50.000
+That also means new devices are born READY for both types, so nothing new lands in Pending approval. The status stays in the lifecycle for old records only.
+
+41 "Ines Moreau" (1042)
+00:10:50.000 --> 00:11:05.000
+And the Faculty-registered sample data reflects that: only Active, Ready and Retired.
+
+42 "Hannah Lindqvist" (1071)
+00:11:05.000 --> 00:11:20.000
+Does Updated by come from the new history feature?
+
+43 "Kofi Mensah" (1057)
+00:11:20.000 --> 00:11:40.000
+No. Updated by and Updated at come straight from the Asset Registry device record. The history feature is on demand only, a Show history command later, and we do not fetch it when listing devices.
+
+44 "Ravi Iyer" (1063)
+00:11:40.000 --> 00:11:55.000
+Also worth saying, there is no sync from Asset Registry to the controllers today. A device can exist in the registry before any controller knows it.
+
+45 "Hannah Lindqvist" (1071)
+00:11:55.000 --> 00:12:10.000
+That is fine. Pre-registering a device before it reaches a room is a normal scenario for us.
+
+46 "Kofi Mensah" (1057)
+00:12:10.000 --> 00:12:25.000
+Open question for the backend: when we fan out and one controller is unreachable, do we return partial results with a warning, or fail the whole request?
+
+47 "Ines Moreau" (1042)
+00:12:25.000 --> 00:12:40.000
+Let's note that as a decision for the Atrium server team. And whether Faculty-registered devices ever reach Provisioned, we need the registry team to confirm.
+
+48 "Hannah Lindqvist" (1071)
+00:12:40.000 --> 00:12:55.000
+Should the wizard warn when a tag is not on any controller yet?
+
+49 "Ines Moreau" (1042)
+00:12:55.000 --> 00:13:10.000
+Good question, that is a UX call. I will add it to the open list.
+
+50 "Ines Moreau" (1042)
+00:13:10.000 --> 00:13:30.000
+Summary: two types with campus-only scope, a locked-type wizard with format checks inline and duplicate checks at commit, retire from three statuses, and approval deprecated. Thanks everyone.

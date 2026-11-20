@@ -1,0 +1,1946 @@
+{
+  "entries": [
+    {
+      "date": "2026-11-04",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "New building controllers are now created with Registry Sync enabled (they used to start disabled). Unarchive still restores the node with Asset Registry off."
+        },
+        {
+          "type": "changed",
+          "description": "The Create and Unarchive Faculties dropdown now offers only the faculties the chosen Campus Hub grants, as Manage Faculties already did. \"No faculties available\" shows when the Campus Hub grants none."
+        },
+        {
+          "type": "changed",
+          "description": "The Relay Association dropdown on the Building Controller panel now lists only Relays from the node's own campus."
+        },
+        {
+          "type": "changed",
+          "description": "The Relay's Manage → Building Controllers list and the Create form's Relay building-controller list now show every active building controller on the Campus Hub, including nodes created or unarchived after load."
+        },
+        {
+          "type": "changed",
+          "description": "The Create form's Relay Campus Hub dropdown now marks NORT nodes with \"(NORT)\", and picking an NORT Campus Hub lists its building controllers."
+        },
+        {
+          "type": "changed",
+          "description": "The Create form's Relay building-controller checks now stay as you set them when the Building Controller hostname, faculties or Campus Hub change, and the \"(new)\" row only shows while the Building Controller section is on."
+        },
+        {
+          "type": "changed",
+          "description": "The same hostname or IP typed in two sections of the Create form is now reported as already in use."
+        },
+        {
+          "type": "changed",
+          "description": "The Create drawer's Close button now asks for confirmation only when you have changed something, including Node Type, Proxy URL, Alert and Relay picks. A freshly opened form closes straight away."
+        },
+        {
+          "type": "changed",
+          "description": "Unarchive now runs the same checks as Move (Campus Hub, required fields, IP format, duplicates) and attaches the Relay you pick. An archived node with no faculties opens with no faculties checked and shows its errors straight away."
+        },
+        {
+          "type": "changed",
+          "description": "Unarchiving a Relay now keeps the Campus Hub and building controllers you choose and clears a stale outdated Proxy URL flag. Unarchiving a Campus Hub no longer wipes its Proxy URL."
+        },
+        {
+          "type": "changed",
+          "description": "The Create form now rejects a hostname or IP that matches a faculty-less building controller."
+        },
+        {
+          "type": "changed",
+          "description": "A building controller with no faculties keeps its \"No Faculties selected\" hint when archived, and its first added faculty now shows immediately."
+        },
+        {
+          "type": "changed",
+          "description": "Archived faculty-less building controllers now show the Archived tag in search, turn Show Archived on when picked, and no longer block archiving their Campus Hub. Three archived NORT nodes that never had a faculty are now in the tree."
+        },
+        {
+          "type": "changed",
+          "description": "\"Remove all faculties, then Archive\" now archives the node instead of leaving it active."
+        },
+        {
+          "type": "changed",
+          "description": "Faculty-less building controllers now appear in the Associated Building Controllers lists on Campus Hub and Relay panels."
+        },
+        {
+          "type": "changed",
+          "description": "Changing a filter keeps the selected node and the branches you collapsed. Ending a bulk selection with a filter change returns to the empty panel, and changing the Campus selection also clears a bulk selection."
+        },
+        {
+          "type": "changed",
+          "description": "Bulk selection: a single remaining pick becomes an ordinary selection, a Shift range from a non-selectable row selects just the clicked row, a Shift+Click with nothing selected picks that row, a plain click on a greyed-out row ends the selection, and Save stays off for a selection with no building controllers."
+        },
+        {
+          "type": "changed",
+          "description": "The bulk panel notice now compares each picked campus's own faculties when deciding whether filters narrow the change."
+        },
+        {
+          "type": "changed",
+          "description": "Saving a Campus's Asset Registry change now reports \"Registry Sync applied to N Building Controllers\" (nothing when Asset Registry refused every node)."
+        },
+        {
+          "type": "changed",
+          "description": "Create Node and Manage are re-enabled whenever the details panel is cleared, and the panel title resets to its default."
+        },
+        {
+          "type": "changed",
+          "description": "Renaming a faculty-less building controller while changing its Campus Hub now updates the old Campus Hub's list correctly, and changing an archived node's Campus Hub no longer strips its faculty history."
+        },
+        {
+          "type": "changed",
+          "description": "The Campus Hub link on a Relay panel is enabled only when that Campus Hub is in the tree. The faculty icon in Manage Faculties and the Create form now matches the exact Campus Hub."
+        },
+        {
+          "type": "changed",
+          "description": "Escape closes only the confirmation popover when one is open, in the Create drawer and the Manage drawers. Confirming an archive re-checks that it is still allowed."
+        },
+        {
+          "type": "changed",
+          "description": "The Network Transport label on the Relay panel and the Associated Timetable Relay section now reads Network Protocol, matching the other panels."
+        },
+        {
+          "type": "changed",
+          "description": "\"Node not visible in current view\" now shows as a warning."
+        },
+        {
+          "type": "fixed",
+          "description": "The CSV export no longer doubles quote characters in Description and Location."
+        },
+        {
+          "type": "fixed",
+          "description": "The seed data no longer has duplicate node IDs or hostnames (nort-bc1-1 now has one ID, and the archived arts-bc01-2 twin is renamed arts-bc01-2-old)."
+        },
+        {
+          "type": "fixed",
+          "description": "The Campus Asset Registry save toast now counts a building controller in several faculties once."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "On the Building Controller side panel, the Relay Association dropdown is now disabled for archived Building Controllers, with the note \"Archived Building Controllers cannot be associated with Timetable Relays.\" below the field. Added to the requirements (FR-P2-24)."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-28",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "The \"Building Controllers need their Proxy URL updated manually\" toast after a Campus Hub rename now matches the Asset Registry failure toast: regular weight, no \"Warning:\" label or icon, a larger close icon, and a \"Details\" link button (was \"View details\")."
+        },
+        {
+          "type": "changed",
+          "description": "Renaming the master Campus Hub (hub.atrium.test) no longer asks for the \"Change Hostname\" confirmation. It saves straight through. Added to the requirements (FR-P2-25)."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-27",
+      "changes": [
+        {
+          "type": "fixed",
+          "description": "Building Controllers with no faculties can now be archived. They stay in the tree as archived (Registry Sync off) and can be unarchived."
+        },
+        {
+          "type": "changed",
+          "description": "The Bulk and Campus Registry Sync failure toast now reads \"Unable to update N Building Controllers Registry Sync status\" in regular weight, with no \"Warning:\" label or icon (like the other toasts on this page), a larger close icon, and a \"Details\" link button."
+        },
+        {
+          "type": "changed",
+          "description": "The Asset Registry failures dialog now has a red error icon and the title \"Unable to update N Building Controllers Registry Sync status\", a Details column (was Errors) and sortable columns. Close is secondary and Copy list is primary. The Proxy URL dialog gets the same sortable columns and buttons."
+        },
+        {
+          "type": "changed",
+          "description": "Toast action links (Details, and View details on the Proxy URL toast) now use the design-system link button."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-23",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "The Create Node drawer (Create, Unarchive, Move) now treats an underivable Building Controller or Relay Proxy URL the same way as the side panels: an orange warning under the field instead of an error, and Save stays available. An empty Proxy URL is still required."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-22",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "On the Building Controller and Relay panels, a Proxy URL that can't be generated after a Hostname change now shows an orange warning (\"Proxy URL is outdated and can't be generated from this Hostname. Enter it manually.\") instead of an error. The field still holds a URL, so Save stays available."
+        },
+        {
+          "type": "fixed",
+          "description": "In the Create drawer, the \"Proxy URL updated because the Campus Hub changed\" warning no longer sticks after other changes: it now names the latest change, and clears when the new Hostname or Campus Hub can't produce a URL."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "The Alert Service switch no longer has help text, in the Create drawer or the Building Controller panel."
+        },
+        {
+          "type": "changed",
+          "description": "The Building Controller panel's Relay Association now follows the Create drawer: it is disabled with \"Select a Campus Hub first\" when no Campus Hub is chosen and \"No Relays for this Campus Hub\" when the Campus Hub has none, and enables as soon as the Campus Hub has a Relay."
+        },
+        {
+          "type": "changed",
+          "description": "Bulk and Campus Registry Sync failures now show one warning toast (\"N Building Controllers could not be updated…\") with a View details link. It opens a dialog listing each refused Building Controller, its campus and the message from Asset Registry, with a Copy list button. New examples: lab-bc01-2, lab-bc01-3 and lab-bc02-1 are refused; lab-bc02-2 and lab-bc02-3 are accepted."
+        },
+        {
+          "type": "changed",
+          "description": "Renaming a Campus Hub now includes its Timetable Relays: the confirmation, the note under the hostname, the warning toast counters and the details modal count Building Controllers and Timetable Relays, and the modal has a Type column. Relay Proxy URLs are regenerated or flagged like Building Controllers'. Example: rvrs-rly1-1 has a hand-typed Proxy URL."
+        },
+        {
+          "type": "added",
+          "description": "New Error Cases button on the DaVinci ribbon (this prototype only). It opens a panel listing the hidden error, blocked and warning states, such as the Asset Registry refusal, the registered-devices check, archive and move blocks and unarchive with an archived Campus Hub, each with the steps to reach it."
+        },
+        {
+          "type": "changed",
+          "description": "Asset Registry refusals now show one two-line error toast for archive, disabling Registry Sync and changing the hostname, in bulk and Campus changes too: \"Unable to <action>, Registry Sync change was not successful.\" followed by the message from the registry. Example: lab-bc01-1, a new faculty-less Building Controller that replaces nort-bc1-1 as the example."
+        },
+        {
+          "type": "changed",
+          "description": "The archive popover's devices warning no longer shows a device count; it says the Building Controller has devices registered to it."
+        },
+        {
+          "type": "added",
+          "description": "Renaming a Campus Hub now asks for confirmation on Save and affects every connected Building Controller. The popover opens at once, with no loading state, and shows a warning that carries the count of connected Building Controllers (no list, no split between generated and manual URLs). The note under the hostname field no longer shows a count. Generated Proxy URLs follow the new hostname; any other URL is kept and flagged Proxy URL outdated, and that Building Controller's panel blocks Save until a new URL is entered. Buttons: Keep Editing / Yes, Save. Example: rvrs-hub, where rvrs-bc2-3 has a hand-typed URL."
+        },
+        {
+          "type": "added",
+          "description": "After a Campus Hub rename, a warning toast tells you when Building Controllers need their Proxy URL updated manually. Its View details link opens a modal with a table of those Building Controllers (hostname, campus, current Proxy URL) and a Copy list button. The tree and legend flag outdated hostnames only."
+        },
+        {
+          "type": "added",
+          "description": "Archived Building Controllers in a Campus Hub's Associated Building Controllers list now carry the Archived tag. New example: rvrs-hub2 is served only by archived Building Controllers, so it can be archived."
+        },
+        {
+          "type": "changed",
+          "description": "Documented that the hostname suffix comes from the server (meta.hostnameSuffix) and that a hostname equal to the suffix is valid. Requirements updated to v2.39."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-16",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "The archive confirmation no longer says it will turn off Registry Sync when they are already off. Its buttons now read Keep Building Controller / Keep Timetable Relay / Keep Campus Hub and Yes, Archive."
+        },
+        {
+          "type": "changed",
+          "description": "The valid hostname suffix is now the same on all three node types: atrium.test. Seed Building Controller and Relay hostnames, placeholders and hints were moved over. Campus Hub hostnames already used it, so Open Question 14 is closed."
+        },
+        {
+          "type": "changed",
+          "description": "Alert Service can now be enabled on any Building Controller, with or without a Relay. Removed the rules that disabled it without a Relay and reset it to Off when the Relay was removed or the Campus Hub changed, and the Alert sentence in the Campus Hub-change confirmation."
+        },
+        {
+          "type": "removed",
+          "description": "Removed the deprecated passThroughURL from Campus Hub and Relay records. The Building Controller Proxy URL, previously also called passThroughURL, is now stored as proxyURL like the others. Campus Hub records keep proxyURL for now, although the field is no longer shown."
+        },
+        {
+          "type": "added",
+          "description": "Asset Registry can now refuse to remove a host that still has devices that aren't retired. Example: nort-bc1-1. Turning Registry Sync off, archiving, or renaming it shows an error and changes nothing; in bulk and Campus changes only the refused nodes are skipped and reported."
+        },
+        {
+          "type": "fixed",
+          "description": "The Relay Proxy URL short name and the Relay hostname hint said rly<row>-<n>; they now say rly<floor>-<n>."
+        },
+        {
+          "type": "removed",
+          "description": "Requirements cleanup after archived Building Controllers became non-bulk-selectable: removed the rules for an all-archived bulk selection (disabled Asset Registry toggle), for skipping archived nodes on a mixed bulk Save, and for skipping archived nodes when a Campus cascade turns Asset Registry on. Archived nodes are simply never in scope, so the toast count, the Campus Asset Registry state and the edge-case table no longer mention them."
+        },
+        {
+          "type": "removed",
+          "description": "Removed the now-unreachable code for those rules in bulk-mode.js and selection.js (all-archived toggle lock, skip-archived on Save, archived write-through in the Campus Asset Registry cascade)."
+        },
+        {
+          "type": "changed",
+          "description": "A Campus whose only Building Controllers are archived now reads Asset Registry as Unavailable, since archived nodes are no longer counted in the Campus scope."
+        },
+        {
+          "type": "changed",
+          "description": "Archived Building Controllers can no longer be selected in bulk, and a Campus selection no longer includes them."
+        },
+        {
+          "type": "fixed",
+          "description": "A Campus Hub whose only Building Controllers or Timetable Relays are archived can now be archived."
+        },
+        {
+          "type": "added",
+          "description": "Archiving a Building Controller now checks for attached devices: a loading state first, then a warning with the device count, or a warning that the check failed. Neither blocks archiving."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "The Proxy URL now updates automatically when the Hostname or Campus Hub changes, on the details panels and in Create Node, Unarchive and Move. An orange warning says when an existing URL was replaced."
+        },
+        {
+          "type": "removed",
+          "description": "The Generate button is gone from every Proxy URL field."
+        },
+        {
+          "type": "added",
+          "description": "When a Proxy URL can't be generated from the new Hostname or Campus Hub, the old one is marked as outdated and Save is blocked until a new URL is entered."
+        },
+        {
+          "type": "changed",
+          "description": "Renaming a Campus Hub now updates the Proxy URL of every Building Controller on it. A warning under the Hostname field says how many Building Controllers will be updated."
+        },
+        {
+          "type": "changed",
+          "description": "The master Campus Hub hub.atrium.test can't be archived. A Building Controller with a Relay, or a Relay serving Building Controllers, can't be archived until that association is removed."
+        },
+        {
+          "type": "changed",
+          "description": "A Campus Hub can't be archived while it still has Building Controllers or Timetable Relays. The menu item says: Remove all associated Building Controllers and Timetable Relays before archiving."
+        },
+        {
+          "type": "added",
+          "description": "Unarchiving a node whose Campus Hub was also archived shows that Campus Hub as archived, with an error, and asks for a different one."
+        },
+        {
+          "type": "changed",
+          "description": "On a Relay, Manage → Building Controllers now lists Building Controllers that are on another Relay as disabled, showing which Relay they're on."
+        },
+        {
+          "type": "changed",
+          "description": "Each field now shows one message at a time: an error replaces a warning, and a warning replaces the format hint."
+        },
+        {
+          "type": "fixed",
+          "description": "The close confirmation now says Keep Unarchiving or Keep Moving instead of Keep Creating."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "changes": [
+        {
+          "type": "fixed",
+          "description": "Editing the IP Address or Description of a Campus Hub can be saved again. A hostname that isn't on atrium.test only blocks Save once you edit it."
+        },
+        {
+          "type": "fixed",
+          "description": "An empty required field, such as a missing Proxy URL, shows its error as soon as the details panel opens, so a disabled Save always says why."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-25",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Proxy URL is now required on Building Controllers and Timetable Relays — on Create Node, Unarchive, Move and the details panel. Save stays disabled until it is filled; the Generate button still fills it in and clears the error."
+        },
+        {
+          "type": "changed",
+          "description": "IP Address is now editable on the Building Controller, Campus Hub and Relay details panels, directly under Hostname. It must be a valid IPv4 address and not already used by another node."
+        },
+        {
+          "type": "changed",
+          "description": "A Campus Hub's Hostname can now be edited at any time, even while Building Controllers are associated with it. The rename is carried to every Building Controller and Relay that points at it."
+        },
+        {
+          "type": "added",
+          "description": "Move → To available Campus on the Manage menu of an active Building Controller or Campus Hub. Pick one of the other campuses selected in the header; everything the campus doesn't affect is kept, and Campus Hub, Proxy URL, Faculties and Relay are re-picked on the new campus. Moving is blocked for a Building Controller scheduled for a Timetable Release, and for a Campus Hub that still serves Building Controllers or Timetable Relays — the menu item says why."
+        },
+        {
+          "type": "changed",
+          "description": "A Building Controller now belongs to at most one Timetable Relay. The Building Controller panel has a Relay Association dropdown and a read-only Associated Timetable Relay section; on the Relay side, Manage → Building Controllers and the Create form only offer Building Controllers that don't already have a Relay."
+        },
+        {
+          "type": "removed",
+          "description": "Manage → Timetable Relays is gone from the Building Controller menu — use the Relay Association dropdown on the panel instead."
+        },
+        {
+          "type": "changed",
+          "description": "The failover Relays no longer share Building Controllers with their primary: meds-rly3-1 now serves meds-bc301 and rvrs-rly1-1 serves rvrs-bc1-7."
+        },
+        {
+          "type": "fixed",
+          "description": "On the Create form, a Building Controller on an NORT Campus Hub at another campus now sees that Campus Hub's Timetable Relays."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-21",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "A Building Controller's Hostname is locked while it has faculties associated, with a note explaining why. Archived Building Controllers can't be renamed until they are unarchived."
+        },
+        {
+          "type": "changed",
+          "description": "Search now finds every node, not just the ones the current filters show. Picking a hidden result widens the filters only as far as needed to reveal it."
+        },
+        {
+          "type": "changed",
+          "description": "Save stays disabled while any field on the details panel is invalid. Error messages still appear when you leave the field."
+        },
+        {
+          "type": "changed",
+          "description": "Manage and Create Node are disabled while the details panel has unsaved changes."
+        },
+        {
+          "type": "removed",
+          "description": "The unused Search Settings field is gone from the details panel."
+        },
+        {
+          "type": "fixed",
+          "description": "Expanded and collapsed tree branches, including a collapsed campus, now stay as you left them after a save."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Archiving a Building Controller turns Registry Sync off, and it stays off while the node is archived. Unarchiving restores the node with Registry Sync off. Bulk and Campus changes skip archived nodes."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-16",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Hostnames are now typed in full and validated to end in atrium.test, with an inline hint and error state."
+        },
+        {
+          "type": "added",
+          "description": "Outdated hostnames (not on atrium.test) are flagged in orange in the node tree."
+        },
+        {
+          "type": "changed",
+          "description": "Proxy URL is now optional and generated on demand with a Generate button."
+        },
+        {
+          "type": "removed",
+          "description": "Proxy URL field removed from Campus Hubs."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "changes": [
+        {
+          "type": "removed",
+          "description": "Safety Rules are gone from this page. The Safety Rules section on the Building Controller panel, the bulk Safety Rules section for a Campus or multi-node selection, the Add from Catalog action, the Copy From / Copy To pair, Reset All and the bulk review modal have all been removed. Room safety interlocks are out of scope for Manage Infrastructure."
+        },
+        {
+          "type": "changed",
+          "description": "The Manage menu no longer appears during a multi-node bulk selection. Adding a room safety interlock was the only thing it offered in that mode; every remaining action targets one node."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-04",
+      "changes": [
+        {
+          "type": "added",
+          "description": "More nodes in the tree. Eight new Campus Hubs and six new Timetable Relays, spread across every campus that already had them — NORT, RVRS, HLSD and MEDS get Campus Hubs; RVRS, HLSD and MEDS get Relays. NORT has no Relay, and still doesn't: on Connected Campus campuses the Building Controller is its own Relay."
+        },
+        {
+          "type": "added",
+          "description": "Each campus got one active and one archived node of each type, so the Archive and Unarchive flows now have something to act on everywhere instead of only at MEDS. Turn on 'Show Archived Nodes' to see the archived ones sitting at the bottom of their section."
+        },
+        {
+          "type": "added",
+          "description": "Every campus now has a spare Campus Hub with no Building Controllers on it — nort-hub-lab (NORT), rvrs-hub2, hlsd-hub2 and meds-hub2. Those are the ones whose Hostname you can edit and which you are allowed to archive; a Campus Hub still serving Building Controllers stays locked on both counts."
+        },
+        {
+          "type": "added",
+          "description": "meds-rly3-1 and rvrs-rly1-1 are failover Relays covering Building Controllers their campus's main Relay already serves — so a Building Controller panel finally shows more than one entry under Associated Timetable Relays. Nothing changed on the Building Controllers themselves."
+        },
+        {
+          "type": "added",
+          "description": "hlsd-rly2-1 sits on the NORT master Campus Hub, so it is the first Relay whose Proxy URL is built from its own hostname — 'https://hlsd-rly2-1.atrium.test/relay/' — instead of its Campus Hub's. Archived meds-rly01 carries an old-style name the rule cannot read, so its Proxy URL is left empty with the 'enter it manually' hint."
+        },
+        {
+          "type": "added",
+          "description": "The Timetable Relay Proxy URL is now filled in for you, the same way a Building Controller's already was. It is built from the Relay's Campus Hub and the Relay's own hostname: a Relay on a local Campus Hub gets 'https://meds-hub.atrium.test/rly1-1/relay/', a Relay on the master Campus Hub (hub.atrium.test) gets 'https://meds-rly1-1.atrium.test/relay/'. Nothing about the rule is new — it is the Building Controller rule with the Relay's own short name and the '/relay/' path in place of '/campus/'."
+        },
+        {
+          "type": "added",
+          "description": "The field tells you where its value came from. 'Auto-generated from the Hostname and Campus Hub.' while it holds the generated URL, 'Manually edited.' from the first character you change, with a 'Reset to generated URL' link beside it to hand it back. A Relay hostname the rule cannot read says 'Could not be auto-generated from this hostname — enter the Proxy URL manually.' and leaves the field to you."
+        },
+        {
+          "type": "changed",
+          "description": "On the Relay details panel, changing the Campus Hub rewrites the Proxy URL straight away; renaming the Relay rewrites it when you Save. Picking a Campus Hub is one deliberate choice, while a hostname is typed a character at a time — the URL would flicker if it followed every keystroke. Either way, a Proxy URL you typed yourself is never overwritten."
+        },
+        {
+          "type": "changed",
+          "description": "On the Create Node form the Relay Proxy URL moved below Campus Hub Association, so it sits under the field it comes from — the same order the Building Controller section already used. It fills in as soon as the Relay hostname and its Campus Hub are both known, including when the Campus Hub is one you are creating in the same form or inherited from the Building Controller section."
+        },
+        {
+          "type": "changed",
+          "description": "Every existing Relay was given its generated Proxy URL, so no Relay opens with the field looking untouched or reading as hand-edited."
+        },
+        {
+          "type": "changed",
+          "description": "Unarchiving a Relay keeps a Proxy URL you had customised, and keeps following the hostname if you had left it as generated."
+        },
+        {
+          "type": "changed",
+          "description": "Campus Hubs are now the only node type whose Proxy URL is typed by hand."
+        },
+        {
+          "type": "added",
+          "description": "Manage → Building Controllers on a Campus Hub. The same add/remove checklist the Relay panel has, from the other end: tick a Building Controller to put it on this Campus Hub, untick one to take it off. Worth knowing before you save — a Building Controller only ever has one Campus Hub, so ticking one MOVES it off whatever it is on now, and unticking leaves it with none at all. Rows that would be a move carry a tag naming the Campus Hub they are on today, and the drawer spells out the consequences at the top."
+        },
+        {
+          "type": "added",
+          "description": "Because that is a real Campus Hub change, everything that normally follows one follows this too: faculties the new Campus Hub doesn't grant are dropped, Relay memberships that no longer share a Campus Hub are detached, Alert Service settles, and the Proxy URL regenerates — unless you had typed your own, which is left alone. Take a Building Controller off a Campus Hub entirely and it loses all its faculties and shows as 'No Faculties selected'."
+        },
+        {
+          "type": "fixed",
+          "description": "The Unarchive button on the Campus Hub unarchive drawer was greyed out and stayed that way, so an archived Campus Hub could be opened for unarchive but never actually restored. Building Controller and Relay unarchive were unaffected."
+        },
+        {
+          "type": "changed",
+          "description": "Node Type now sits above Hostname on the Building Controller side panel. The Create Node form already had it that way; the panel did not, so the two disagreed. Same order everywhere now."
+        },
+        {
+          "type": "fixed",
+          "description": "Relay Proxy URLs were being generated ending in '/relay/'. Every auto-generated Proxy URL ends in '/campus/' now, Building Controllers and Relays alike — so rvrs-rly1-1 reads https://rvrs-hub.atrium.test/rly1-1/campus/. Only the short name differs between the two rules. A Proxy URL you typed yourself is untouched."
+        },
+        {
+          "type": "changed",
+          "description": "Building Controller and Relay hostnames now all end in atrium.test, and the Hostname field takes care of it for you. You type the short name — 'rvrs-bc1-4' — and '.atrium.test' sits fixed at the end of the field, greyed out and not editable. Paste a full hostname in and it drops the domain rather than doubling it. This is on all four places a hostname is entered: the Building Controller and Relay side panels, and the Building Controller and Relay sections of Create Node. Campus Hubs are not part of this — their field is unchanged."
+        },
+        {
+          "type": "changed",
+          "description": "Every existing Building Controller and Relay was moved onto the new domain, so nothing opens with an old-looking hostname beside the new suffix — meds-bc101.campus.test is now meds-bc101.atrium.test, rvrs-bc1-3.legacy.test is rvrs-bc1-3.atrium.test, meds-rly1-1.legacy.test is meds-rly1-1.atrium.test. Two archived MEDS nodes whose old names only differed by their domain were renamed to meds-bc001-old and meds-bc002-old so no two nodes share a hostname. Campus Hubs were left alone."
+        },
+        {
+          "type": "changed",
+          "description": "Proxy URLs built from the master Campus Hub pick the new domain up automatically — a Building Controller on hub.atrium.test now reads https://meds-bc401.atrium.test/campus/. Which nodes can and can't have their Proxy URL generated has not changed: the ones with legacy short names still show the 'enter it manually' hint."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-02",
+      "changes": [
+        {
+          "type": "added",
+          "description": "The search results dropdown now tells you what each column holds. Every node type in the results — Building Controllers, Campus Hubs, Timetable Relays — opens with a header row carrying its icon, its name, and the names of the columns on the right: 'Faculties' and 'ID' for Building Controllers, 'ID' alone for Campus Hub and Relays. The number on the right of a result is the node's ID; until now nothing said so."
+        },
+        {
+          "type": "added",
+          "description": "A count line sits above the results: '8 results found:'."
+        },
+        {
+          "type": "changed",
+          "description": "Results are now a single line each, reading 'NORT > nort-bc1-2.atrium.test' with the part you typed shown in bold. They used to be two lines — the node name over its full path through the tree. Archived nodes carry the 'Archived' tag, Building Controllers show their faculty tags on the right (up to two, the rest folded into a '+N' you can hover), and every result shows its ID."
+        },
+        {
+          "type": "changed",
+          "description": "Only nodes appear in the results now. Campuses, faculties and the 'Campus Hubs' / 'Timetable Relays' section rows were being matched too, and could not be acted on."
+        },
+        {
+          "type": "fixed",
+          "description": "The master Campus Hub is shared by every campus, so it no longer shows a campus name in front of it."
+        },
+        {
+          "type": "fixed",
+          "description": "A node reachable from more than one selected campus is listed once instead of twice."
+        },
+        {
+          "type": "fixed",
+          "description": "Clicking back into the search field no longer closes the results."
+        },
+        {
+          "type": "added",
+          "description": "Escape closes the results without clearing what you typed, and a search that matches nothing now says 'No results found' instead of showing nothing."
+        },
+        {
+          "type": "fixed",
+          "description": "An archived Building Controller listed under Associated Building Controllers on a Campus Hub or Relay panel no longer offers a link that goes nowhere. While 'Show Archived Nodes' is off the node is not in the tree, so its navigate icon is now disabled and hovering it says to turn the filter on to view it. Turning the filter on restores the link."
+        }
+      ]
+    },
+    {
+      "date": "2026-09-01",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Campus Hubs and Relays can now be archived and unarchived, the same way Building Controllers already could. Archive sits under the Manage button and asks for confirmation; a node that still has an associated Building Controller cannot be archived, and the menu entry says why."
+        },
+        {
+          "type": "added",
+          "description": "The Campus Hub a Building Controller or a Relay belongs to is now a dropdown you can change on the details panel, instead of a value fixed at creation. The read-only Associated Campus Hub section stays as the navigable detail view."
+        },
+        {
+          "type": "changed",
+          "description": "Changing the Campus Hub carries consequences and Atrium applies them together: the old and new Campus Hub reciprocal lists are updated, faculties the new Campus Hub does not grant are removed, Relay memberships on a different Campus Hub are dropped, any Building Controller left with no Relay has Alert Service turned off, and the derived Proxy URL re-generates. When the change would strand something, Save asks first and names what it would break."
+        },
+        {
+          "type": "added",
+          "description": "Relay and Building Controller membership can be managed from either side, adding and removing, through the same searchable list with ADDING / REMOVING tags — replacing the add-only 'Add Building Controller' action."
+        },
+        {
+          "type": "added",
+          "description": "A Campus Hub grants its Building Controllers access to a set of faculties, shown read-only on the Campus Hub panel. Moving a Building Controller to a Campus Hub that does not grant one of its faculties removes that faculty; losing all of them leaves the node faculty-less rather than deleting it."
+        },
+        {
+          "type": "changed",
+          "description": "The tree filter is now 'Show Archived Nodes' — it covers all three node types, not just Building Controllers."
+        },
+        {
+          "type": "changed",
+          "description": "The Building Controller Proxy URL now re-generates when the Campus Hub changes, not only on a rename, and a Campus Hub change applies it immediately instead of waiting for Save."
+        }
+      ]
+    },
+    {
+      "date": "2026-08-31",
+      "changes": [
+        {
+          "type": "removed",
+          "description": "The Timetable Release check no longer applies to Registry Sync. Turning the switch off is never blocked — on the Building Controller panel, in bulk selection, or when cascading from a Campus — and the related inline messages and error toasts are gone. Archiving is unaffected: a Building Controller scheduled for a Timetable Release still cannot be archived until the deploy is cancelled."
+        },
+        {
+          "type": "fixed",
+          "description": "A Building Controller scheduled for a Timetable Release can no longer slip past the archive block when opened from a different faculty. Previously only one of its faculty entries carried the flag, so archiving from another branch of the tree was allowed."
+        },
+        {
+          "type": "changed",
+          "description": "Faculties are now optional when unarchiving a Building Controller. Unarchiving with none selected restores it as a Building Controller with no faculties — visible in the tree with the 'No Faculties selected' hint — instead of blocking with a warning. The field label stays 'Faculties (optional)' in both Create and Unarchive."
+        },
+        {
+          "type": "fixed",
+          "description": "The Registry Sync note on the bulk and Campus configuration panels now reads 'Use the filters' and responds to the Registry Sync filter as well as the Faculties filter. It previously claimed a change would update every Building Controller in a campus even when a filter was hiding some of them."
+        },
+        {
+          "type": "changed",
+          "description": "The requirements document was reconciled with the prototype. Contradictions were resolved (archived Building Controllers are selectable in bulk; Node Type is the second editable field, below Hostname), field types corrected (Bridge Service and Alert Service are switches, not dropdowns), Lab added alongside Standalone Campus and Connected Campus, the toast list completed, the load-time empty state documented, and the unbuilt 'Faculty-registered Rooms' modal section removed. The Proxy URL rules now point at the source document instead of restating it."
+        }
+      ]
+    },
+    {
+      "date": "2026-08-27",
+      "changes": [
+        {
+          "type": "fixed",
+          "description": "The Search bar in the page header now renders correctly. The magnifying-glass icon sits inside the field on its right edge instead of dropping below the field on its own line, and the field is vertically aligned with the Campus selector next to it again."
+        }
+      ]
+    },
+    {
+      "date": "2026-08-26",
+      "changes": [
+        {
+          "type": "added",
+          "description": "The Building Controller Proxy URL is now generated automatically from the associated Campus Hub and the Building Controller hostname, so it no longer has to be typed in. On a local Campus Hub it becomes https://<Campus Hub hostname>/<bc floor-number>/campus/; on the master Campus Hub (hub.atrium.test) it becomes https://<Building Controller hostname>/campus/. The rule depends only on which Campus Hub the Building Controller belongs to, never on its Node Type. Campus Hub and Relay Proxy URLs are unaffected — those stay manually entered."
+        },
+        {
+          "type": "changed",
+          "description": "Proxy URL moved below Campus Hub Association on the Create Node form, so it sits after the two fields it is generated from and fills in as soon as both are set — including while a new Campus Hub is being created in the same form. On Unarchive the archived value is prefilled."
+        },
+        {
+          "type": "added",
+          "description": "The generated Proxy URL stays editable and explains itself. A hint on the line below the field reads 'Auto-generated from the Hostname and Campus Hub' and switches to 'Manually edited' the moment you change a character, with a 'Reset to generated URL' link on that same line to put the generated value back. A Proxy URL you edited yourself is never overwritten."
+        },
+        {
+          "type": "changed",
+          "description": "Renaming a Building Controller from the details panel regenerates its Proxy URL when you click Save, rather than rewriting the field as you type. Renaming to a hostname the rule cannot read keeps the existing URL instead of clearing it."
+        },
+        {
+          "type": "added",
+          "description": "Hostnames the rule cannot read — legacy names such as engr-bc-studio.atrium.test with no bc<floor>-<n> pattern, or names that carry extra codes — are left blank with the hint 'Could not be auto-generated from this hostname — enter the Proxy URL manually.' Atrium never guesses a value; those are corrected by hand in the field."
+        },
+        {
+          "type": "added",
+          "description": "Existing Building Controllers now show a Proxy URL: 29 of the 40 seeded nodes have one generated from their Campus Hub association, and the 11 with legacy hostnames stay blank to show the manual case."
+        },
+        {
+          "type": "added",
+          "description": "Every Proxy URL field on the Building Controller, Campus Hub, and Timetable Relay panels has an open-in-new-tab button beside it — the same affordance as the Associated Campus Hub / Building Controller / Relay lists. It always opens the saved URL: editing the field does not re-point it, so a half-typed address can never be opened. It picks up your change when you click Save, and is greyed out when the saved Proxy URL is empty."
+        },
+        {
+          "type": "changed",
+          "description": "Hostname fields now show an example instead of 'Enter Hostname' — e.g. meds-bc1-4.atrium.test for Building Controllers, meds-hub.atrium.test for Campus Hubs, and meds-rly1-1.atrium.test for Timetable Relays."
+        },
+        {
+          "type": "changed",
+          "description": "Hostname is editable again from the details panel — on Building Controllers, Campus Hubs, and Timetable Relays. It is now the first field of the editable section on all three panels, instead of a read-only value in the information grid."
+        },
+        {
+          "type": "added",
+          "description": "A Campus Hub's Hostname can only be renamed while no Building Controller is associated with it. When the Campus Hub has associated Building Controllers the field is read-only, with a hint below it — 'Remove all associated Building Controllers to edit.' Every other field on the panel stays editable."
+        },
+        {
+          "type": "added",
+          "description": "New spare Campus Hub on MEDS — meds-hub2.atrium.test, with no Building Controllers registered on it yet. It is the one Campus Hub that shows an editable Hostname; every other Campus Hub has associated Building Controllers and is therefore read-only."
+        },
+        {
+          "type": "added",
+          "description": "Hostname edits are validated the same way as the Create Node form: an empty value shows 'Hostname is required.' and a name already taken by another node (Building Controller, Campus Hub, or Relay — including archived ones) shows 'Hostname is already in use.' Both block the save."
+        },
+        {
+          "type": "added",
+          "description": "Renaming a node updates everywhere it is referenced. A renamed Building Controller keeps its place in the Associated Building Controllers lists of its Campus Hub and Timetable Relays, and a renamed Campus Hub carries through to the Campus Hub Association shown on its Building Controllers and Timetable Relays."
+        }
+      ]
+    },
+    {
+      "date": "2026-07-29",
+      "changes": [
+        {
+          "type": "fixed",
+          "description": "Newly created Building Controllers now start with Registry Sync disabled. Previously the toggle showed as Enabled right after creation, even though the Create Node form has no Asset Registry field — access must be granted explicitly afterwards from the side panel, the campus cascade, or bulk mode."
+        },
+        {
+          "type": "changed",
+          "description": "Hostname is now read-only on the Building Controller side panel and is the first field shown, above IP Address — matching the Campus Hub and Relay panels. It is set on creation (or unarchive) and can no longer be edited from the details panel."
+        },
+        {
+          "type": "added",
+          "description": "Requirements now document what the Export button is for: ad-hoc housekeeping lists of nodes (for example the set being updated, or information requested by the service desk) that can be taken offline. The same data is available from the telemetry dashboards, so the export is a convenience rather than the system of record."
+        }
+      ]
+    },
+    {
+      "date": "2026-07-22",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Proxy URL is now editable directly from the details panel for Building Controllers, Campus Hubs, and Timetable Relays. On Building Controllers it sits right after Hostname; on Campus Hub and Timetable Relays it is the first editable field — matching the order and validation of the Create Node form."
+        },
+        {
+          "type": "changed",
+          "description": "Archiving a Building Controller no longer turns off its Registry Sync setting — the node keeps whatever value it had."
+        },
+        {
+          "type": "changed",
+          "description": "The Configuration panel (Registry Sync) now stays visible and editable on the side panel for archived Building Controllers, instead of being hidden."
+        }
+      ]
+    },
+    {
+      "date": "2026-07-17",
+      "changes": [
+        {
+          "type": "added",
+          "description": "New campus SOUT — a fully empty campus (no Building Controllers, Campus Hubs or Relays). It appears in the Campus multi-select and renders with an empty-state message."
+        },
+        {
+          "type": "added",
+          "description": "Archiving a building controller that is scheduled for a Timetable Release is now blocked with an error toast ('This Building controller is scheduled for Timetable Release. Cancel the deploy before archiving.'). This validation applies to archiving only — disabling Registry Sync stays unrestricted."
+        },
+        {
+          "type": "changed",
+          "description": "Empty states across the prototype now use a single consistent icon (the tray glyph) instead of a mix of different icons."
+        },
+        {
+          "type": "changed",
+          "description": "Empty-state copy is now context-aware: a genuinely empty campus shows 'No Data' / 'This Campus has no data yet', while a campus whose building controllers are hidden by the active filters shows 'No Building Controllers Match Filters' / 'Adjust the filters to see results'."
+        },
+        {
+          "type": "fixed",
+          "description": "Toast notifications now use the correct design-system semantic icons (checkmark for success, warning triangle for warning, and the standard error icon) instead of plain text characters."
+        }
+      ]
+    },
+    {
+      "date": "2026-07-16",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Selecting campuses no longer auto-selects a node. The tree loads with nothing selected and the details panel shows an empty message — 'Select item(s) in the tree to load options'. Filter changes, reset filters, and clearing a selection all return to this empty state instead of jumping to the first campus."
+        },
+        {
+          "type": "added",
+          "description": "Clear Selection button now appears whenever a Campus is selected (its highlight cascades across all the campus's building controllers), giving a one-click way to drop back to the empty state — matching the bulk-selection affordance."
+        },
+        {
+          "type": "removed",
+          "description": "Removed the 'scheduled for Timetable Release' validation that blocked disabling Registry Sync, on both the single building controller panel and bulk configuration. Registry Sync can now be disabled freely."
+        },
+        {
+          "type": "changed",
+          "description": "Tree now lists campuses alphabetically regardless of the order they were selected in."
+        },
+        {
+          "type": "changed",
+          "description": "Unarchive drawer title now names the campus — 'Unarchive Building Controller for <Campus>' — matching the Create Node wording."
+        },
+        {
+          "type": "fixed",
+          "description": "An empty campus (all its faculties filtered out) now correctly shows Registry Sync as 'Unavailable'. Previously it could show 'Enabled' when another selected campus had matching results."
+        },
+        {
+          "type": "fixed",
+          "description": "Create Node drawer no longer shows a stray divider line at the top of the form when the Campus field is hidden (Manage, Unarchive, and single-campus entries). The divider only appears when the Campus field is visible above it."
+        }
+      ]
+    },
+    {
+      "date": "2026-07-08",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Bulk Configuration panel (2+ selected nodes) now uses the standard Save / Discard Changes footer instead of a dedicated 'Apply' button. Save runs the same effective-set cascade (with Timetable Release validation); Discard Changes reverts the Asset Registry toggle to its saved state. Both follow the shared dirty-state model — disabled until the toggle differs from the captured state."
+        },
+        {
+          "type": "changed",
+          "description": "Selecting a single Campus now shows the 'Bulk Configuration (N Building Controllers)' header (N = the campus's active building controllers) instead of 'Campus Details', treating a campus selection as a bulk configuration of its building controllers."
+        },
+        {
+          "type": "changed",
+          "description": "Bulk Configuration title now shows a single effective building-controller count — 'Bulk Configuration (N Building Controllers)' — for campus, building-controller, and mixed selections, replacing the previous 'N Campuses, M Building Controllers' breakdown."
+        },
+        {
+          "type": "removed",
+          "description": "Removed the standalone bulk 'Apply' button and its fixed footer; bulk configuration is committed through the shared side-panel Save button."
+        }
+      ]
+    },
+    {
+      "date": "2026-06-18",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Campus panel Registry Sync toggle gains a fourth 'Unavailable' state — when the active tree filters (Faculties and/or Registry Sync) narrow the campus to zero non-archived building controllers, the input is disabled, the label reads 'Unavailable', and the info notice swaps to 'No building controllers match the current filters, so Registry Sync cannot be changed for this campus. Adjust the Faculties or Registry Sync filter to enable changes.'"
+        },
+        {
+          "type": "changed",
+          "description": "Campus panel Registry Sync aggregate state now considers BOTH the Faculties filter and the Registry Sync filter (Enabled/Disabled/All), not just Faculties. The toggle reflects the Building Controllers visible under the current filters: picking 'Enabled' shows the toggle as Enabled, 'Disabled' shows Disabled, combined narrows compose, and zero matches → Unavailable."
+        },
+        {
+          "type": "changed",
+          "description": "Campus panel Asset Registry cascade on Save now writes only to building controllers visible under the current tree filters (Faculties ∩ Registry Sync). Previously the cascade respected only the Faculties filter; archived nodes continue to be untouched."
+        },
+        {
+          "type": "changed",
+          "description": "Campus panel Asset Registry cascade notice copy unified — when any filter is narrowed (Faculties narrowed OR Asset Registry filter ≠ All), the notice reads '…that match the current filters.' (was '…that match the current Faculties filter.'); the all-defaults copy now reads 'Use the filters to limit changes to a specific subset.' Multi-campus 'this campus' / 'a campus / that campus' wording is preserved on top."
+        },
+        {
+          "type": "changed",
+          "description": "Subheader Campus multi-select now exposes the search input (searchable: true) to match the Faculties multi-select, so both subheader scope dropdowns share the same dropdown layout (search input + Select All/None controls + list)."
+        },
+        {
+          "type": "fixed",
+          "description": "ProjMultiSelect plugin: Select All / None links now respect the active search term — they operate only on the items currently visible in the filtered list. When no search is active behavior is unchanged (selects/clears every item). Affects every prototype that uses the plugin."
+        },
+        {
+          "type": "changed",
+          "description": "Requirements document updated to v2.15 — FR-P2-05 rewritten to describe the four-state toggle, both-filter scoping, and the new empty-state notice copy."
+        }
+      ]
+    },
+    {
+      "date": "2026-06-17",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Campus Type renamed to Node Type and moved from the Campus side panel onto the Building Controller. Now editable on the Building Controller side panel and on the Create Node form (Building Controller section), positioned as the first field above Hostname. Pre-filled on Unarchive from the archived building controller's stored value."
+        },
+        {
+          "type": "changed",
+          "description": "Campus side panel now shows only the Configuration section. Campus Info (campus name + campus type) section removed entirely from the markup and rendering logic."
+        },
+        {
+          "type": "changed",
+          "description": "Node Type field on the Create Node form starts empty and is required — Save is blocked until the user picks a value (matches Hostname / IP / Description / Location). Side panel Save also blocks with inline + toast error when Node Type is cleared."
+        },
+        {
+          "type": "added",
+          "description": "Per-Building-Controller `serverType` property on the Building Controller data model. Existing seed data is backfilled at load time (`_backfillServerType` IIFE in config-data.js) from the previous campus-level value so every Building Controller starts with a sensible Node Type."
+        },
+        {
+          "type": "changed",
+          "description": "Internal rename: `siteTypesData` → `serverTypesData`, `getSiteType` → `getServerType`, `getSiteTypeLabel` → `getServerTypeLabel`. The Campus Hub Association option label format (`hostname (Standalone Campus)`) and other internal callers use the new names. Dead `#assocGHDSSiteType` / `#assocGHServerType` / `#ghdsSiteType` populator blocks (referencing IDs that don't exist in markup) cleaned up while renaming."
+        },
+        {
+          "type": "changed",
+          "description": "CSV export Campus Type column renamed to Node Type and now reflects each building controller's stored value."
+        },
+        {
+          "type": "changed",
+          "description": "Campus panel Registry Sync cascade notice now adapts wording to multi-campus context: when the header has 2+ campuses selected, the copy switches from \"this campus\" to \"a campus / that campus\" so the cascade scope is unambiguous as the user browses across campuses. The Faculties-filter narrowed/default split is preserved on top, yielding four total strings — single-campus default, single-campus narrowed, multi-campus default, and multi-campus narrowed."
+        },
+        {
+          "type": "added",
+          "description": "Bulk Configuration panel for campus bulk-selection now shows the Asset Registry cascade notice above the Registry Sync toggle (`#bulkFSNApiCallsNotice`). Copy mirrors the per-campus multi-campus wording (\"a campus / that campus\") and swaps to the narrowed variant when the Faculties filter narrows the union of available faculties across the bulk-selected campuses. The notice stays hidden for building-controller bulk-selection (cascade explanation isn't relevant there)."
+        },
+        {
+          "type": "changed",
+          "description": "Faculties filter now narrows each building controller's visible tag strip in the tree, not just which rows appear. When the filter is narrowed, only the in-filter faculties render as visible tags on a row; the building controller's other faculties fold into the `+N` overflow badge and surface in its hover popover (the same popover used for width-overflowed tags). The popover always carries the full sorted faculty set so users still see complete membership on hover. When the filter is at \"all selected\", behavior is unchanged."
+        },
+        {
+          "type": "removed",
+          "description": "\"Show Faculties\" checkbox removed from the tree section header. Faculty tags are now always shown on building controller rows — the new Faculties-filter-aware tag partition makes the toggle redundant. Reset Filters detection and tree-filter wiring updated accordingly."
+        },
+        {
+          "type": "changed",
+          "description": "Tree selection now uses a hands-free model, the same as Manage Devices. Plain click on a Campus cascades the `.tree__node--selected` highlight to every active Building Controller under it (visual only — side panel still shows the Campus's Configuration section). Plain click on a Building Controller stays single-select. Cmd/Shift bulk-selection now allows Campuses and Building Controllers to coexist in the same set (the previous kind-lock is lifted); the bulk panel title becomes \"Bulk Configuration (A Campuses, B Building Controllers)\" for mixed sets. Shift+hover paints a `.tree__node--range-preview` ahead of commit; ESC clears the bulk. Apply uses an effective set — the union of directly-picked Building Controllers and every active Building Controller under any picked Campus (de-duplicated) — and the Timetable Release guard still runs per Building Controller. Only the Configuration section (Registry Sync) is editable in bulk."
+        }
+      ]
+    },
+    {
+      "date": "2026-06-10",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Manage Faculties drawer: when the user removes every faculty from a building controller and clicks Save, an archive confirmation popover appears anchored to the Save button — 'By removing all faculties from <hostname>, it will become archived. Are you sure you want to archive this Building Controller?'. Confirm runs the standard archive flow (archives across the full everAssociated history; Registry Sync is forced off by the Registry Sync rules); Cancel keeps the drawer open with the current selections"
+        },
+        {
+          "type": "added",
+          "description": "Empty state on the Manage Faculties and Add Building Controller drawer search — when the filter zeroes the visible list, a design-system empty state appears in place of the checklist (magnifyingglass icon, 'No Faculties available' / 'No Building Controllers available')"
+        },
+        {
+          "type": "changed",
+          "description": "Search placeholder on both checklist drawers updated to 'Search Faculties' / 'Search Building Controllers' (was 'Search Items' / 'Search <Item>...')"
+        },
+        {
+          "type": "changed",
+          "description": "Selection counter on both checklist drawers updated to 'N Faculties Selected' / 'N Building Controllers Selected' (was 'N Items Selected' / 'N selected')"
+        },
+        {
+          "type": "removed",
+          "description": "Timetable Relay info box (Hostname / IP / Campus Hub) removed from the Add Building Controller drawer — the drawer now opens directly on the building controller checklist"
+        },
+        {
+          "type": "removed",
+          "description": "'Select Building Controllers' section title removed from the Add Building Controller drawer — the column header in the checklist already labels the list"
+        },
+        {
+          "type": "changed",
+          "description": "Alert Service help text on the building controller side panel no longer prefixes 'Disabled:' when Relay is missing — now reads 'Requires Relay connection to enable Alert service.' to match the Create Node form copy"
+        },
+        {
+          "type": "changed",
+          "description": "Faculties field on the Create Building Controller form is now optional — label reads 'Faculties (optional)', the Save button no longer requires a selection, and the 'Select at least one faculty' submit guard is removed"
+        },
+        {
+          "type": "added",
+          "description": "Faculty-less building controllers (created with zero faculties) are stored in a new orphanLineServersData[campus] bucket and merged into the tree by buildAllServersTree so they remain visible and manageable. The tree row and the side-panel 'Associated Faculties' field render an italic 'No Faculties selected' hint where the faculty tags would normally appear. Adding a faculty via Manage Faculties promotes the orphan into the regular per-project structure"
+        },
+        {
+          "type": "fixed",
+          "description": "Manage Faculties 'remove all → archive' popover now also requires that the building controller had at least one faculty to start with — saving Manage Faculties on an already-orphan building controller no longer triggers the archive confirm"
+        },
+        {
+          "type": "changed",
+          "description": "Unarchive Building Controller: the Faculties field label drops the '(optional)' suffix while in unarchive mode (the user must pick at least one faculty to reactivate the node). The label is restored to 'Faculties (optional)' when leaving unarchive mode"
+        }
+      ]
+    },
+    {
+      "date": "2026-06-03",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Proxy URL field (optional) added to the Campus Hub and Relay Create Node form sections, positioned directly under Hostname"
+        },
+        {
+          "type": "added",
+          "description": "Proxy URL added to the Campus Hub and Relay side panels and to the Associated Campus Hub section on the Building Controller and Relay panels (read-only). Sample Proxy URL values seeded on all Campus Hub and Relays, backfilling the previously empty RVRS and HLSD Campus Hub entries"
+        },
+        {
+          "type": "added",
+          "description": "Campus side panel now has a Configuration section with a Registry Sync toggle that cascades the setting to every active (non-archived) Building Controller of the campus on Save. The toggle is tri-state — Enabled (all on), Disabled (all off), or Mixed (some on, some off, shown as an amber indeterminate switch) — with an info notification explaining the cascade"
+        },
+        {
+          "type": "changed",
+          "description": "Proxy URL positioned immediately after Hostname on every side panel that shows it (first read-only field on the Building Controller panel, where Hostname is editable)"
+        },
+        {
+          "type": "changed",
+          "description": "Building Controller 'Pass-Through URL' relabeled 'Proxy URL' on both the side panel and the Create Node form, and the field is now a manually entered value — no longer auto-generated from the hostname"
+        },
+        {
+          "type": "changed",
+          "description": "Cross-campus NORT Campus Hub no longer duplicated in the tree — when NORT is also selected, a referenced NORT Campus Hub appears only under NORT instead of also appearing under the referencing campus's Campus Hub section"
+        },
+        {
+          "type": "changed",
+          "description": "Campus Hub navigate (go-to-node) links are now enabled whenever the target node's campus is present in the current tree (previously only same-site or NORT), applied consistently to Campus Hub Association and Associated Campus Hub links"
+        },
+        {
+          "type": "changed",
+          "description": "Archived building controllers always report Registry Sync as off so they all appear under the 'Disabled' Asset Registry filter; the toggle itself remains hidden on archived panels"
+        },
+        {
+          "type": "changed",
+          "description": "Tree filters moved back inline into the tree section header — removed the 'Filters' popover button and active-filter badge. Header now shows Registry Sync, Show Archived Building Controllers, and Show Faculties with a reset button; the 'Faculties' filter was relabeled 'Show Faculties'"
+        },
+        {
+          "type": "changed",
+          "description": "Tree section title changed to 'Filters', and spacing between the header filters increased"
+        },
+        {
+          "type": "changed",
+          "description": "Campus Configuration section placed at the top of the campus panel with its info notification above the toggle"
+        },
+        {
+          "type": "changed",
+          "description": "Proxy URL is now rendered as a clickable navigable link (link icon, opens in a new tab) on every side panel that shows it — matching the earlier Manage Infrastructure style — instead of plain text"
+        },
+        {
+          "type": "changed",
+          "description": "Requirements document updated with the Proxy URL relabel/placement, Campus Hub/Relay Proxy URL fields, campus-level Asset Registry cascade, cross-campus NORT Campus Hub de-duplication, navigate-link rule, archived Asset Registry-off filtering, and the inline tree-header filters"
+        },
+        {
+          "type": "fixed",
+          "description": "Alert Service label typo on the Create Node form (was 'Alert Sevice')"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-25",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Side panel Save and Discard Changes buttons now follow a dirty-state model — both are disabled when a node is first selected and only enable when any editable field (text, switch, checkbox, or campus-type select) differs from the captured snapshot. Saving or discarding re-syncs the snapshot and disables the buttons again. Includes the Configuration toggles (Manage on Atrium, Registry Sync)"
+        },
+        {
+          "type": "changed",
+          "description": "Disabling the Discard Changes button also blocks its popover from opening (native <button disabled> suppresses click events) — users cannot pop the confirm dialog when there is nothing to discard"
+        },
+        {
+          "type": "changed",
+          "description": "Side panel Save toast simplified and made type-aware — now reads 'Building Controller updated.', 'Campus Hub updated.', 'Timetable Relay updated.', or 'Campus updated.' depending on which panel was edited (was '<hostname> information saved successfully')"
+        },
+        {
+          "type": "changed",
+          "description": "Side panel Discard toast made type-aware to match — now reads 'Building Controller changes discarded.', 'Campus Hub changes discarded.', 'Timetable Relay changes discarded.', or 'Campus changes discarded.' (was 'Changes to <hostname> discarded')"
+        },
+        {
+          "type": "added",
+          "description": "Close-confirmation popover on the Create Node drawer swaps copy when opened in unarchive mode — header becomes 'Stop Unarchiving' and body becomes 'All changes made to this building controller will be lost. Are you sure you want to stop unarchiving?'. Original 'Close Node Creation' copy is restored when leaving unarchive mode"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-20",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Timetable Release Validation: Manage on Atrium and Registry Sync toggles cannot be flipped from ON → OFF on a building controller scheduled for a Timetable Release. Inline error appears below the affected toggle and a blocking error toast is shown on Save (side panel) and Apply (bulk). Only ON → OFF flips trigger the check — turning a toggle ON, archiving, or saving with no toggle change skip it"
+        },
+        {
+          "type": "added",
+          "description": "Sample Timetable Release data: 5 building controllers across NORT, HLSD, MEDS, RVRS flagged via a new `usedBy` field (driven by `_serversInUse` in config-data.js) so the validation is demoable"
+        },
+        {
+          "type": "added",
+          "description": "Bulk Apply runs the Timetable Release check per Building Controller — mixed-state bulks where some nodes are already OFF still catch the specific ones being turned off. Single-blocker error names the Building Controller, multi-blocker error lists all blocked hostnames"
+        },
+        {
+          "type": "added",
+          "description": "Tree row configuration indicators: each building controller row now shows two icons (Manage on Atrium = square-and-pencil, Registry Sync = app-connected-to-app-below-fill) — green when enabled, dark when disabled. Same icon set mirrored on the Configuration toggle labels in the side panel and on the new filter dropdowns"
+        },
+        {
+          "type": "changed",
+          "description": "Tree filters reorganized: Manage on Atrium, Registry Sync, and Archived filters moved into a `proj-popover-editor` popover triggered by a new 'Filters' button with a count badge for active filters. Only the Faculties checkbox stays inline in the tree section header"
+        },
+        {
+          "type": "changed",
+          "description": "Archived building controllers excluded from bulk selection. Archived rows render disabled during bulk mode with a dedicated dark popover tooltip: 'Archived building controllers cannot be selected in bulk mode'"
+        },
+        {
+          "type": "changed",
+          "description": "Archiving a building controller now forces both Configuration toggles (Manage on Atrium, Registry Sync) to OFF on every archived copy"
+        },
+        {
+          "type": "changed",
+          "description": "Configuration section is hidden on archived building controller panels; panel Save and bulk Apply never overwrite Configuration values on archived copies. Tree row indicator dots always render OFF (gray) for archived nodes regardless of any stale stored value"
+        },
+        {
+          "type": "changed",
+          "description": "Requirements document updated with FR-P2-04 (Timetable Release Validation), revised FR-P2-01 (archived configuration locked), and revised FR-P2-02 (archived building controllers excluded from bulk selection)"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Configuration toggles wired into the building controller Save/Discard cycle — Manage on Atrium and Registry Sync now participate in `captureEditableSnapshot`/`restoreEditableSnapshot`/`commitEditableFields` so changes persist on Save and revert correctly on Discard"
+        },
+        {
+          "type": "changed",
+          "description": "Configuration section now shown only for active building controllers — hidden on archived building controllers and on Campus Hub/Relay/Campus selections"
+        },
+        {
+          "type": "changed",
+          "description": "Manage on Atrium and Registry Sync switch labels now toggle between 'Enabled' and 'Disabled' as the user flips the switch (matches the Alert Service pattern)"
+        },
+        {
+          "type": "changed",
+          "description": "Manage on Atrium help text rewritten: 'On other pages, enabled Building Controllers are visible to users who are not Campus IT Admins and the faculties within them can be managed by Atrium.'"
+        },
+        {
+          "type": "changed",
+          "description": "Unarchive toast simplified to 'Building Controller Unarchived' (was 'X unarchived — restored to N faculty(s)')"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Location field on Campus Hub — visible on Create Node form, editable on Campus Hub side panel, and read-only in the Associated Campus Hub sections of the Building Controller and Relay panels"
+        },
+        {
+          "type": "changed",
+          "description": "Energy Saver and Exam Lockdown checkbox labels on the Building Controller side panel updated to match the Create Node form: 'Enable Energy Saver' and 'Classify as an Exam Lockdown controller'"
+        },
+        {
+          "type": "changed",
+          "description": "Energy Saver and Exam Lockdown checkboxes reordered on the Building Controller side panel to Exam Lockdown first, Energy Saver second — matching the Create Node form"
+        },
+        {
+          "type": "changed",
+          "description": "ADDING/REMOVING status tags in the Manage Faculties drawer changed to semantic colors and smaller size: ADDING is green (tag--tiny tag--success), REMOVING is red (tag--tiny tag--danger)"
+        },
+        {
+          "type": "changed",
+          "description": "Relay Association multi-select on Create Node form refactored to use the shared ProjMultiSelect plugin — consistent with the Faculties field and removes the custom dropdown implementation"
+        },
+        {
+          "type": "changed",
+          "description": "Description and Location promoted to required fields across all node types (Building Controller, Campus Hub, Relay). '(optional)' label removed from Create Node form, 'Optional' placeholder/setting-note removed from side panels. Blur validation shows inline 'Field is required.' error; Save button disabled until filled on the Create form; details-panel Save shows inline + toast error and blocks save when empty"
+        },
+        {
+          "type": "fixed",
+          "description": "Alert Service toggle now correctly resets to OFF and disables when the Campus Hub selection changes (previously selected Relay is cleared) on both the Create Node and Unarchive Building Controller forms"
+        },
+        {
+          "type": "changed",
+          "description": "Requirements document updated to v2.10 with required-field promotion for Description and Location across Building Controller, Campus Hub, and Relay node types"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-12",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Configuration section: new collapsible 'CONFIGURATION' section at the top of the Building Controller details panel with two switches — Manage on Atrium (default ON, controls visibility for users who are not Campus IT Admins and Atrium faculty management) and Registry Sync (default ON, controls Asset Registry communication access)"
+        },
+        {
+          "type": "added",
+          "description": "Bulk Selection Mode: always-on multi-select via Cmd+Click (Mac) / Ctrl+Click (Windows) and Shift+Click range selection. Single click without modifier exits bulk mode and selects the node normally"
+        },
+        {
+          "type": "added",
+          "description": "Bulk Configuration panel replaces the details panel when 2+ building controllers are selected — title 'Bulk Configuration (N Building Controllers)' with the same two Configuration toggles. Switches show unchecked + 'Mixed' label when selected nodes disagree on a value"
+        },
+        {
+          "type": "added",
+          "description": "Bulk info bar at the top of the tree with keyboard shortcut hints and a Clear Selection button (shown when >1 node is selected). Manage dropdown is hidden during bulk mode"
+        },
+        {
+          "type": "added",
+          "description": "'Apply' button in bulk panel commits Configuration changes to all selected nodes across data sources, re-renders the tree, and shows a success toast. Disabled until at least one switch differs from the initial bulk state"
+        },
+        {
+          "type": "added",
+          "description": "Nodes other than Building Controllers (Campus Hub, Relay, Campus, Node Category) appear disabled with a dark popover tooltip during bulk selection: 'Only building controllers can be selected in bulk mode'"
+        },
+        {
+          "type": "added",
+          "description": "Tree filter dropdowns: 'Managed: All/Enabled/Disabled' and 'Asset Registry: All/Enabled/Disabled' compact dropdowns (`form-select--table-cell`) added to the tree section header alongside the existing Faculties/Archived checkboxes. Filters apply AND logic and changing a filter clears any active bulk selection"
+        },
+        {
+          "type": "added",
+          "description": "Reset Filters icon button in the tree section header — disabled when all filters are at defaults; click restores all filters to defaults and re-renders the tree"
+        },
+        {
+          "type": "added",
+          "description": "Filter empty state: when no building controllers match the active Manage on Atrium + Registry Sync + Archived filters, an inline empty state row replaces the building controller list while Campus Hub/Relay sections still render below"
+        },
+        {
+          "type": "changed",
+          "description": "Requirements document updated with a new section: FR-P2-01 (Configuration Section), FR-P2-02 (Bulk Selection Mode), FR-P2-03 (Tree Filters for Configuration Properties)"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-11",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Form validation with inline error messages for required fields (Hostname, IP) on blur — error only appears when a field had a value that was then cleared"
+        },
+        {
+          "type": "added",
+          "description": "IP format validation on the Create Node form — shows 'Invalid IP Address' on blur for non-IPv4 values"
+        },
+        {
+          "type": "added",
+          "description": "Duplicate hostname and IP checking on save — inline field error plus error toast when a hostname or IP already exists across all node data"
+        },
+        {
+          "type": "added",
+          "description": "Error toast variant support — showToast() now accepts a type parameter (success, error, warning) with matching design-system notification styling"
+        },
+        {
+          "type": "added",
+          "description": "Multi-select fields show gray design-system tags with dismiss (×) button for each selected item, with +N overflow badge when tags exceed one line"
+        },
+        {
+          "type": "added",
+          "description": "Hostname required validation on the details panel — shows inline error on blur when hostname is cleared"
+        },
+        {
+          "type": "changed",
+          "description": "Reordered Building Controller form: Hostname → Pass-Through URL → IP → Campus Hub → Faculties → Relay → Exam Lockdown → Energy Saver → Description → Location → Alert"
+        },
+        {
+          "type": "changed",
+          "description": "Updated form field labels, placeholders, and help texts across all Create Node sections to match design spec"
+        },
+        {
+          "type": "changed",
+          "description": "Manage menu items shortened — action verb prefix removed from items (label serves as context, e.g., 'Create' label + 'Building Controller' item)"
+        },
+        {
+          "type": "changed",
+          "description": "Archived Building Controller menu label renamed from 'Restore' to 'Unarchive'"
+        },
+        {
+          "type": "changed",
+          "description": "Toast messages rephrased: creation shows '<Type> created' (e.g., 'Building Controller created', 'Building Controller and Campus Hub created'), manage faculties shows 'Faculties Updated for Building Controller', archive shows 'Building Controller Archived'"
+        },
+        {
+          "type": "changed",
+          "description": "Removed 'Success:' and 'Error:' prefixes from all toast notifications"
+        },
+        {
+          "type": "removed",
+          "description": "Network protocol/transport read-only fields removed from all Create Node form sections"
+        },
+        {
+          "type": "removed",
+          "description": "Required field asterisks removed from form labels"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-08",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Pass-Through URL changed from read-only auto-generated text to an editable input field on the Create Node form"
+        },
+        {
+          "type": "changed",
+          "description": "Pass-Through URL moved up in form layout — now directly below Hostname for better discoverability"
+        },
+        {
+          "type": "changed",
+          "description": "Pass-Through URL auto-fills from hostname but allows manual override — manual edits are preserved even if hostname changes"
+        },
+        {
+          "type": "changed",
+          "description": "Pass-Through URL now stored on node data and displayed from stored value in details panel, with fallback to computed URL"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-06",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Merged 'Add Faculty' and 'Remove Faculty' into a single 'Manage Faculties' action — unified drawer shows all campus faculties with ADDING/REMOVING status tags"
+        },
+        {
+          "type": "added",
+          "description": "Manage Faculties drawer includes search filter, sort toggle, select-all checkbox with indeterminate state, and 'N Items Selected' count"
+        },
+        {
+          "type": "changed",
+          "description": "Archive Building Controller changed from drawer confirmation to inline design-system popover on the Manage button with node hostname in message"
+        },
+        {
+          "type": "changed",
+          "description": "Unarchive Building Controller now opens the Create Node drawer in unarchive mode — pre-fills all fields from archived node, hides Campus Hub/Relay sections, changes button to 'Unarchive'"
+        },
+        {
+          "type": "added",
+          "description": "Close confirmation popover on Create Node drawer — warns about unsaved data with 'Keep Creating' and 'Yes, Close' options. Skips confirmation when form is clean"
+        },
+        {
+          "type": "added",
+          "description": "Bidirectional Campus Hub sync between Relay and Building Controller — Relay Campus Hub selection now propagates back to Building Controller Campus Hub field (in addition to existing Building Controller→Relay sync)"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-30",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Campus Hub Association is now a required field on the Create Node form — form validation blocks submission and Save button stays disabled without a Campus Hub selection"
+        },
+        {
+          "type": "changed",
+          "description": "Relay Campus Hub field now inherits Building Controller Campus Hub selection — auto-filled and disabled when Building Controller has a Campus Hub selected, restores independent dropdown when cleared"
+        },
+        {
+          "type": "changed",
+          "description": "Faculties dropdown moved below Campus Hub Association and disabled until a Campus Hub is selected"
+        },
+        {
+          "type": "changed",
+          "description": "Building controller icon indicator on faculty items now scoped to the selected Campus Hub — shows faculties with nodes connected to that specific Campus Hub, not any node on the campus"
+        },
+        {
+          "type": "changed",
+          "description": "Campus Hub-scoped indicator applied across all faculty listings: Create Node form and Add Faculty manage action drawer"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-29",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Alert Service now requires Relay connection to enable (was Campus Hub). Updated on both Create Node form and Building Controller details panel"
+        },
+        {
+          "type": "changed",
+          "description": "Alert Service changed from dropdown select to switch (ON/OFF) on Building Controller details panel"
+        },
+        {
+          "type": "changed",
+          "description": "Alert Service help text displayed below the switch instead of beside it"
+        },
+        {
+          "type": "changed",
+          "description": "Unarchive action now includes a faculty selection step — user chooses which faculties to restore the node to"
+        },
+        {
+          "type": "added",
+          "description": "Checklist toolbar for all action drawers (Add Faculty, Remove Faculty, Unarchive, Add Building Controller to Relay) with search filter, select-all checkbox with indeterminate state, and selected count"
+        },
+        {
+          "type": "changed",
+          "description": "Tree filter changes now preserve current selection. Only resets to campus when an archived node is selected and archived filter is disabled"
+        },
+        {
+          "type": "added",
+          "description": "Campus Hub Association help text now shows 'NORT nodes also included' when selected campus is not NORT"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Standalone Campus-specific warning from Campus Hub Association field in Create Node form"
+        },
+        {
+          "type": "removed",
+          "description": "Removed toast confirmation message after CSV export"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed Associated Campus Hub section showing wrong Campus Hub — substring match (includes) replaced with startsWith (indexOf===0)"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed RVRS campus missing building controllers — added 3 building controllers matching Relay child data"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed RVRS Campus Hub missing fields (description, associatedLineServers, passThroughURL, bridgeService)"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed HLSD Campus Hub incorrectly claiming hlsd-bc201 which points to NORT master Campus Hub"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed MEDS LAW and GENERAL faculty copies missing Energy Saver and Exam Lockdown properties"
+        },
+        {
+          "type": "changed",
+          "description": "Requirements document updated to v2.6 with Alert Relay dependency, unarchive faculty selection, filter persistence, checklist toolbar"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-23",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Prototype renamed from 'New Manage Building Controllers' to 'Manage Infrastructure' — folder, navigation, HTML title, CSS classes, and documentation all updated"
+        },
+        {
+          "type": "added",
+          "description": "NORT Campus Hubs referenced by a campus's building controllers now appear in the campus's Campus Hubs tree section with a blue 'NORT' tag badge"
+        },
+        {
+          "type": "added",
+          "description": "Campus field added to Campus Hub details panel and Associated Campus Hub section — shows blue tag when cross-campus NORT"
+        },
+        {
+          "type": "added",
+          "description": "Campus Hub dropdown in Create Node form shows '(NORT)' suffix for NORT nodes when viewing non-NORT campuses"
+        },
+        {
+          "type": "added",
+          "description": "Associated Building Controllers list groups nodes by campus with section headers when spanning multiple campuses"
+        },
+        {
+          "type": "added",
+          "description": "Cross-campus building controllers in associated lists have disabled navigate icon with tooltip explaining they belong to another campus"
+        },
+        {
+          "type": "changed",
+          "description": "NORT Campus Hub navigate icons enabled from all campuses — nodes are now present in the tree"
+        },
+        {
+          "type": "changed",
+          "description": "`_lsForGhds()` now scans all campuses' building controller data (not just NORT) to include cross-campus references in `associatedLineServers`"
+        },
+        {
+          "type": "changed",
+          "description": "Orphaned hostnames in associated building controller lists (not found in any campus data) are filtered out"
+        },
+        {
+          "type": "added",
+          "description": "Campus Type column added to CSV export (Standalone Campus/Connected Campus/Test Lab)"
+        },
+        {
+          "type": "added",
+          "description": "Todo list created from second review meeting transcript with pending items"
+        },
+        {
+          "type": "changed",
+          "description": "Faculty tags max-width set to 50% of tree row width"
+        },
+        {
+          "type": "removed",
+          "description": "Removed todo-list.md (all stakeholder feedback items completed)"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-22",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Tree restructured: building controllers are now direct children of Campus, Campus Hub and Relay moved to separate collapsible sections at the bottom"
+        },
+        {
+          "type": "changed",
+          "description": "Campus Hub and Relay are no longer parent nodes — they are associations shown in the building controller details panel"
+        },
+        {
+          "type": "changed",
+          "description": "Energy Saver and Exam Lockdown moved from Campus Hub to Building Controller (they are building controller settings)"
+        },
+        {
+          "type": "changed",
+          "description": "Node Type (Standalone Campus/Connected Campus/Test Lab) is now a campus-level setting with editable dropdown on campus details panel — nodes inherit it"
+        },
+        {
+          "type": "changed",
+          "description": "Faculty tags shown inline with building controllers in tree view (gray, right-aligned, alphabetically sorted)"
+        },
+        {
+          "type": "changed",
+          "description": "Archived building controllers hidden by default (filter unchecked) and sorted to bottom of building controller list when visible"
+        },
+        {
+          "type": "changed",
+          "description": "Removed faculties from a building controller no longer shown in UI — synced to Campus Hub in background only"
+        },
+        {
+          "type": "changed",
+          "description": "Campus Hub selection dropdown now shows nodes from selected campus AND NORT (cross-campus selection)"
+        },
+        {
+          "type": "changed",
+          "description": "Default faculties (GENERAL, TEMPLATE, NONE) pre-selected at top of list when creating a building controller"
+        },
+        {
+          "type": "added",
+          "description": "Campus details panel with CAMPUS INFO section, campus name (read-only) and campus type dropdown (Standalone Campus/Connected Campus/Test Lab)"
+        },
+        {
+          "type": "added",
+          "description": "Manage dropdown on Campus node with Create Building Controller, Create Timetable Relay, Create Campus Hub shortcuts"
+        },
+        {
+          "type": "added",
+          "description": "Export button in subheader — downloads CSV of all building controllers with faculty associations for selected campus"
+        },
+        {
+          "type": "added",
+          "description": "Faculties filter toggle in subheader to show/hide inline faculty tags in tree"
+        },
+        {
+          "type": "added",
+          "description": "Lab added as third campus type option alongside Standalone Campus and Connected Campus"
+        },
+        {
+          "type": "added",
+          "description": "Cross-campus Campus Hub sample data: HLSD and MEDS nodes referencing NORT master Campus Hub (hub.atrium.test)"
+        },
+        {
+          "type": "added",
+          "description": "Archived building controllers show all faculties they were ever associated with (including previously removed)"
+        },
+        {
+          "type": "removed",
+          "description": "Removed faculty multi-select filter from subheader — all building controllers shown automatically when campus is selected"
+        },
+        {
+          "type": "removed",
+          "description": "Removed 'Select these faculties' link from building controller detail panel"
+        },
+        {
+          "type": "removed",
+          "description": "Removed 'Archive for Faculties' and 'Unarchive for Faculties' actions — replaced with 'Remove Faculty'"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Node Type field from Campus Hub create form and the Controller Info subsection from Campus Hub detail panel"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Campus Type and Node Type read-only fields from Associated Campus Hub section and Campus Hub panel"
+        },
+        {
+          "type": "removed",
+          "description": "Removed `ghdsServerType` from building controller data model and `serverType` from Campus Hub data model (inherited from campus)"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Moved Create Node button and Relay/Archived filters from tree section header to page subheader, right-aligned after search"
+        },
+        {
+          "type": "changed",
+          "description": "Filters and Create Node button only visible when a faculty is selected"
+        },
+        {
+          "type": "changed",
+          "description": "Save button changed from primary to secondary style"
+        },
+        {
+          "type": "changed",
+          "description": "Discard Changes button changed from secondary to link style"
+        },
+        {
+          "type": "changed",
+          "description": "Settings panel section headers lightened to white background with subtle hover"
+        },
+        {
+          "type": "removed",
+          "description": "Removed tree section header bar (Nodes title, filters, button)"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-15",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Manage dropdown button in settings panel header with context-aware actions per node type"
+        },
+        {
+          "type": "added",
+          "description": "Manage action drawer with 9 actions: Add Faculty, Archive for Faculties, Archive Building Controller, Unarchive for Faculties, Unarchive Building Controller, Create Building Controller (Campus Hub/Relay), Create Timetable Relay, Add Building Controller to Relay"
+        },
+        {
+          "type": "added",
+          "description": "Create Building Controller form in Manage drawer with faculty multi-select dropdown, collapsible read-only parent node info, pre-filled Campus Hub/Relay associations"
+        },
+        {
+          "type": "added",
+          "description": "Create Timetable Relay form in Manage drawer with building controller multi-select dropdown, collapsible read-only Campus Hub info, filtered building controllers (excludes archived and other Relays)"
+        },
+        {
+          "type": "added",
+          "description": "Archive/unarchive actions move node-faculty connections between lineServersDataSets and archivedServersData"
+        },
+        {
+          "type": "added",
+          "description": "Relay Association field on Building Controller creation form, filtered by selected Campus Hub, disabled when no Campus Hub selected"
+        },
+        {
+          "type": "added",
+          "description": "Associated Faculties shown as colored design-system tags: blue (active), gray (archived)"
+        },
+        {
+          "type": "added",
+          "description": "Select these faculties link button on Building Controller panel — changes subheader faculty selection to match node's active + archived faculties"
+        },
+        {
+          "type": "added",
+          "description": "Associated Timetable Relay read-only section on Building Controller panel, mirroring Relay panel fields exactly (Hostname, IP, Node ID, Campus Hub, Transport, Description, Location)"
+        },
+        {
+          "type": "added",
+          "description": "Save button commits editable field changes to all node copies across data sources via commitEditableFields/forEachServerCopy"
+        },
+        {
+          "type": "added",
+          "description": "Hostname changes reflected in tree view after save"
+        },
+        {
+          "type": "added",
+          "description": "Archived building controllers excluded from all Relay building controller selections via isServerFullyArchived()"
+        },
+        {
+          "type": "added",
+          "description": "Create Node button moved to tree section header as small button, visible only after faculty selection"
+        },
+        {
+          "type": "changed",
+          "description": "Discard Changes changed from modal to design-system popover-confirm (popover--top) with explicit close on confirm and discard toast"
+        },
+        {
+          "type": "changed",
+          "description": "Bridge Service switch moved from the Controller Info subsection to main Campus Hub editable section"
+        },
+        {
+          "type": "changed",
+          "description": "Associated Campus Hub section restructured to mirror Campus Hub panel exactly — same fields, same layout, all read-only"
+        },
+        {
+          "type": "changed",
+          "description": "Settings panel header and footer changed to white background with gray border"
+        },
+        {
+          "type": "changed",
+          "description": "Tree section header changed to white background with gray border, matching settings panel height"
+        },
+        {
+          "type": "changed",
+          "description": "Info section dividers consolidated to single separator with minimal spacing between read-only and editable areas"
+        },
+        {
+          "type": "changed",
+          "description": "Switch rows center-aligned with labels via :has() selector"
+        },
+        {
+          "type": "changed",
+          "description": "Create Node drawer section order changed to Campus Hub → Building Controller → Relay"
+        },
+        {
+          "type": "changed",
+          "description": "Campus Hub/Relay toggle lock text changed from 'above/below' to 'from this form'"
+        },
+        {
+          "type": "changed",
+          "description": "Building controller creation uses single ID across all faculty entries for proper deduplication"
+        },
+        {
+          "type": "changed",
+          "description": "Relay creation is campus-level (single entry, not per-project)"
+        },
+        {
+          "type": "changed",
+          "description": "Archived node tree filter now only collects from selected faculties, not all campus faculties"
+        },
+        {
+          "type": "changed",
+          "description": "Relay children auto-expanded in tree view to show moved building controllers"
+        },
+        {
+          "type": "changed",
+          "description": "Relay children deduplicated by hostname in buildAllServersTree"
+        },
+        {
+          "type": "removed",
+          "description": "Removed tabs (All Nodes, Network Graph) — single tree view only"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Network Graph tab and all graph visualization code"
+        },
+        {
+          "type": "removed",
+          "description": "Removed View Toggle (Group by Faculties / Group by Nodes)"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Pass-Through URL from all Campus Hub forms and panels"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Campus field from all node side panels (visible in tree)"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Associated Building Controllers field from Campus Hub side panel (visible in tree)"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Associated Building Controllers dropdown and list from Relay side panel (managed via tree + Manage button)"
+        },
+        {
+          "type": "removed",
+          "description": "Removed Building Controllers checkbox from tree filters (always shown)"
+        },
+        {
+          "type": "removed",
+          "description": "Removed unused files: tabs-handler.js, view-toggle.js, network-graph.js, tabs-layout.css, network-graph.css"
+        },
+        {
+          "type": "removed",
+          "description": "Removed unused tree builder functions: `buildTreeByProjects`, `buildTreeByServers`, `buildGHDSTreeByServers`, `buildCDNTreeByLineServers`"
+        },
+        {
+          "type": "removed",
+          "description": "Removed unused Relay edit multi-select code and CSS from selection.js and settings-list.css"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed Timetable Relay creation form crash when Building Controller toggle was off"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed auto-select after node creation (was checking wrong currentServerType)"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed findAssociatedCDNServer — was comparing Relay hostnames against building controller name instead of checking associatedLineServers array"
+        },
+        {
+          "type": "fixed",
+          "description": "Fixed checkLineServerHasCDN — same bug as findAssociatedCDNServer"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-14",
+      "changes": [
+        {
+          "type": "changed",
+          "description": "Consolidated Active, Archived, and Relay tabs into a single 'All Nodes' tab with unified tree hierarchy"
+        },
+        {
+          "type": "changed",
+          "description": "New tree hierarchy: Campus → Campus Hub → [Direct Building Controllers + Relay → Relay's Building Controllers], placing Relay as intermediate layer"
+        },
+        {
+          "type": "added",
+          "description": "Network Graph tab with layered column visualization (Faculties → Building Controllers → Campus Hub → Relay)"
+        },
+        {
+          "type": "added",
+          "description": "Network graph focus mode: clicking a node dims all non-connected nodes/edges to 15% opacity"
+        },
+        {
+          "type": "added",
+          "description": "Network graph faculty click: shows connected nodes list with active/disabled status in side panel"
+        },
+        {
+          "type": "added",
+          "description": "Network graph 'Show disabled' toggle to hide/show archived connections"
+        },
+        {
+          "type": "added",
+          "description": "Archived nodes shown in All Nodes tree with design-system gray tag badge and dimmed styling"
+        },
+        {
+          "type": "added",
+          "description": "Tree filters for All Nodes tab: Building Controllers, Timetable Relays, and Archived checkboxes"
+        },
+        {
+          "type": "added",
+          "description": "Pass-Through URL auto-generated on Building Controllers as https://<hostname>/campus/"
+        },
+        {
+          "type": "added",
+          "description": "Pass-Through URL shown as read-only info on Building Controller details panel"
+        },
+        {
+          "type": "added",
+          "description": "Pass-Through URL live preview on Building Controller creation form (updates as hostname is typed)"
+        },
+        {
+          "type": "added",
+          "description": "Campus Type (Standalone Campus/Connected Campus) displayed on Campus Hub info panel"
+        },
+        {
+          "type": "added",
+          "description": "Relay creation form disclaimer: Connected Campus campuses use the Building Controller as Relay, only Standalone Campus needs dedicated Relay"
+        },
+        {
+          "type": "added",
+          "description": "Building Controller toggle switch on creation form (default ON, can be toggled off to create Campus Hub/Relay only)"
+        },
+        {
+          "type": "changed",
+          "description": "Removed Campus dropdown from Building Controller form — campus now inherited from subheader selector"
+        },
+        {
+          "type": "removed",
+          "description": "Removed inherited campus notes from Campus Hub and Relay form sections"
+        },
+        {
+          "type": "changed",
+          "description": "Campus Hubs stored under standalone key — no faculty dependency for creation"
+        },
+        {
+          "type": "changed",
+          "description": "Node IDs changed to simple numeric format across all node types"
+        },
+        {
+          "type": "changed",
+          "description": "Settings panel footer changed from position:fixed to flexbox — now flush with canvas footer"
+        },
+        {
+          "type": "changed",
+          "description": "Renamed 'New Node' button to 'Create Node'"
+        },
+        {
+          "type": "changed",
+          "description": "Toggle labels changed from 'Also create...' to 'Create a...' for all node sections"
+        },
+        {
+          "type": "changed",
+          "description": "Drawer title changed to 'New Building Controller' → consistent with create action"
+        },
+        {
+          "type": "changed",
+          "description": "NORT data expanded to a realistic set: 18 active nodes, 9 archived, 3 Campus Hubs"
+        },
+        {
+          "type": "added",
+          "description": "MEDS expanded with realistic data: 5 Building Controllers across 4 faculties, 1 Campus Hub, 2 Relays, 2 archived"
+        },
+        {
+          "type": "changed",
+          "description": "Subheader faculty list updated to 19 faculties matching the NORT data"
+        },
+        {
+          "type": "added",
+          "description": "TODO-NEXT.md with decisions, additions, and changes checklist based on Design Document comparison"
+        },
+        {
+          "type": "changed",
+          "description": "Requirements document updated to v2.0 with Design Document information (architecture, workflows, field specs)"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "changes": [
+        {
+          "type": "added",
+          "description": "Tree section header matching settings panel header style"
+        },
+        {
+          "type": "added",
+          "description": "View toggle in tree header to switch between 'Group by Faculties' and 'Group by Building Controllers' hierarchy modes"
+        },
+        {
+          "type": "added",
+          "description": "View toggle visibility control - shown for all tabs (Active, Archived, Campus Hub, Relay)"
+        },
+        {
+          "type": "added",
+          "description": "Campus Hub alternate view mode: Campus → Campus Hub → Faculties"
+        },
+        {
+          "type": "added",
+          "description": "Relay alternate view mode: Campus → Building Controller → Timetable Relays"
+        },
+        {
+          "type": "added",
+          "description": "Dynamic toggle icons that change based on active tab"
+        },
+        {
+          "type": "changed",
+          "description": "Updated toggle visibility logic to support all node types with appropriate hierarchy modes"
+        },
+        {
+          "type": "changed",
+          "description": "Refined tree node toggle logic to correctly identify leaf nodes across all view modes and node types"
+        },
+        {
+          "type": "added",
+          "description": "Initial prototype foundation with modular architecture (15 CSS files, 10 JS files)"
+        },
+        {
+          "type": "added",
+          "description": "4-tab navigation system for Active, Archived, Campus Hub, and Relay node types"
+        },
+        {
+          "type": "added",
+          "description": "Hierarchical tree navigation with Campus → Faculty → Node structure"
+        },
+        {
+          "type": "added",
+          "description": "Campus and Faculty selection dropdowns in subheader with dynamic filtering"
+        },
+        {
+          "type": "added",
+          "description": "Settings panel with collapsible categories for node details"
+        },
+        {
+          "type": "added",
+          "description": "3-step wizard drawer for creating Building Controller, Campus Hub, and Timetable Relay"
+        },
+        {
+          "type": "added",
+          "description": "Real-time tree search with grouped results and highlighting"
+        },
+        {
+          "type": "added",
+          "description": "Building Controller, Campus Hub, and Timetable Relay details panels"
+        },
+        {
+          "type": "added",
+          "description": "Associated Campus Hub and Relay read-only sections in Building Controller details"
+        },
+        {
+          "type": "added",
+          "description": "Alert Service logic with automatic disable when no Campus Hub or when Standalone Campus without Relay"
+        },
+        {
+          "type": "added",
+          "description": "Network protocol display (rsync for Building Controller/Relay, aria2c for Campus Hub)"
+        },
+        {
+          "type": "added",
+          "description": "SF Symbol icons for all node types"
+        },
+        {
+          "type": "added",
+          "description": "Sample data for 5 campuses with multiple faculties and nodes"
+        },
+        {
+          "type": "added",
+          "description": "Controller Info subsection with Node Type, Pass-Through URL, Energy Saver, and Exam Lockdown fields"
+        },
+        {
+          "type": "added",
+          "description": "Form validation, multi-select support, and comprehensive PROTOTYPE.md documentation"
+        }
+      ]
+    }
+  ]
+}

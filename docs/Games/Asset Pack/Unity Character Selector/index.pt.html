@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unity Character Selector · UI de ferramenta de editor — David Smith</title>
+  <meta name="description" content="Design de UI do Unity Character Selector, um painel do editor Unity que mostra um personagem em sprites em 1, 2, 4 ou 8 vistas, recolore cada parte e exporta. Telas, tooltips, UI kit e protótipo ao vivo.">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pt-BR" href="index.pt.html">
+  <script>
+    /* Language preference: stored choice wins; with none, EN pages follow a Portuguese browser. */
+    (function () {
+      try {
+        var page = /^pt/i.test(document.documentElement.lang) ? 'pt' : 'en';
+        var stored = localStorage.getItem('lang');
+        var want = stored || (page === 'en' && /^pt/i.test(navigator.language || '') ? 'pt' : page);
+        if (want !== page) {
+          var alt = document.querySelector('link[rel="alternate"][hreflang="' + (want === 'pt' ? 'pt-BR' : 'en') + '"]');
+          if (alt) location.replace(alt.href + location.hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/site.css">
+  <link rel="stylesheet" href="assets/uc-page.css">
+</head>
+<body class="uc-page">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="../../../index.pt.html"><i></i>David Smith</a>
+      <nav aria-label="Sections">
+        <a href="../../../index.pt.html#work-games">← Trabalhos</a><a href="#screens">Telas</a><a href="#kit">Painéis</a><a href="#flow">Fluxo</a><a href="#prototype">Protótipo</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="index.pt.html" lang="pt-BR" hreflang="pt-BR" data-lang="pt" aria-current="true">PT-BR</a>
+        <a href="index.html" lang="en" hreflang="en" data-lang="en">EN-US</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.pt.html">Início</a> / <a href="../../../index.pt.html#work">Trabalhos</a> / <a href="../../../index.pt.html#work-gui">UI de jogos</a> / Unity Character Selector</nav>
+    <section class="uc-hero">
+      <div>
+        <div class="eyebrow">Games · Ferramentas · Editor Unity</div>
+        <h1>Unity Character<br><span class="gold">Selector</span></h1>
+        <p class="steam">Um painel Character Viewer para o editor da Unity. Carregue um personagem em sprites, veja-o por um, dois, quatro ou oito lados, anime, recolore cada parte e salve ou exporte o resultado, sem sair do editor.</p>
+        <ul class="facts-row"><li><b>Plataforma</b>Editor da Unity</li><li><b>Tipo</b>Asset pack · ferramenta de editor</li><li><b>Painel</b>Character Viewer</li><li><b>Meu papel</b>Design de UI/UX do painel</li></ul>
+        <div class="btn-row" style="margin-top:26px">
+          <a class="btn gold" href="prototype/">Testar o protótipo ao vivo</a>
+          <a class="btn" href="#kit">Ver os painéis</a>
+          <a class="btn" href="../../../index.pt.html#work-games">Voltar a todos os trabalhos</a>
+        </div>
+      </div>
+      <div class="banner reveal"><button type="button" data-full="assets/web/screens/desktop-2.jpg" style="all:unset;display:block;cursor:zoom-in"><img src="assets/web/screens/desktop-2.jpg" alt="The Character Viewer panel docked in the Unity editor, showing a character in four poses and the View Settings"></button></div>
+    </section>
+
+    <section class="uc-sec reveal" id="pillars"><h2>Pilares do design</h2><div class="pillars">
+      <div class="pillar"><div class="n">01</div><h3>Um painel, um personagem</h3><p>Arquivos, avatar, personagem e configurações de visualização ficam em uma única janela encaixável, cada um como foldout, para o artista esconder o que não usa e manter o personagem à vista.</p></div><div class="pillar"><div class="n">02</div><h3>Nativo da Unity</h3><p>Superfícies cinza escuras, cabeçalhos com foldout, botões segmentados, barras de cor com conta-gotas e um checkbox simples. Ele usa os controles da própria Unity, então nada precisa ser aprendido duas vezes.</p></div><div class="pillar"><div class="n">03</div><h3>Explique ao passar o mouse</h3><p>Os rótulos ficam curtos. Uma caixa de informação fixa no fim de cada seção explica o campo sob o cursor, então o painel segue compacto e ainda se explica sozinho.</p></div><div class="pillar"><div class="n">04</div><h3>O resultado em primeiro lugar</h3><p>O personagem é a maior coisa do painel. Quantidade de poses, vistas e cores mudam tudo na hora, e as animações idle, walk e attack rodam em todas as vistas.</p></div>
+    </div></section>
+
+    <section class="uc-sec" id="screens"><h2>Telas</h2><p class="intro">Duas passadas da mesma janela, em uma cena 3D da Unity. A esquerda do editor é a Unity pura; tudo à direita é a ferramenta. Clique em qualquer imagem para ampliar.</p>
+<div class="shots-group reveal"><h3>Duas iterações <span>2 versões</span></h3><p>A primeira versão usava os verbos completos (“Download”, “Import Sprites”) e deixava todos os foldouts abertos. A segunda encurta os rótulos, porque o título do foldout já diz “Prefab” ou “Sprites”, e recolhe Avatar View e Character View para dar espaço às configurações.</p><div class="shots one">
+<figure class="shot"><button type="button" data-full="assets/web/screens/desktop-1.jpg"><img loading="lazy" src="assets/web/screens/desktop-1.jpg" alt="Versão 1"></button><figcaption><b>Versão 1.</b> Download, Import Sprites, Open Sprites, Export Sprites e Clear Sprites. Avatar e Character view abertos, cores cortadas abaixo da dobra.</figcaption></figure>
+<figure class="shot"><button type="button" data-full="assets/web/screens/desktop-2.jpg"><img loading="lazy" src="assets/web/screens/desktop-2.jpg" alt="Versão 2"></button><figcaption><b>Versão 2.</b> Create, Import, Open, Export e Clear. Avatar e Character view recolhidos, então todas as cores e os botões Reset e Save cabem.</figcaption></figure>
+</div></div>
+<div class="shots-group reveal"><h3>Informações ao passar o mouse <span>1 folha</span></h3><p>Cada controle tem uma explicação de uma linha, escrita para quem nunca usou a ferramenta. A folha é o banco de textos da caixa de informação.</p><div class="shots tips">
+<figure class="shot"><button type="button" data-full="assets/web/screens/tooltips.png"><img loading="lazy" src="assets/web/screens/tooltips.png" alt="Textos dos tooltips"></button><figcaption><b>Textos dos tooltips.</b> Uma entrada por controle, de Upload a Save. As linhas de cor compartilham uma frase, com a parte selecionada preenchida.</figcaption></figure>
+</div></div>
+</section>
+<section class="uc-sec" id="kit"><h2>Painéis</h2><p class="intro">Os quatro foldouts de que a janela é feita, recortados da segunda versão.</p><div class="kit reveal" style="grid-template-columns:repeat(2,1fr)">
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/panels/files.png"><img loading="lazy" src="assets/web/panels/files.png" alt="Files"></button></div><div class="body"><h3>Files</h3><p>Prefab (Upload, Create) e Sprites (Import, Open, Export, Clear) como botões de largura total, depois a caixa de informação.</p><div class="used">Usado em: topo do painel</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/panels/avatar.png"><img loading="lazy" src="assets/web/panels/avatar.png" alt="Avatar View"></button></div><div class="body"><h3>Avatar View</h3><p>Um busto do personagem ao lado de um nome editável e um balão de fala que explica o painel na voz do próprio personagem.</p><div class="used">Usado em: painel, opcional</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/panels/character.png"><img loading="lazy" src="assets/web/panels/character.png" alt="Character View"></button></div><div class="body"><h3>Character View</h3><p>O personagem em quatro poses ao redor de um círculo. Muda para uma, duas ou oito poses e anima com os controles abaixo.</p><div class="used">Usado em: painel</div></div></article>
+<article class="kit-card"><div class="art"><button type="button" data-full="assets/web/panels/view-settings.png"><img loading="lazy" src="assets/web/panels/view-settings.png" alt="View Settings"></button></div><div class="body"><h3>View Settings</h3><p>Quantidade de poses, as quatro vistas para uma e duas poses, animação, oito barras de cor com conta-gotas, Reset e Save.</p><div class="used">Usado em: base do painel</div></div></article>
+</div><div class="tokens"><div class="token"><i style="--c:#383838"></i><span><b>Painel</b><code>#383838</code></span></div><div class="token"><i style="--c:#3d6a9e"></i><span><b>Selecionado</b><code>#3D6A9E 4 poses</code></span></div><div class="token"><i style="--c:#585858"></i><span><b>Botão</b><code>#585858</code></span></div><div class="token"><i style="--c:#efc6a0"></i><span><b>Pele</b><code>#EFC6A0 padrão</code></span></div><div class="token"><i style="--c:#1ab5c4"></i><span><b>Cabelo</b><code>#1AB5C4 padrão</code></span></div><div class="token"><i style="--c:#8b1a1a"></i><span><b>Armadura</b><code>#8B1A1A padrão</code></span></div></div><p class="intro" style="margin-top:22px">A fonte do editor da Unity (Inter), regular para rótulos e semibold para cabeçalhos de foldout e subseções. As dicas usam o mesmo tamanho com menos contraste.</p></section>
+<section class="uc-sec reveal" id="flow"><h2>Fluxo</h2><p class="intro">Como a pessoa percorre o painel. O ciclo é “ver, mudar, guardar”.</p><div class="lane">
+<div class="path"><h4>Carregar</h4><div class="chain">
+<div class="node page"><small>Upload ou Import</small>Prefab ou sprites</div>
+<span class="arrow">→</span>
+<div class="node panel"><small>Character View</small>Aparece nas poses escolhidas</div>
+</div></div>
+<div class="path"><h4>Ver</h4><div class="chain">
+<div class="node page"><small>Pose view</small>1, 2, 4 ou 8</div>
+<span class="arrow">→</span>
+<div class="node panel"><small>Select view</small>Só com 1 e 2 poses</div>
+<span class="arrow">→</span>
+<div class="node drawer"><small>Animated</small>Idle, Walk, Attack</div>
+</div></div>
+<div class="path"><h4>Mudar e guardar</h4><div class="chain">
+<div class="node page"><small>Cor</small>Escolher ou captar uma parte</div>
+<span class="arrow">→</span>
+<div class="node panel"><small>Reset</small>Volta ao padrão</div>
+<span class="arrow">→</span>
+<div class="node dialog"><small>Save / Create / Export</small>Guardar o resultado</div>
+</div></div>
+</div></section>
+<section class="uc-sec" id="prototype"><h2>Protótipo ao vivo</h2><p class="intro">O painel Character Viewer dentro de uma simulação do editor da Unity. Ele funciona: o personagem é desenhado ao vivo e tudo em View Settings o altera.</p>
+      <div class="launch one reveal"><a class="launch-card wide" href="prototype/"><div class="imgs"><img loading="lazy" src="assets/web/screens/desktop-1.jpg" alt=""></div><div class="body"><h3>Character Viewer</h3><p>Abre em tela cheia. O editor ao redor do painel é uma simulação estática.</p><p>Alterne entre uma, duas, quatro e oito poses, escolha vistas, anime Idle, Walk e Attack, recolore cada parte, salve as cores no navegador e crie ou exporte o personagem.</p><span class="go">Abrir o protótipo →</span></div></a></div>
+      <div class="controls"><b>Dicas.</b> Passe o mouse sobre qualquer campo para ler o que ele faz. Clique no título de um foldout para recolher. <b>Upload</b>, <b>Create</b>, <b>Import</b>, <b>Open</b> e <b>Export</b> são simulados: mostram o que a Unity faria e nunca leem nem gravam arquivos. As cores podem ser salvas no navegador. O protótipo está em inglês e funciona melhor em desktop.</div></section>
+    <section class="uc-sec reveal" id="credits"><h2>Créditos e pendências</h2><div class="credits"><div class="box"><h3>Créditos</h3><p><strong>Design de UI/UX do painel:</strong> David Smith.<br>O editor da Unity ao redor do painel é uma simulação feita para esta página.</p></div><div class="box"><h3>Pendências</h3><p>A folha tem um erro de digitação na dica de Clear Sprites (“form” em vez de “from”), corrigido no protótipo. A dica de cor ainda tem um marcador, {Selected element}. O balão do avatar não tem textos desenhados para outros estados.</p></div></div></section>
+  <nav class="nextproj" aria-label="Próximo projeto"><a class="btn" href="../../../index.pt.html#work-gui">← Voltar a todos os trabalhos</a><a class="btn primary" href="../../Game%20Design/wild-saga/index.pt.html"><small>Próximo projeto</small> Wild Saga →</a></nav>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>© David Simonsen Paes de Almeida Smith</span><span>Feito à mão. Só o Atrium foi prototipado com IA</span><a href="../../../index.pt.html#work-games">← Voltar a todos os trabalhos</a></div>
+  </footer>
+
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer"><button type="button" aria-label="Close">×</button><img alt=""><p></p></div>
+  <script>
+    (function () {
+      var lb = document.getElementById('lb'), im = lb.querySelector('img'), cap = lb.querySelector('p');
+      document.querySelectorAll('[data-full]').forEach(function (b) {
+        b.addEventListener('click', function () { im.src = b.getAttribute('data-full'); im.alt = b.querySelector('img').alt; var f = b.closest('figure'); f = f && f.querySelector('figcaption'); var h = b.closest('article'); h = h && h.querySelector('h3'); cap.textContent = f ? f.textContent : (h ? h.textContent : ''); lb.classList.add('open'); });
+      });
+      function close() { lb.classList.remove('open'); }
+      lb.addEventListener('click', close);
+      window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+  <script src="../../../assets/site.js"></script>
+</body>
+</html>

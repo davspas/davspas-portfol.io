@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base — Atrium</title>
+    <!-- The framework will automatically load all CSS from assets -->
+    <link rel="stylesheet" href="css/knowledge-base.css">
+</head>
+<!-- `kb-page` suppresses the ribbon's own "Knowledge Base" link (proj-kb-launcher)
+     so the page never links to itself. Must be on the element from the start: the
+     plugin checks it the moment the canvas ribbon renders. -->
+<body class="kb-page">
+    <!-- App container where the canvas will be injected -->
+    <div id="app"></div>
+
+    <!-- Define your page-specific content here -->
+    <script id="page-content" type="text/html">
+        <div class="kb" id="kbRoot">
+
+            <!-- Toolbar: search · layout switcher · view controls -->
+            <div class="kb-toolbar">
+                <div class="kb-toolbar__search">
+                    <span class="kb-search">
+                        <span class="kb-search__icon"><sf-symbol name="magnifyingglass"></sf-symbol></span>
+                        <input type="search" id="kbSearchInput" class="kb-search__input"
+                               placeholder="Search the knowledge base…" autocomplete="off"
+                               spellcheck="false" aria-label="Search the knowledge base">
+                        <button class="kb-search__clear" id="kbSearchClear" type="button"
+                                aria-label="Clear search" hidden>
+                            <sf-symbol name="xmark.circle.fill"></sf-symbol>
+                        </button>
+                    </span>
+                    <span class="kb-search__status" id="kbSearchStatus" role="status" aria-live="polite"></span>
+                </div>
+
+                <div class="kb-toolbar__layouts" id="kbLayouts" role="group" aria-label="Graph layout">
+                    <!-- Buttons injected by js/kb-main.js from KbGraph.LAYOUTS -->
+                </div>
+
+                <div class="kb-toolbar__view">
+                    <label class="kb-switch" title="Hide non-matching nodes instead of dimming them">
+                        <input type="checkbox" id="kbHideNonMatching" checked>
+                        <span class="kb-switch__label">Hide non-matching</span>
+                    </label>
+                    <button class="kb-legend-toggle" id="kbLegendToggle" type="button"
+                            aria-pressed="true" title="Show or hide the legend">
+                        <sf-symbol name="info.circle"></sf-symbol> Legend
+                    </button>
+                    <div class="kb-zoom" role="group" aria-label="Zoom">
+                        <button class="kb-zoom__btn" id="kbZoomOut" type="button" aria-label="Zoom out">
+                            <sf-symbol name="minus"></sf-symbol>
+                        </button>
+                        <button class="kb-zoom__btn" id="kbZoomIn" type="button" aria-label="Zoom in">
+                            <sf-symbol name="plus"></sf-symbol>
+                        </button>
+                        <button class="kb-zoom__btn" id="kbZoomFit" type="button" aria-label="Fit graph to view">
+                            <sf-symbol name="arrow.up.left.and.arrow.down.right"></sf-symbol>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage: the graph surface and everything floating over it -->
+            <div class="kb-stage" id="kbStage">
+                <svg class="kb-svg" id="kbSvg" role="application" aria-label="Knowledge base relationship graph">
+                    <g class="kb-viewport" id="kbViewport">
+                        <g class="kb-lanes" id="kbLanes"></g>
+                        <g class="kb-edges" id="kbEdges"></g>
+                        <g class="kb-nodes" id="kbNodes"></g>
+                    </g>
+                </svg>
+
+                <!-- Shared documents — always one click away, never nodes -->
+                <div class="kb-floating" id="kbFloating">
+                    <button class="kb-floating__btn" type="button" data-shared="index">
+                        <sf-symbol name="list.bullet.rectangle"></sf-symbol> Index
+                    </button>
+                    <button class="kb-floating__btn" type="button" data-shared="glossary">
+                        <sf-symbol name="character.book.closed"></sf-symbol> Glossary
+                    </button>
+                    <button class="kb-floating__btn" type="button" data-shared="system-overview">
+                        <sf-symbol name="square.stack.3d.up"></sf-symbol> System Overview
+                    </button>
+                    <button class="kb-floating__btn" type="button" data-shared="roles-permissions">
+                        <sf-symbol name="person.badge.key"></sf-symbol> Roles &amp; Permissions
+                    </button>
+                </div>
+
+                <!-- Legend for the active layout -->
+                <div class="kb-legend" id="kbLegend" aria-live="polite"></div>
+
+                <!-- Hover tooltip -->
+                <div class="kb-tooltip" id="kbTooltip" role="tooltip" hidden></div>
+
+                <!-- Search results dropdown -->
+                <div class="kb-results" id="kbResults" hidden></div>
+
+                <!-- Load / error states -->
+                <div class="kb-state kb-state--loading" id="kbLoading">
+                    <div class="kb-state__spinner"></div>
+                    <p class="kb-state__text">Reading the knowledge base…</p>
+                </div>
+                <div class="kb-state kb-state--error" id="kbError" hidden>
+                    <sf-symbol class="kb-state__icon" name="exclamationmark.triangle"></sf-symbol>
+                    <p class="kb-state__text" id="kbErrorText"></p>
+                    <p class="kb-state__hint">
+                        The knowledge base is read over HTTP from
+                        <code>module-knowledge-base/</code>. Opening this page directly from the
+                        file system (<code>file://</code>) will not work — serve the workspace instead.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Load the DaVinci Canvas Framework -->
+    <script src="../runtime/assets/canvas/davinci-canvas.js"></script>
+
+    <!-- Page-specific JavaScript (order matters: data → graph → search → drawer → main) -->
+    <script src="js/kb-data.js"></script>
+    <script src="js/kb-graph.js"></script>
+    <script src="js/kb-search.js"></script>
+    <script src="js/kb-drawer.js"></script>
+    <script src="js/kb-main.js"></script>
+    <script src="../runtime/back-to-portfolio.js" data-href="../../../"></script>
+</body>
+</html>

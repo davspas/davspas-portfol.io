@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Recovery</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="app"></div>
+
+    <script id="page-content" type="text/html">
+        <div class="fdr-page">
+            <!-- Info ribbon (same pattern as the Manage Devices Faculty-registered ribbon): sticky, flush under the sub-header. -->
+            <div id="fdrRibbon" class="fdr-ribbons" hidden></div>
+
+            <div class="fdr-lead">
+                <div id="fdrResult" class="fdr-stack" hidden></div>
+                <div id="fdrCounters" class="fdr-counters" style="display: none;"></div>
+            </div>
+
+            <div id="fdrContent" class="table-container" style="display: none;">
+                <table class="table" id="fdrTable">
+                    <thead class="table__head" id="fdrHead"></thead>
+                    <tbody class="table__body" id="fdrBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Roll out tab: version strip, wizard, units table -->
+            <div id="fdrDeploy" hidden>
+                <div id="fdrDeployBar" class="fdr-deploybar"></div>
+                <div class="table-container">
+                    <table class="table" id="fdrDeployTable">
+                        <thead class="table__head" id="fdrDeployHead"></thead>
+                        <tbody class="table__body" id="fdrDeployBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="fdrEmpty" class="empty-state" style="display: none;">
+                <sf-symbol class="empty-state__icon" name="tray"></sf-symbol>
+                <div class="empty-state__title"></div>
+                <div class="empty-state__subtitle"></div>
+            </div>
+
+            <div id="fdrLoading" class="empty-state" style="display: flex;">
+                <div class="loader">
+                    <div class="loader__spinner loader__spinner--large"></div>
+                    <span class="loader__text loader__text--large">Loading device recovery registration</span>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script src="../runtime/assets/canvas/davinci-canvas.js"></script>
+
+    <script src="js/data.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/table.js"></script>
+    <script src="js/column-filters.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/deploy.js"></script>
+    <script src="js/subheader.js"></script>
+    <script src="js/main.js"></script>
+    <script src="../runtime/back-to-portfolio.js" data-href="../../../"></script>
+</body>
+</html>

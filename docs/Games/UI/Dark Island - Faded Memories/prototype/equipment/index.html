@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equipment · Dark Island: Faded Memories (UI prototype)</title>
+  <link rel="stylesheet" href="../css/di.css">
+</head>
+<body class="di" data-device="kb">
+  <div class="di-viewport">
+    <main class="di-stage" id="stage">
+      <div class="di-bg di-bg--blue"></div>
+      <div class="di-motes"></div>
+      <svg class="di-magic" viewBox="0 0 1440 1024" width="1440" height="1024" fill="none" stroke="#f4dd0e" stroke-opacity=".5" stroke-width="1.2" aria-hidden="true"><path d="M874 555.5C874 811.484 666.484 1019 410.5 1019C154.516 1019 -53 811.484 -53 555.5C-53 299.516 154.516 92.0004 410.5 92.0004C666.484 92.0004 874 299.516 874 555.5Z"/><path d="M738 553.5C738 733.821 591.821 880 411.5 880C231.179 880 85 733.821 85 553.5C85 373.179 231.179 227 411.5 227C591.821 227 738 373.179 738 553.5Z"/><path d="M739 784.5C739 837.796 695.795 881 642.5 881C589.205 881 546 837.796 546 784.5C546 731.205 589.205 688 642.5 688C695.795 688 739 731.205 739 784.5Z"/><path d="M688 784.5C688 809.629 667.629 830 642.5 830C617.371 830 597 809.629 597 784.5C597 759.371 617.371 739 642.5 739C667.629 739 688 759.371 688 784.5Z"/><path d="M277 784C277 837.02 234.019 880 181 880C127.981 880 85 837.02 85 784C85 730.981 127.981 688 181 688C234.019 688 277 730.981 277 784Z"/><path d="M234 784C234 813.271 210.271 837 181 837C151.729 837 128 813.271 128 784C128 754.729 151.729 731 181 731C210.271 731 234 754.729 234 784Z"/><path d="M-50.4688 553.531L411.062 92L872.593 553.531L411.062 1015.06L-50.4688 553.531Z"/><path d="M412.854 227.67L738.83 553.647L412.146 880.33L86.1702 554.354L412.854 227.67Z"/><path d="M297.701 437.295L413.902 553.497L297.701 669.698L181.5 553.497L297.701 437.295Z"/><path d="M412.537 476.964L489.574 554.001L412.537 631.037L335.501 554.001L412.537 476.964Z"/><path d="M412.537 630.927L489.574 707.964L412.537 785L335.501 707.964L412.537 630.927Z"/><path d="M412.537 323L489.574 400.037L412.537 477.073L335.501 400.037L412.537 323Z"/><path d="M527.676 437.676L643.497 553.497L527.676 669.318L411.855 553.497L527.676 437.676Z"/></svg>
+
+      <div class="eq-left" id="left">
+        <div class="eq-char" id="char"></div>
+        <div id="slots"></div>
+        <div class="eq-level">999<small>Level</small></div>
+        <div class="eq-stats" id="stats"></div>
+      </div>
+
+      <h2 class="di-title" style="left:824px;width:578px;top:96px">Inventory</h2>
+      <p class="di-sub" style="left:824px;width:578px;top:146px">Select a weapon or slot to change its object</p>
+      <div class="di-tabs" style="left:826px;width:576px;top:172px" id="tabs">
+        <span class="di-cap di-cap--l di-cap--tab" data-pad="LT" data-kb="Z"></span>
+        <span style="flex:1;display:flex" id="tabBtns"></span>
+        <span class="di-cap di-cap--r di-cap--tab" data-pad="RT" data-kb="C"></span>
+      </div>
+      <div class="di-panel di-panel--gold" id="panel" style="left:824px;top:214px;width:578px;height:782px;border-color:var(--silver)">
+        <div class="di-list" id="list" style="inset:0"></div>
+      </div>
+
+      <div id="tips"></div>
+      <div class="di-modal" id="modal"><div class="di-modal__box"><h3 id="mTitle"></h3><p id="mBody"></p><div class="di-modal__row"><button class="di-obtn di-obtn--sm" id="mOk" type="button">Drop</button><button class="di-obtn di-obtn--sm" id="mNo" type="button">Cancel</button></div></div></div>
+      <div class="eq-status" id="status"></div>
+    </main>
+  </div>
+  <script src="../js/di-data.js"></script>
+  <script src="../js/di-core.js"></script>
+  <script src="equipment.js"></script>
+</body>
+</html>

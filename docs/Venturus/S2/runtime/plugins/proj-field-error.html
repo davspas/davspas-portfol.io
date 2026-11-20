@@ -1,0 +1,129 @@
+<!-- PROJ-FIELD-ERROR -->
+<!-- Inline field validation error: one message element, one copy pattern, everywhere. -->
+
+<!-- METADATA
+Component: Inline Field Error
+Category: Forms
+Complexity: Low
+
+CRITICAL STRUCTURE REQUIREMENTS:
+- MUST NOT hand-write the error message — call ProjFieldError so the copy stays patternized
+- MUST let the plugin own the wording; callers pass a CAUSE (required / invalid / duplicate /
+  outOfRange / tooLong / format)
+- MUST pair the field with a resolvable name: a `<label for>`, a `.setting-label` /
+  `.form-label` inside the same `.setting-row` / `.form-group`, or an explicit `opts.label`
+- The invalid input treatment is MDS `form-input--invalid`; the plugin applies it
+
+COMMON MISTAKES TO AVOID:
+[X] Composing your own string ("Hostname is required.") — that is the drift this replaces
+[X] Adding a fifth error element class instead of reusing form-help--error
+[X] Styling the message locally — proj-field-error.css already covers all three classes
+[X] Forgetting to clear() on input, so a stale error outlives the value that caused it
+[X] Passing a raw regular expression as format()'s `hint` — it must read as plain language
+
+JAVASCRIPT INTEGRATION:
+- ProjFieldError.required(field, opts)   → "Enter <Field Name>" / "Select <Field Name>"
+- ProjFieldError.invalid(field, opts)    → "Enter a valid <Field Name>"
+- ProjFieldError.duplicate(field, opts)  → "<Field Name> already in use"
+- ProjFieldError.outOfRange(field, opts) → "Enter a number between 5 and 1000"
+- ProjFieldError.tooLong(field, opts)    → "Use 64 characters or fewer"
+- ProjFieldError.format(field, opts)     → "Enter a valid <Field Name> — an IPv4 address"
+- ProjFieldError.show(field, message, opts)  → raw message (escape hatch)
+- ProjFieldError.clear(field) / ProjFieldError.clearAll(root)
+- `field` is an element or an id string. All calls return false, so
+  `return ProjFieldError.required(id)` reads as "this field is invalid".
+- opts.label  — the field name, wins over DOM resolution
+- opts.kind   — 'text' | 'choice', forces the verb (inferred otherwise)
+- opts.target — an existing message element to fill instead of injecting one
+- opts.scope  — qualifier appended to duplicate(), e.g. 'on this building controller'
+- opts.min / opts.max       — the bounds for outOfRange(); either may be absent
+- opts.maxLength            — the limit for tooLong()
+- opts.hint                 — plain-language expectation for format(), e.g. 'a whole number'
+- outOfRange() and tooLong() name the CONSTRAINT, not the field: they fire only where the
+  label is directly above the message, and the rule is what the operator needs told.
+  Each degrades to invalid() when its parameters are missing.
+- No init() call — it is a pure utility, loaded by plugins.js before canvas:ready
+
+COMPANION FILES:
+- CSS: proj-field-error.css
+- JS: proj-field-error.js
+
+CORRECT STRUCTURE TEMPLATE:
+<div class="form-group">
+  <label class="form-label" for="hostname">Hostname</label>
+  <input type="text" class="form-input" id="hostname">
+  <!-- injected by ProjFieldError; do not author it by hand -->
+</div>
+
+When to prompt: when a field's display name cannot be read from the DOM — ask for the label
+rather than falling back to the element id.
+Variants: none — one treatment, deliberately.
+-->
+
+<!-- NOTHING TO COPY. The plugin injects the message element itself. -->
+<!-- Author only the field; these are the three markup shapes it already understands. -->
+
+<!-- A) NO MESSAGE ELEMENT — the plugin injects a form-help--error span after the field -->
+<div class="form-group">
+  <label class="form-label" for="newLineHostname">Hostname</label>
+  <input type="text" class="form-input" id="newLineHostname">
+  <span class="form-help">Fully qualified domain name.</span>
+</div>
+
+<!-- B) SETTINGS ROW — the message is appended inside .setting-value / .setting-control -->
+<div class="setting-row">
+  <label class="setting-label" for="infoLocation">Location</label>
+  <div class="setting-value">
+    <input type="text" class="form-input" id="infoLocation">
+  </div>
+</div>
+
+<!-- C) MESSAGE ELEMENT ALREADY IN THE MARKUP — found by the `<fieldId>Error`
+     or `<fieldId>-error` id convention and filled in place -->
+<div class="form-group">
+  <label class="form-label" for="role-name">Role</label>
+  <input type="text" class="form-input" id="role-name">
+  <div class="form-error" id="role-name-error"></div>
+</div>
+
+<!-- USAGE:
+
+  // Empty required field
+  if (!hostname) return ProjFieldError.required('newLineHostname', { label: 'Hostname' });
+  //   → "Enter Hostname"
+
+  // Empty required dropdown or checklist — the verb switches automatically
+  if (!serverType) return ProjFieldError.required('newLineServerType');
+  //   → "Select Server Type"
+
+  // Format failure
+  if (!isValidIP(ip)) return ProjFieldError.invalid('newLineIP', { label: 'IP Address' });
+  //   → "Enter a valid IP Address"
+
+  // Value taken, optionally scoped
+  if (taken) return ProjFieldError.duplicate('recScriptName', { scope: 'on this building controller' });
+  //   → "Name already in use on this building controller"
+
+  // Numeric range — either bound may be absent
+  if (n > 1000) return ProjFieldError.outOfRange('semVal_3', { min: 5, max: 1000 });
+  //   → "Enter a number between 5 and 1000"
+
+  // Over a character limit
+  if (v.length > 64) return ProjFieldError.tooLong('semVal_3', { maxLength: 64 });
+  //   → "Use 64 characters or fewer"
+
+  // Wrong shape, described in plain language (never the regex itself)
+  if (!IPV4.test(v)) return ProjFieldError.format('semVal_3', { hint: 'an IPv4 address, e.g. 10.0.0.1' });
+  //   → "Enter a valid Property Value — an IPv4 address, e.g. 10.0.0.1"
+
+  // Clear on input, and clear the whole form before re-validating
+  input.addEventListener('input', function() { ProjFieldError.clear(input); });
+  ProjFieldError.clearAll(document.getElementById('newServerDrawer'));
+
+- Copy patterns are the only seven above. Anything else means show() — and a second look
+  at whether the field really needs bespoke wording.
+- The error glyph is a single constant in the JS (`ProjFieldError.icon`); prototypes must
+  not re-declare their own copy of it.
+- Styling covers `.form-help--error`, `.form-error` and `.setting-error` so the three
+  message elements the prototypes already ship all render identically.
+-->

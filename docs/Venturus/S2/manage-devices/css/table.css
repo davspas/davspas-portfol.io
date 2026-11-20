@@ -1,0 +1,222 @@
+/* Manage Units — Table enhancements */
+
+/* Page wrapper: pull up against the sub-header (canvas `.content` provides a top
+   padding of `var(--space-mp)` we want to cancel for this prototype). Applies in
+   both modes — the Groundhog info banner is the first child when visible, otherwise
+   the table-container is. */
+.manage-devices-page {
+    /* Sticky-offset tokens: the canvas <header> (ribbon 3.2rem + navbar 4.8rem +
+       sub-header 6rem = 14rem) is sticky at the top of the document scroll, so the
+       sticky table head + the Groundhog info banner must be pinned below it. */
+    --mu-header-offset: 14rem;
+    --mu-banner-height: 3.2rem;
+    margin-top: calc(var(--space-mp) * -1);
+}
+
+/* Table container shadow (MDS provides base table styling) */
+.table-container {
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
+    width: calc(100% + 4.8rem) !important;
+    transform: translateX(-2.4rem);
+}
+
+/* Page table only (scoped so the wizard's review table is untouched): force the container
+   to be non-clipping so the DOCUMENT — not the container — is the scroll context. MDS sets
+   `overflow-x: auto`, which makes `overflow-y` compute to `auto` too and traps the
+   MDS-sticky `.table__head` inside the (unscrolled) container, pinning it partway down the
+   table. `overflow-x: visible !important` beats MDS (loaded after us, equal specificity) so
+   the head instead pins to the viewport. Horizontal scroll is restored on mobile below. */
+.manage-devices-page .table-container {
+    overflow-x: visible !important;
+}
+
+/* Pin the sticky table head below the canvas header stack. Groundhog also has the info
+   banner above the table, so push the head down by the banner height in that mode. */
+.manage-devices-page .table__head {
+    top: var(--mu-header-offset) !important;
+}
+.manage-devices-page--groundhog .table__head {
+    top: calc(var(--mu-header-offset) + var(--mu-banner-height)) !important;
+}
+
+/* The header row is a `.table__row`, so MDS's `.table__row:hover` (row-wide blue) fires when
+   hovering any header cell. Suppress it on the head so only the individual sortable cell
+   highlights via MDS's `.table__header.sortable:hover`. */
+.manage-devices-page .table__head .table__row:hover {
+    background-color: transparent;
+}
+
+.modal__body .table-container {
+    width: calc(100% + 6.4rem) !important;
+    transform: translateX(-3.2rem);
+
+}
+
+td:first-child, th:first-child {padding-left: 2.4rem;}
+td:last-child, th:last-child {padding-right: 2.4rem;}
+
+/* Checkbox in table header */
+.table__header .checkbox {
+    margin: 0;
+}
+
+/* Help icon on GHLS-complemented column headers. Matches the MDS filter/sort icons
+   (inline-flex, centered, vertical-align middle, 0.4rem left gap). Custom CSS hover tooltip
+   via `data-tooltip` — MDS has no tooltip component, and native `title` is unreliable. */
+.mu-help-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 0.4rem;
+    color: var(--color-glyph-gray-secondary);
+    font-size: 14px;
+    cursor: help;
+}
+.mu-help-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 0.8rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22rem;
+    white-space: normal;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: normal;
+    line-height: 1.4;
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-fill);
+    background: var(--color-fill-gray);
+    padding: var(--space-xs) var(--space-s);
+    border-radius: var(--radius-s);
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 30;
+}
+.mu-help-icon::before {
+    content: '';
+    position: absolute;
+    top: calc(100% + 0.3rem);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 0.5rem solid transparent;
+    border-bottom-color: var(--color-fill-gray);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 30;
+}
+.mu-help-icon:hover::after,
+.mu-help-icon:hover::before,
+.mu-help-icon:focus-visible::after,
+.mu-help-icon:focus-visible::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+.table__header .checkbox__label {
+    display: none;
+}
+
+/* Tag adjustments in table */
+.table__cell .tag {
+    margin: 0;
+}
+
+/* Unreadable GHLS complement: one cell spanning the five sequential GHLS columns
+   (Project → Last Heard From) with a single warning message naming the unreachable
+   line server. Red exclamation icon (error), muted message text. */
+.mu-complement-error {
+    text-align: center;
+}
+.mu-complement-error__msg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-tiny);
+}
+.mu-complement-error__msg sf-symbol {
+    font-size: 16px;
+    color: var(--color-fill-red);
+}
+
+/* "No campus selected" and loading fill the page edge to edge, vertically centred, like
+   Manage Infrastructure's empty state (the canvas pads the content 2.4rem; header 14rem and
+   footer 3.2rem sit outside it). "No devices found" stays a compact block under the table head. */
+.manage-devices-page > #noSiteState,
+.manage-devices-page > #loadingState {
+    width: calc(100% + 4.8rem);
+    transform: translateX(-2.4rem);
+    min-height: calc(100vh - 14rem - 3.2rem + var(--space-mp));
+}
+.manage-devices-page > #emptyFilterState { min-height: 30rem; }
+
+/* Loading state (optional) */
+.table__row--loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Row hover effect enhancement */
+.table__row:hover .checkbox__box {
+    border-color: var(--color-fill-blue);
+}
+
+/* Selected row highlight */
+.table__row--unit:has(.checkbox__input:checked) {
+    background-color: var(--color-fill-blue-secondary) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    /* Mobile: prioritise horizontal scroll over the sticky head (re-enables the container
+       scroll context, beating the desktop `overflow-x: visible !important` above). */
+    .manage-devices-page .table-container {
+        overflow-x: auto !important;
+    }
+
+    .table {
+        min-width: 1200px;
+    }
+}
+
+/* ── Column filter popover (opened from a header's filter icon) ── */
+.mu-col-filter {
+    position: fixed;
+    z-index: 1100;
+    min-width: 22rem;
+    max-width: 32rem;
+    background: var(--color-fill);
+    border: 0.1rem solid var(--color-fill-gray-quaternary);
+    border-radius: var(--radius-m);
+    box-shadow: var(--shadow-m);
+    padding: var(--space-s) 0;
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-regular);
+    text-transform: none;
+    letter-spacing: 0;
+}
+.mu-col-filter__actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 var(--space-m) var(--space-s);
+    border-bottom: 0.1rem solid var(--color-fill-gray-quaternary);
+}
+.mu-col-filter__actions .btn--link { font-size: var(--font-size-tiny); }
+.mu-col-filter__list {
+    max-height: 26rem;
+    overflow-y: auto;
+    padding: var(--space-s) var(--space-m) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+}
+.mu-col-filter__item { color: var(--color-glyph-gray); }
+.mu-col-filter__item .checkbox__label { margin-left: var(--space-s); color: var(--color-glyph-gray); white-space: nowrap; }
+.mu-col-filter__count { color: var(--color-glyph-gray-tertiary); margin-left: var(--space-xs); }
+.table__header.filter-active { color: var(--color-base-accent); }

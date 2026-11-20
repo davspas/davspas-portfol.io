@@ -1,0 +1,297 @@
+/* proj-json-diff.css */
+/* Plugin component: JSON Diff — two payloads side by side, aligned line by line */
+
+/* The component has NO height and NO vertical overflow: the host's scroll
+   container owns both, so this can drop into a modal body, a drawer or a page
+   without producing a nested scrollbar. The head is sticky against whatever that
+   container is. */
+.proj-json-diff {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    font-size: var(--font-size-tiny);
+}
+
+/* --- Pane headers ---------------------------------------------------------
+ *
+ * Two cells on the same 1fr/1fr grid as the body, so each header sits over its
+ * own column. Sticky rather than scrolled away: on a payload of any length, "which
+ * side am I reading" is the question a scrolled-off header stops answering.
+ */
+.proj-json-diff__head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-m);
+    padding-bottom: var(--space-s);
+    /* Opaque: lines scroll UNDER this band. */
+    background-color: var(--color-fill);
+}
+
+/* ⚠️ ALL THREE CHILDREN OF THE HEAD ARE PLACED EXPLICITLY, AND THAT IS NOT TIDINESS.
+   The nav badge shares the second cell (see its rule below), and an explicitly-placed
+   item makes grid auto-placement SKIP that cell — so with only the badge placed, the
+   right pane header would be auto-flowed onto a second row instead of sitting beside
+   the left one. Two items may share a cell; an auto-placed item may not join one. */
+.proj-json-diff__pane-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+    grid-row: 1;
+}
+
+.proj-json-diff__pane-head:nth-child(1) {
+    grid-column: 1;
+}
+
+/* The nav badge shares this cell, so the text keeps its own space rather than
+   running underneath it. ⚠️ HORIZONTAL ONLY — the vertical clearance comes from the
+   two sharing a grid row, which sizes itself to the taller of them. */
+.proj-json-diff__pane-head:nth-child(2) {
+    grid-column: 2;
+    padding-right: 20rem;
+}
+
+/* Small line above the title — the context the payload belongs to
+   (e.g. `ENG | NORT`). */
+.proj-json-diff__pane-label {
+    color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-xxxs);
+    text-transform: uppercase;
+    letter-spacing: 0.04rem;
+}
+
+.proj-json-diff__pane-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-width: 0;
+}
+
+.proj-json-diff__pane-name {
+    font-size: var(--font-size-xxs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-glyph-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* A quiet glyph, not an accent one: two panes means two of these, and the accent
+   budget for the view they sit in belongs to whatever action the host is offering.
+   Gray until hovered, then accent — the same treatment as every other secondary row
+   glyph in this workspace. */
+.proj-json-diff__copy {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 0;
+    color: var(--color-glyph-gray-secondary);
+}
+
+.proj-json-diff__copy:hover {
+    color: var(--color-base-accent);
+}
+
+/* Copy confirms in place — the glyph swaps to a checkmark for a moment. Green
+   because the confirmation is the message, not the action. */
+.proj-json-diff__copy--done {
+    color: var(--color-glyph-green);
+}
+
+/* --- Differences badge + navigation --------------------------------------
+ *
+ * States the count and steps through it. It SHARES the right pane header's grid cell
+ * rather than being taken out of flow, which is what keeps the two headers on the
+ * body's exact column grid AND makes the head band tall enough to hold it. The
+ * reserved padding on that header is what stops the two from colliding horizontally.
+ *
+ * ⚠️ IT WAS `position: absolute` UNTIL 2026-09-02, AND THAT IS THE BUG THIS FIXES.
+ * Out of flow, it contributed no height, so the band was sized by the pane headers
+ * alone — fine while every host passed a `label` (two lines cleared the badge), and
+ * broken the moment one did not: the badge spilled over the first rows of JSON.
+ * A grid item in an occupied cell still overlaps by design, so the appearance is
+ * unchanged; what changes is that the ROW now grows to the taller of the two.
+ * **Do not "tidy" this back to absolute positioning.**
+ */
+.proj-json-diff__nav {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    align-self: start;
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: var(--space-xs) var(--space-s);
+    border: 1px solid var(--color-fill-gray-tertiary);
+    border-radius: var(--space-xs);
+    background-color: var(--color-fill-tertiary);
+}
+
+/* sf-symbol needs a wrapper here: it is laid out as text, so the flex row places
+   the span and the glyph fills it. ⚠️ `line-height: 0` is what makes it sit centred
+   beside the count — `sf-symbol.js` writes `vertical-align: baseline` onto its SVG
+   as an inline style, so the host box is taller than the glyph and `align-items:
+   center` alone leaves it visibly high. */
+.proj-json-diff__nav-icon {
+    display: inline-flex;
+    line-height: 0;
+    font-size: 14px;
+    color: var(--color-glyph-gray-secondary);
+}
+
+.proj-json-diff__nav-count {
+    color: var(--color-glyph-gray);
+    white-space: nowrap;
+}
+
+.proj-json-diff__nav--clean .proj-json-diff__nav-icon {
+    color: var(--color-glyph-green);
+}
+
+/* Stacked chevrons, matching the control the pattern comes from: up is the
+   previous difference, down is the next. */
+.proj-json-diff__nav-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.proj-json-diff__nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 0;
+    color: var(--color-glyph-gray-secondary);
+}
+
+.proj-json-diff__nav-btn:hover {
+    color: var(--color-base-accent);
+}
+
+/* --- Panes ---------------------------------------------------------------- */
+
+.proj-json-diff__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-m);
+    align-items: start;
+}
+
+/* Horizontal overflow only. A vertical one would put a second scrollbar inside
+   the host's, and wrapping is not an option — a wrapped line is taller than its
+   counterpart and every row below it loses alignment. */
+.proj-json-diff__col {
+    overflow-x: auto;
+    border: 1px solid var(--color-fill-gray-tertiary);
+    border-radius: var(--space-xs);
+    background-color: var(--color-fill);
+    font-family: inherit;
+}
+
+/* `width: max-content` + `min-width: 100%` is what makes a tint span the full
+   column even on a short line, while long lines still scroll. */
+.proj-json-diff__line {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    line-height: 1.7;
+    white-space: pre;
+    color: var(--color-glyph-gray);
+}
+
+/* Line numbers stay put while a long line scrolls sideways. */
+.proj-json-diff__num {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    flex: 0 0 4.4rem;
+    padding-right: var(--space-s);
+    text-align: right;
+    color: var(--color-glyph-gray-tertiary);
+    background-color: var(--color-fill-tertiary);
+    user-select: none;
+}
+
+.proj-json-diff__text {
+    padding: 0 var(--space-s);
+}
+
+/* THE TWO TINTS ARE THE `-secondary` STEPS OF THE SEMANTIC FILLS — the lightest
+   MDS defines for each, which is what 12px text needs to stay readable on
+   top of them. The gutter takes a matching step so the marked line reads as one
+   band across both columns. */
+.proj-json-diff__line--del {
+    background-color: var(--color-fill-red-secondary);
+}
+
+.proj-json-diff__line--del .proj-json-diff__num {
+    background-color: var(--color-fill-red-tertiary);
+    color: var(--color-glyph-red);
+}
+
+.proj-json-diff__line--ins {
+    background-color: var(--color-fill-green-secondary);
+}
+
+.proj-json-diff__line--ins .proj-json-diff__num {
+    background-color: var(--color-fill-green-secondary);
+    color: var(--color-glyph-green);
+}
+
+/* A row the other side has nothing for. Striped rather than blank, so it reads as
+   "no line here" instead of "an empty line here". */
+.proj-json-diff__line--empty {
+    background-image: repeating-linear-gradient(
+        45deg,
+        var(--color-fill-tertiary) 0,
+        var(--color-fill-tertiary) 0.4rem,
+        var(--color-fill) 0.4rem,
+        var(--color-fill) 0.8rem
+    );
+}
+
+.proj-json-diff__line--empty .proj-json-diff__num {
+    background-color: var(--color-fill-tertiary);
+}
+
+/* The changed PART of a paired line. `--color-fill-*-secondary` is too pale to
+   read as a second layer over itself, and MDS defines no mid step in green, so
+   both marks are mixed from the semantic fill rather than hardcoded — the token
+   still owns the hue. */
+.proj-json-diff__mark {
+    padding: 0 0.1rem;
+    border-radius: 0.2rem;
+    color: var(--color-glyph-gray);
+    background-color: transparent;
+}
+
+.proj-json-diff__line--del .proj-json-diff__mark {
+    background-color: color-mix(in srgb, var(--color-fill-red) 22%, var(--color-fill));
+}
+
+.proj-json-diff__line--ins .proj-json-diff__mark {
+    background-color: color-mix(in srgb, var(--color-fill-green) 22%, var(--color-fill));
+}
+
+/* Where prev/next just landed. An outline rather than a background: the tint is
+   already carrying the change type, and this has to sit on top of it without
+   replacing it. Inset offset so it doesn't widen the row. */
+.proj-json-diff__line--current {
+    outline: 1px solid var(--color-base-accent);
+    outline-offset: -1px;
+}

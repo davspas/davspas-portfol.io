@@ -1,0 +1,101 @@
+/* proj-combobox.css */
+/* Plugin component: Combobox */
+
+/* Panel contents only. The floating shell — border, radius, shadow, arrow,
+   placement — is proj-popover-editor's, which is MDS `.popover`. Nothing here
+   restyles that; if the panel chrome looks wrong, fix it there, not here. */
+
+.proj-combobox__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+}
+
+/* --- Search field ------------------------------------------------------- */
+
+.proj-combobox__search-wrap {
+    /* Stays put while the list below it scrolls — retyping after scrolling a
+       long list shouldn't require scrolling back up. */
+    flex-shrink: 0;
+}
+
+.proj-combobox__search {
+    width: 100%;
+}
+
+/* --- Option list -------------------------------------------------------- */
+
+/* Caps at roughly eight rows before scrolling: enough that short lists never
+   scroll at all, few enough that the panel can't outgrow the viewport on a
+   creatable field whose list has been added to repeatedly. */
+.proj-combobox__list {
+    display: flex;
+    flex-direction: column;
+    max-height: 24rem;
+    overflow-y: auto;
+}
+
+/* Rows are real <button>s, so they are focusable, announced, and keyboard
+   reachable without extra ARIA plumbing. The reset below is because MDS styles
+   bare buttons and a `.btn`-free button still inherits the browser default. */
+.proj-combobox__option,
+.proj-combobox__create {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    width: 100%;
+    padding: var(--space-xs) var(--space-s);
+    border: none;
+    border-radius: var(--space-xxs);
+    background: none;
+    text-align: left;
+    font-family: inherit;
+    font-size: var(--font-size-tiny);
+    color: var(--color-glyph-gray);
+    cursor: pointer;
+}
+
+.proj-combobox__option-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Hover and keyboard highlight are the SAME treatment on purpose: pointer and
+   arrow keys are two ways to point at one thing, and showing two different
+   highlights at once (one under the pointer, one under the caret) reads as two
+   selections. `--active` is set by JS for both. */
+.proj-combobox__option:hover,
+.proj-combobox__create:hover,
+.proj-combobox__option--active {
+    background-color: var(--color-fill-tertiary);
+}
+
+/* The value currently held by the <select>. Weight rather than colour, so it
+   still reads when it is also the highlighted row. */
+.proj-combobox__option--selected {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-base-accent);
+}
+
+.proj-combobox__empty {
+    margin: 0;
+    padding: var(--space-xs) var(--space-s);
+    color: var(--color-glyph-gray-secondary);
+    font-size: var(--font-size-tiny);
+}
+
+/* --- Create row --------------------------------------------------------- */
+
+/* Separated from the list by a rule: adding a value is a different kind of act
+   from picking one, and the divider is what says so. */
+.proj-combobox__create-wrap {
+    flex-shrink: 0;
+    padding-top: var(--space-s);
+    border-top: 1px solid var(--color-fill-gray-quaternary);
+}
+
+.proj-combobox__create {
+    color: var(--color-base-accent);
+    font-size: var(--font-size-tiny);
+}
